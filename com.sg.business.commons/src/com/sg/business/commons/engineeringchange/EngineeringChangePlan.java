@@ -1,4 +1,4 @@
-package com.tmt.gs.editor.page;
+package com.sg.business.commons.engineeringchange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -20,10 +21,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.portal.Portal;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.part.WorkListCreater;
@@ -43,17 +48,18 @@ import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
-import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
-import com.tmt.gs.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
-
-public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
+public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	private WorkListCreater workListCreater;
 	private IContext context;
 	private String eca;
+	private String menuId = "popup:project.change.document";
+	private Button createDeliverableButton;
+	private boolean buttonEnable = true;
 
-	public EngineeringOfGSChangePlan() {
+	public EngineeringChangePlan() {
 	}
 
 	@Override
@@ -63,7 +69,6 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 		context = new CurrentAccountContext();
 		setFormInput(input);
 		parent.setLayout(new FormLayout());
-		Button b = createToolBar(parent);
 		workListCreater = new WorkListCreater(parent, SWT.BORDER);
 		workListCreater.setContext(context);
 
@@ -72,46 +77,30 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 		Object value;
 		try {
 			Task task = taskform.getExecuteTask(context);
-			String taskName = task.getNames().get(0).getText();
 			List<Work> ecnList = new ArrayList<Work>();
-			value = taskform.getProcessInstanceVarible("ecn", context); //$NON-NLS-1$
-
-			if (value instanceof List<?>) {
-				List<?> list = (List<?>) value;
-				for (Object dbo : list) {
-					Work work = ModelService.createModelObject((DBObject) dbo,
-							Work.class);
-					ecnList.add(work);
-				}
-			} else if (value instanceof Object[]) {
-				Object[] array = (Object[]) value;
-				for (Object dbo : array) {
-					Work work = ModelService.createModelObject((DBObject) dbo,
-							Work.class);
-					ecnList.add(work);
-				}
-
-			}
-			for (Work ecn : ecnList) {
-				if (taskName != null && taskName.equals(ecn.getDesc())) {
-					eca = (String) ecn.getValue(Work.F_INTERNAL_ECAPARA);
-					value = taskform.getProcessInstanceVarible(eca, context);
-					if (value instanceof List<?>) {
-						List<?> list = (List<?>) value;
-						for (Object dbo : list) {
-							Work work = ModelService.createModelObject(
-									(DBObject) dbo, Work.class);
-							ecnList.add(work);
-						}
-					} else if (value instanceof Object[]) {
-						Object[] array = (Object[]) value;
-						for (Object dbo : array) {
-							Work work = ModelService.createModelObject(
-									(DBObject) dbo, Work.class);
-							ecnList.add(work);
-						}
+			String taskName;
+			if (task != null) {
+				taskName = task.getNames().get(0).getText();
+				value = taskform.getProcessInstanceVarible("ecn", context); //$NON-NLS-1$
+				ecnList.addAll(appendWorkDataList(value));
+				for (Work ecn : ecnList) {
+					if (taskName != null && taskName.equals(ecn.getDesc())) {
+						eca = (String) ecn.getValue(Work.F_INTERNAL_ECAPARA);
+						// value = taskform.getProcessInstanceVarible(eca,
+						// context);
+						value = taskform.getValue(eca);
+						ecnList.addAll(appendWorkDataList(value));
 					}
 				}
+//				buttonEnable = true;
+			} else {
+				taskName = taskform.getUserTask().getDesc();
+				eca = (String) taskform.getValue(Work.F_INTERNAL_ECAPARA);
+				// value = taskform.getProcessInstanceVarible(eca,
+				// context);
+				buttonEnable = false;
+				value = taskform.getValue(eca);
+				ecaList.addAll(appendWorkDataList(value));
 			}
 
 		} catch (Exception e) {
@@ -119,6 +108,8 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				e.printStackTrace();
 			}
 		}
+
+		Button b = createToolBar(parent);
 
 		FormData fd = new FormData();
 		workListCreater.setLayoutData(fd);
@@ -132,12 +123,33 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 		return workListCreater;
 	}
 
+	private List<Work> appendWorkDataList(Object value) {
+		List<Work> primaryObjectList = new ArrayList<Work>();
+		if (value instanceof List<?>) {
+			List<?> list = (List<?>) value;
+			for (Object dbo : list) {
+				Work work = ModelService.createModelObject((DBObject) dbo,
+						Work.class);
+				primaryObjectList.add(work);
+			}
+		} else if (value instanceof Object[]) {
+			Object[] array = (Object[]) value;
+			for (Object dbo : array) {
+				Work work = ModelService.createModelObject((DBObject) dbo,
+						Work.class);
+				primaryObjectList.add(work);
+			}
+		}
+		return primaryObjectList;
+	}
+
 	private Button createToolBar(final Composite parent) {
 		Button createWorkButton = new Button(parent, SWT.PUSH);
 		createWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_CREATEWORK_24));
 		createWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_1);
 		createWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");//$NON-NLS-1$
+		createWorkButton.setEnabled(buttonEnable);
 		createWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -155,46 +167,17 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 		fd.top = new FormAttachment(0, 2);
 		fd.left = new FormAttachment(0, 2);
 
-		final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
-		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("从项目中选择..."); //$NON-NLS-1$
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithProject();
-			}
-		});
-		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText(Messages.get().EngineeringChangePlan_4);
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithVault();
-			}
-		});
-
-		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText(Messages.get().EngineeringChangePlan_5);
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithPDM(parent);
-			}
-
-		});
-
-		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
+		createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
-		createDeliverableButton.setToolTipText(Messages.get().EngineeringChangePlan_6);
+		createDeliverableButton
+				.setToolTipText(Messages.get().EngineeringChangePlan_6);
 		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		createDeliverableButton.setEnabled(buttonEnable);
 		createDeliverableButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Point point = createDeliverableButton.toDisplay(0,
-						createDeliverableButton.getBounds().height);
-				menu.setLocation(point);
-				menu.setVisible(true);
+				showPopup(parent);
 			}
 
 			@Override
@@ -202,6 +185,7 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 
 			}
 		});
+
 		fd = new FormData();
 		createDeliverableButton.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 2);
@@ -212,6 +196,7 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_EDITWORK_24));
 		editWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_8);
 		editWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		editWorkButton.setEnabled(buttonEnable);
 		editWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -234,6 +219,7 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_REMOVE_24));
 		deleteButton.setToolTipText(Messages.get().EngineeringChangePlan_10);
 		deleteButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		deleteButton.setEnabled(buttonEnable);
 		deleteButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -260,6 +246,7 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_REFRESH_24));
 		refreshButton.setToolTipText(Messages.get().EngineeringChangePlan_12);
 		refreshButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		refreshButton.setEnabled(buttonEnable);
 		refreshButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -280,6 +267,40 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 		return refreshButton;
 	}
 
+	private void showPopup(final Composite parent) {
+		MenuManager menuManager = new MenuManager();
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IMenuService mSvc = (IMenuService) window
+				.getService(IMenuService.class);
+		mSvc.populateContributionManager(menuManager, menuId);
+		Menu menu = menuManager.createContextMenu(createDeliverableButton);
+		// final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
+		menu.setVisible(true);
+		menu.setData("treeViewer", workListCreater);
+		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("从项目中选择..."); //$NON-NLS-1$
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithProject();
+			}
+		});
+		menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText(Messages.get().EngineeringChangePlan_4);
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithVault();
+			}
+		});
+
+		Point point = createDeliverableButton.toDisplay(0,
+				createDeliverableButton.getBounds().height);
+		menu.setLocation(point);
+
+	}
+
 	protected void refreshData() {
 		workListCreater.refresh();
 	}
@@ -295,7 +316,8 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 			}
 			setDirty(true);
 		} else {
-			MessageUtil.showToast(Messages.get().EngineeringChangePlan_14, SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().EngineeringChangePlan_14,
+					SWT.ICON_WARNING);
 			return;
 		}
 
@@ -344,7 +366,7 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 						}
 					};
 					DataObjectDialog.openDialog(work, "edit.work.plan.4", //$NON-NLS-1$
-							false, handler);
+							true, handler);
 					workListCreater.refresh();
 					setDirty(true);
 				} catch (Exception e) {
@@ -353,7 +375,8 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_16, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_16,
+				SWT.ICON_WARNING);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -377,9 +400,10 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 						"project.documents.released", Messages.get().EngineeringChangePlan_18) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						List docList =is.toList();
+						List docList = is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
+							workListCreater.createDeliverable(work, docList,
+									IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -413,10 +437,11 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_20, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_20,
+				SWT.ICON_WARNING);
 
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void createDeliverableWithVault() {
 		IStructuredSelection sel = workListCreater.getSelection();
@@ -436,9 +461,10 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 						"vault.document.selector", Messages.get().EngineeringChangePlan_22) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						List docList =is.toList();
+						List docList = is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
+							workListCreater.createDeliverable(work, docList,
+									IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -459,40 +485,9 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_23, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_23,
+				SWT.ICON_WARNING);
 
-	}
-
-	protected void createDeliverableWithPDM(Composite parent) {
-
-		IStructuredSelection sel = workListCreater.getSelection();
-		if (sel != null && !sel.isEmpty()) {
-			Object element = sel.getFirstElement();
-			final Work work;
-			if (element instanceof Work) {
-				work = (Work) element;
-			} else if (element instanceof Deliverable) {
-				Deliverable deliverable = (Deliverable) element;
-				work = (Work) deliverable.getParentPrimaryObjectCache();
-			} else {
-				work = null;
-			}
-			if (work != null) {
-				String userid = new CurrentAccountContext().getAccountInfo()
-						.getConsignerId();
-				try {
-					List<Document> docList = DCPDMUtil.getDocumentFromDCPDM(
-							userid, parent.getShell());
-					workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
-				} catch (Exception e) {
-					MessageUtil.showToast(e);
-				}
-				
-			}
-
-			return;
-		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_24, SWT.ICON_WARNING);
 	}
 
 	protected void createWork() {
@@ -504,6 +499,8 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 				WorkDefinition workd = (WorkDefinition) is.getFirstElement();
 				try {
 					Work work = workd.makeStandloneWork(null, context);
+					work.setValue(Work.F_CHARGER, context.getAccountInfo()
+							.getConsignerId());
 					work.setValue(Work.F_DESC, workd.getDesc());
 					workListCreater.createWork(work);
 					setDirty(true);
@@ -531,7 +528,21 @@ public class EngineeringOfGSChangePlan extends AbstractFormPageDelegator {
 
 		TaskForm taskform = (TaskForm) getInputData();
 		if (eca != null) {
-			taskform.setValue(eca, workListCreater.getInput());
+			// 转换成DBObject存入到TaskForm中 2014/04/04 yangjun
+			// taskform.setValue(eca, workListCreater.getInput());
+			Object value = workListCreater.getInput();
+			List<DBObject> ecaList = new ArrayList<DBObject>();
+			if (value instanceof List<?>) {
+				List<?> list = (List<?>) value;
+				for (Object obj : list) {
+					if (obj instanceof PrimaryObject) {
+						PrimaryObject po = (PrimaryObject) obj;
+						ecaList.add(po.get_data());
+					}
+				}
+			}
+			taskform.setValue(Work.F_INTERNAL_ECAPARA, eca);
+			taskform.setValue(eca, ecaList);
 		}
 		setDirty(false);
 

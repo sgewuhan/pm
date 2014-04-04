@@ -7,6 +7,13 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
 
+/**
+ * 2014/04/04
+ * 
+ * @author yangjun
+ * 
+ */
+@Deprecated
 public class ECNOfGS implements IProcessParameterDelegator {
 
 	@Override

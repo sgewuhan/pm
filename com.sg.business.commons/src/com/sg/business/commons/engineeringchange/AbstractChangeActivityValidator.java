@@ -1,4 +1,4 @@
-package com.tmt.tb.validation;
+package com.sg.business.commons.engineeringchange;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.taskform.IValidationHandler;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Work;
-import com.tmt.tb.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class AbstractChangeActivityValidator implements
 		IValidationHandler {

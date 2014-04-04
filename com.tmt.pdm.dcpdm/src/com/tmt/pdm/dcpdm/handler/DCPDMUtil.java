@@ -503,13 +503,13 @@ public class DCPDMUtil {
 			doc.setValue(Document.F_DESC, desc);
 			doc.setValue(Document.F_PDM_OUID, ouid);
 			doc.setValue(Document.F__EDITOR, "editor.document.dcpdm");
+			doc.doSave(context);
+			pdmObject = Starter.dos.get(ouid);
+			pdmObject.put("pm_id", doc.get_id().toString());
+			pdmObject.put("pm_rev", doc.getRevId());
+			Starter.dos.set(pdmObject);
 		}
-		doc.doSave(context);
 
-		pdmObject = Starter.dos.get(ouid);
-		pdmObject.put("pm_id", doc.get_id().toString());
-		pdmObject.put("pm_rev", doc.getRevId());
-		Starter.dos.set(pdmObject);
 
 		return doc;
 	}

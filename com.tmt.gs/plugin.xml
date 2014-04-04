@@ -3614,36 +3614,8 @@
          </searchAction>
       </navigator>
       <navigator
-            id="gsorganization.navigaor.projectfunctionorg"
-            tree="gsorganization.navigaor.projectfunctionorg">
-         <filterAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-         </searchAction>
-      </navigator>
-      <navigator
             id="gsproject.navigator.changedoc"
             tree="gsproject.navigator.changedoc">
-      </navigator>
-      <navigator
-            id="gsproject.documents.released"
-            tree="gsproject.documents.released">
-         <filterAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-         </searchAction>
       </navigator>
       <navigator
             id="gs.taskforms.applicationleader.selector"
@@ -3950,6 +3922,15 @@
       </tree>
       <tree
             autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.ProjectFunctionOrgOfGS"
+            headerVisiable="false"
+            id="gsorganization.navigaor.projectfunction">
+         <column
+               columnDefinitionId="work.desc.1">
+         </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.gs.dataset.UserSelectorOfGS"
             headerVisiable="false"
             id="gs.taskforms.user.selector">
@@ -3961,37 +3942,6 @@
          </structure>
          <structure
                modelRelation="organization_user">
-         </structure>
-      </tree>
-      <tree
-            autoExpandLevel="3"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
-            headerVisiable="false"
-            id="gsproject.documents.released">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-         <structure
-               modelRelation="folder_folder">
-         </structure>
-         <structure
-               modelRelation="folder_document_released">
-         </structure>
-      </tree>
-      <tree
-            autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.ProjectFunctionOrgOfGS"
-            headerVisiable="false"
-            id="gsorganization.navigaor.projectfunctionorg">
-         <column
-               columnDefinitionId="work.desc.1">
-         </column>
-         <structure
-               modelRelation="organization_internalbystandlonework">
          </structure>
       </tree>
       <tree
@@ -4012,15 +3962,6 @@
          <structure
                modelRelation="folder_document">
          </structure>
-      </tree>
-      <tree
-            autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.ProjectFunctionOrgOfGS"
-            headerVisiable="false"
-            id="gsorganization.navigaor.projectfunction">
-         <column
-               columnDefinitionId="work.desc.1">
-         </column>
       </tree>
       <tree
             autoExpandLevel="2"
@@ -4087,43 +4028,6 @@
             id="gs.taskforms.project.selector">
          <column
                columnDefinitionId="project.desc">
-         </column>
-      </table>
-      <table
-            id="ec.gsstandlonework"
-            useHashlookup="false">
-         <column
-               column="defaultselected"
-               editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
-               type="Boolean"
-               width="40">
-         </column>
-         <column
-               column="desc"
-               name="变更内容"
-               type="String"
-               width="260">
-         </column>
-         <column
-               column="planstart"
-               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
-               name="计划开始"
-               type="Date">
-         </column>
-         <column
-               column="planfinish"
-               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
-               name="计划完成"
-               type="Date">
-         </column>
-         <column
-               column="chargerid"
-               editingSupport="com.sg.business.commons.column.editingsupport.UserNavigatorSelectorEditing"
-               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-               lazyDisplay="true"
-               name="负责人"
-               type="String"
-               width="120">
          </column>
       </table>
       <table
@@ -5756,11 +5660,10 @@
       <taskForm
             editorId="gsprojectchange.confirmProgram"
             name="确认变更方案"
-            persistentFields="plan,other,qc,market,customer,project_supervisor,hasother,choice,hascustomer"
+            persistentFields="plan,other,qc,market,customer,project_supervisor,hasother,choice,hascustomer,ecn"
             processDefinitionId="gs.gsProjectChange"
             saveHandler="com.tmt.gs.editor.ProjectChangeConfirmProgramOfGSSaveHandler">
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecn"
                taskFormFieldName="ecn">
          </processParameter>
@@ -5864,14 +5767,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="设计变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_design,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_design"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_design"
                taskFormFieldName="ecnitem_design">
          </processParameter>
@@ -5884,14 +5786,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="工艺变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_process,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_process"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_process"
                taskFormFieldName="ecnitem_process">
          </processParameter>
@@ -5905,14 +5806,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="采购变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_purchase,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_purchase"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_purchase"
                taskFormFieldName="ecnitem_purchase">
          </processParameter>
@@ -5925,14 +5825,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="在制品处理"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_mfg,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_mfg"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_mfg"
                taskFormFieldName="ecnitem_mfg">
          </processParameter>
@@ -5945,14 +5844,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="检验变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_inspect,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_inspect"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_inspect"
                taskFormFieldName="ecnitem_inspect">
          </processParameter>
@@ -5965,14 +5863,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="包装变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_package,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_package"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_package"
                taskFormFieldName="ecnitem_package">
          </processParameter>
@@ -5985,14 +5882,13 @@
       <taskForm
             editorId="gsprojectchange.activity"
             name="相关部门变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_relevant,ecapara"
             processDefinitionId="gs.gsProjectChange">
          <processParameter
                processParameterName="choice_relevant"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_relevant"
                taskFormFieldName="ecnitem_relevant">
          </processParameter>
@@ -6308,7 +6204,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.gs.editor.page.EngineeringOfGSChangeItem"
+               pageDelegator="com.sg.business.commons.engineeringchange.EngineeringChangeItem"
                title="变更方案">
          </basicpage>
          <basicpage
@@ -6436,7 +6332,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.gs.editor.page.EngineeringOfGSChangePlan"
+               pageDelegator="com.sg.business.commons.engineeringchange.EngineeringChangePlan"
                title="变更方案">
          </basicpage>
          <basicpage

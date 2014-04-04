@@ -21,6 +21,7 @@ public class Messages {
 	public static Messages get(Locale local) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, local);
 	}
+	public String AbstractChangeActivityValidator_0;
 	public String AbstractCheckFieldByChoice_1;
 	public String AbstractLifecycleAction_0;
 	public String AbstractLifecycleAction_1;
@@ -352,6 +353,21 @@ public class Messages {
 	public String EditWorkDefinition_2;
 	public String ExportTeam_0;
 	public String ExportWBS_0;
+	public String EngineeringChangePlan_1;
+	public String EngineeringChangePlan_10;
+	public String EngineeringChangePlan_12;
+	public String EngineeringChangePlan_14;
+	public String EngineeringChangePlan_16;
+	public String EngineeringChangePlan_18;
+	public String EngineeringChangePlan_20;
+	public String EngineeringChangePlan_22;
+	public String EngineeringChangePlan_23;
+	public String EngineeringChangePlan_24;
+	public String EngineeringChangePlan_26;
+	public String EngineeringChangePlan_4;
+	public String EngineeringChangePlan_5;
+	public String EngineeringChangePlan_6;
+	public String EngineeringChangePlan_8;
 	public String FilterUnAssignment_0;
 	public String FinishTask;
 	public String FinishWork;

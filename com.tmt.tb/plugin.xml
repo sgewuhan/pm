@@ -1517,14 +1517,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="采购变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_purchase,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_purchase"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_purchase"
                taskFormFieldName="ecnitem_purchase">
          </processParameter>
@@ -1537,14 +1536,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="在制品处理"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_mfg,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_mfg"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_mfg"
                taskFormFieldName="ecnitem_mfg">
          </processParameter>
@@ -1557,14 +1555,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="检验变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_inspect,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_inspect"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_inspect"
                taskFormFieldName="ecnitem_inspect">
          </processParameter>
@@ -1577,14 +1574,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="包装变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_package,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_package"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_package"
                taskFormFieldName="ecnitem_package">
          </processParameter>
@@ -1597,14 +1593,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="相关部门变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_relevant,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_relevant"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_relevant"
                taskFormFieldName="ecnitem_relevant">
          </processParameter>
@@ -1785,7 +1780,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangeItem"
+               pageDelegator="com.sg.business.commons.engineeringchange.EngineeringChangeItem"
                title="%basicpage.title.53">
          </basicpage>
          <basicpage
@@ -1912,7 +1907,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
+               pageDelegator="com.sg.business.commons.engineeringchange.EngineeringChangePlan"
                title="%basicpage.title.60">
          </basicpage>
          <basicpage
@@ -2043,36 +2038,8 @@
          </searchAction>
       </navigator>
       <navigator
-            id="organization.navigaor.projectfunctionorg"
-            tree="organization.navigaor.projectfunctionorg">
-         <filterAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-         </searchAction>
-      </navigator>
-      <navigator
             id="project.navigator.changedoc"
             tree="project.navigator.changedoc">
-      </navigator>
-      <navigator
-            id="project.documents.released"
-            tree="project.documents.released">
-         <filterAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-         </searchAction>
       </navigator>
       <navigator
             id="tb.taskforms.applicationleader.selector"
@@ -2162,18 +2129,6 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.tb.dataset.ProjectFunctionOrg"
-            headerVisiable="false"
-            id="organization.navigaor.projectfunctionorg">
-         <column
-               columnDefinitionId="work.desc.1">
-         </column>
-         <structure
-               modelRelation="organization_internalbystandlonework">
-         </structure>
-      </tree>
-      <tree
-            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -2192,27 +2147,8 @@
          </structure>
       </tree>
       <tree
-            autoExpandLevel="3"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
-            headerVisiable="false"
-            id="project.documents.released">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-         <structure
-               modelRelation="folder_folder">
-         </structure>
-         <structure
-               modelRelation="folder_document_released">
-         </structure>
-      </tree>
-      <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.tb.dataset.ProjectFunctionOrg"
+            dataSet="com.sg.business.commons.engineeringchange.ProjectFunctionOrg"
             headerVisiable="false"
             id="organization.navigaor.projectfunction">
          <column
@@ -2228,43 +2164,6 @@
             id="tb.taskforms.project.selector">
          <column
                columnDefinitionId="project.desc">
-         </column>
-      </table>
-      <table
-            id="ec.standlonework"
-            useHashlookup="false">
-         <column
-               column="defaultselected"
-               editingSupport="com.sg.business.commons.column.editingsupport.ECNCheckBox"
-               type="Boolean"
-               width="40">
-         </column>
-         <column
-               column="desc"
-               name="%column.name"
-               type="String"
-               width="260">
-         </column>
-         <column
-               column="planstart"
-               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
-               name="%column.name.0"
-               type="Date">
-         </column>
-         <column
-               column="planfinish"
-               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
-               name="%column.name.1"
-               type="Date">
-         </column>
-         <column
-              column="chargerid"
-            labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-            lazyDisplay="true"
-             editingSupport="com.sg.business.commons.column.editingsupport.UserNavigatorSelectorEditing"
-            name="%column.name.2"
-            type="String"
-            width="120">
          </column>
       </table>
       <table
