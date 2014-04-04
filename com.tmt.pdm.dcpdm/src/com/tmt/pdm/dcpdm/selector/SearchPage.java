@@ -39,8 +39,10 @@ import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.nls.Messages;
 
 import dyna.framework.iip.IIPRequestException;
+import dyna.framework.service.dos.DOSChangeable;
 
 public class SearchPage extends WizardPage implements ISelectionChangedListener {
+
 	private ArrayList<String> fieldlist;
 
 	private DCPDMObjectSelectWizard wizard;
@@ -113,9 +115,15 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 				while (iter.hasNext()) {
 					for (int index = 0; index < keys.length; index++) {
 						String classOuid = iter.next();
-						appendResult(result, keys[index], classOuid, "80001a79");
-						appendResult(result, keys[index], classOuid, "86054a45");
-						appendResult(result, keys[index], classOuid, "80001a7a");
+						try {
+							ArrayList<String> fields = getFieldList(classOuid);
+							for (String field : fields) {
+								appendResult(result, keys[index], classOuid,
+										field);
+							}
+						} catch (IIPRequestException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 				return Status.OK_STATUS;
@@ -155,12 +163,36 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 			HashMap<String, String> condition = new HashMap<String, String>();
 			condition.put(fieldName, "*" + key + "*"); //$NON-NLS-1$ //$NON-NLS-2$ 
 			condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
-			ArrayList r = Starter.dos.list(classOuid, fieldlist, condition);
+			ArrayList r = Starter.dos.list(classOuid, getFieldList(classOuid),
+					condition);
 			if (r != null) {
 				result.addAll(r);
 			}
 		} catch (Exception e) {
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private ArrayList<String> getFieldList(String classOuid)
+			throws IIPRequestException {
+		ArrayList<DOSChangeable> fields = Starter.dos
+				.listFieldInClass(classOuid);
+		boolean hasName = false;
+		for (DOSChangeable dosChangeable : fields) {
+			String ouid = (String) dosChangeable.get("ouid");
+			if ("86054a45".equals(ouid)) {
+				hasName = true;
+				break;
+			}
+		}
+		ArrayList<String> result = new ArrayList<String>();
+		result.addAll(fieldlist);
+		if (!hasName) {
+			result.remove(1);
+		} else {
+			result.remove(2);
+		}
+		return result;
 	}
 
 	@Override
@@ -206,9 +238,8 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		col.setWidth(120);
 		col = createColumn(2, "名称");
 		col.setWidth(120);
-		col = createColumn(3, "描述");
-		col.setWidth(120);
-		col = createColumn(4, "创建人");
+
+		col = createColumn(3, "创建人");
 		col.setWidth(60);
 		Control control = viewer.getControl();
 		FormData fd1 = new FormData();

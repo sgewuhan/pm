@@ -79,6 +79,16 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.change.document?after=additions">
+         <command
+               commandId="projectchange.linkpdm"
+               label="%command.label.0"
+               mode="FORCE_TEXT"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -88,6 +98,10 @@
       </command>
       <command
             id="workflow.deliverable.linkpdm"
+            name="%command.name.0">
+      </command>
+      <command
+            id="projectchange.linkpdm"
             name="%command.name.0">
       </command>
    </extension>
@@ -100,6 +114,10 @@
       <handler
             class="com.tmt.pdm.dcpdm.handler.LinkPDMDocAndDraw2"
             commandId="workflow.deliverable.linkpdm">
+      </handler>
+      <handler
+            class="com.tmt.pdm.dcpdm.handler.LinkPDMDocAndDrawOfProjectChange"
+            commandId="projectchange.linkpdm">
       </handler>
    </extension>
    <extension

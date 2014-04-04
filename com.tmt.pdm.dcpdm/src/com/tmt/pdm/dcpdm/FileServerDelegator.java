@@ -13,6 +13,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.IFileServerDelegator;
 import com.tmt.pdm.client.Starter;
+import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 
 import dyna.framework.iip.IIPRequestException;
 
@@ -73,6 +74,35 @@ public class FileServerDelegator implements IFileServerDelegator {
 		String fileTypeDescription = (String) tempMap.get("md$description"); //$NON-NLS-1$
 		File file = new File(fileTypeDescription);
 		return file.getName();
+	}
+
+	@Override
+	public boolean doSetLifeCycleStatus(PrimaryObject document, String status) {
+		if (document != null) {
+			String ouid = ((Document) document).getPDMOuid();
+			return DCPDMUtil.doSetLifeCycleStatus(ouid, status);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean doSetRev(PrimaryObject document) {
+		if (document != null) {
+			String ouid = ((Document) document).getPDMOuid();
+			return DCPDMUtil.doSetRev(ouid,
+					((Document) document).getRevId());
+		}
+		return false;
+	}
+
+	@Override
+	public boolean setUpdateVersion(PrimaryObject document, String status) {
+		if (document != null) {
+			String ouid = ((Document) document).getPDMOuid();
+			String rev = ((Document) document).getRevId();
+			return DCPDMUtil.doSetUpdateVersion(ouid, status, rev);
+		}
+		return false;
 	}
 
 }

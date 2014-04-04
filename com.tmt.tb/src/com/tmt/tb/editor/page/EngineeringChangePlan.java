@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -20,6 +21,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.IContext;
@@ -43,15 +47,15 @@ import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
-import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 import com.tmt.tb.nls.Messages;
-
 
 public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	private WorkListCreater workListCreater;
 	private IContext context;
 	private String eca;
+	private String menuId = "popup:project.change.document";
+	private Button createDeliverableButton;
 
 	public EngineeringChangePlan() {
 	}
@@ -155,46 +159,17 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		fd.top = new FormAttachment(0, 2);
 		fd.left = new FormAttachment(0, 2);
 
-		final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
-		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("从项目中选择..."); //$NON-NLS-1$
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithProject();
-			}
-		});
-		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText(Messages.get().EngineeringChangePlan_4);
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithVault();
-			}
-		});
-
-		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText(Messages.get().EngineeringChangePlan_5);
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithPDM(parent);
-			}
-
-		});
-
-		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
+		createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
-		createDeliverableButton.setToolTipText(Messages.get().EngineeringChangePlan_6);
+		createDeliverableButton
+				.setToolTipText(Messages.get().EngineeringChangePlan_6);
 		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+
 		createDeliverableButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Point point = createDeliverableButton.toDisplay(0,
-						createDeliverableButton.getBounds().height);
-				menu.setLocation(point);
-				menu.setVisible(true);
+				showPopup(parent);
 			}
 
 			@Override
@@ -280,6 +255,40 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		return refreshButton;
 	}
 
+	private void showPopup(final Composite parent) {
+		MenuManager menuManager = new MenuManager();
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IMenuService mSvc = (IMenuService) window
+				.getService(IMenuService.class);
+		mSvc.populateContributionManager(menuManager, menuId);
+		Menu menu = menuManager.createContextMenu(createDeliverableButton);
+		// final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
+		menu.setVisible(true);
+		menu.setData("treeViewer", workListCreater);
+		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("从项目中选择..."); //$NON-NLS-1$
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithProject();
+			}
+		});
+		menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText(Messages.get().EngineeringChangePlan_4);
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithVault();
+			}
+		});
+
+		Point point = createDeliverableButton.toDisplay(0,
+				createDeliverableButton.getBounds().height);
+		menu.setLocation(point);
+
+	}
+
 	protected void refreshData() {
 		workListCreater.refresh();
 	}
@@ -295,7 +304,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 			setDirty(true);
 		} else {
-			MessageUtil.showToast(Messages.get().EngineeringChangePlan_14, SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().EngineeringChangePlan_14,
+					SWT.ICON_WARNING);
 			return;
 		}
 
@@ -344,7 +354,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						}
 					};
 					DataObjectDialog.openDialog(work, "edit.work.plan.4", //$NON-NLS-1$
-							false, handler);
+							true, handler);
 					workListCreater.refresh();
 					setDirty(true);
 				} catch (Exception e) {
@@ -353,7 +363,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_16, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_16,
+				SWT.ICON_WARNING);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -377,9 +388,10 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						"project.documents.released", Messages.get().EngineeringChangePlan_18) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						List docList =is.toList();
+						List docList = is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
+							workListCreater.createDeliverable(work, docList,
+									IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -413,10 +425,11 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_20, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_20,
+				SWT.ICON_WARNING);
 
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void createDeliverableWithVault() {
 		IStructuredSelection sel = workListCreater.getSelection();
@@ -436,9 +449,10 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						"vault.document.selector", Messages.get().EngineeringChangePlan_22) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						List docList =is.toList();
+						List docList = is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
+							workListCreater.createDeliverable(work, docList,
+									IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -459,40 +473,9 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_23, SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_23,
+				SWT.ICON_WARNING);
 
-	}
-
-	protected void createDeliverableWithPDM(Composite parent) {
-
-		IStructuredSelection sel = workListCreater.getSelection();
-		if (sel != null && !sel.isEmpty()) {
-			Object element = sel.getFirstElement();
-			final Work work;
-			if (element instanceof Work) {
-				work = (Work) element;
-			} else if (element instanceof Deliverable) {
-				Deliverable deliverable = (Deliverable) element;
-				work = (Work) deliverable.getParentPrimaryObjectCache();
-			} else {
-				work = null;
-			}
-			if (work != null) {
-				String userid = new CurrentAccountContext().getAccountInfo()
-						.getConsignerId();
-				try {
-					List<Document> docList = DCPDMUtil.getDocumentFromDCPDM(
-							userid, parent.getShell());
-					workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
-				} catch (Exception e) {
-					MessageUtil.showToast(e);
-				}
-				
-			}
-
-			return;
-		}
-		MessageUtil.showToast(Messages.get().EngineeringChangePlan_24, SWT.ICON_WARNING);
 	}
 
 	protected void createWork() {
@@ -504,6 +487,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				WorkDefinition workd = (WorkDefinition) is.getFirstElement();
 				try {
 					Work work = workd.makeStandloneWork(null, context);
+					work.setValue(Work.F_CHARGER, context.getAccountInfo()
+							.getConsignerId());
 					work.setValue(Work.F_DESC, workd.getDesc());
 					workListCreater.createWork(work);
 					setDirty(true);

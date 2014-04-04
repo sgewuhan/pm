@@ -39,6 +39,7 @@ public class WorkListCreater extends Composite {
 	public WorkListCreater(Composite parent, int style) {
 		super(parent, style);
 		this.setLayout(new FillLayout());
+		
 		createContent(this);
 	}
 
@@ -241,6 +242,11 @@ public class WorkListCreater extends Composite {
 
 	public List<Work> getInput() {
 		return input;
+	}
+
+	public void doReloadData(){
+		viewer.refresh();
+		viewer.expandAll();
 	}
 
 }

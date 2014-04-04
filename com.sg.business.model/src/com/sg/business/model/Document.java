@@ -165,7 +165,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public static final String F_SECOND_VID = "svid"; //$NON-NLS-1$
 
-
 	/**
 	 * 内容
 	 */
@@ -181,11 +180,21 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		initVersionNumber();
 		initVerStatus();
 		checkDocumentNumber();
-		boolean saved = super.doSave(context);
+		boolean saved = true;
+		saved = super.doSave(context);
 
 		generatePreview();
 
 		return saved;
+	}
+	
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+		super.doUpdate(context);
+		if (setPDMVersionNumber()) {
+		} else {
+			throw new Exception("无法连接到PDM进行保存！");
+		}
 	}
 
 	@Override
@@ -224,7 +233,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
 				+ "." + prefix); //$NON-NLS-1$
-//		String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$  cctec
+		//		String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$  cctec
 		String seq = String.format("%03d", id).toUpperCase(); //$NON-NLS-1$
 		String codeValue = prefix + seq;
 		setValue(F_DOCUMENT_NUMBER, codeValue);
@@ -288,7 +297,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						try {
 							serverFile = remoteFile.createServerFile(pathname);
 							int fileType = FileUtil.getFileType(serverFile);
-							if(FileUtil.FILETYPE_OFFICE_FILE != fileType){
+							if (FileUtil.FILETYPE_OFFICE_FILE != fileType) {
 								continue;
 							}
 						} catch (IOException e1) {
@@ -347,7 +356,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
-	public void doUpdateVersion() {
+	public void doUpdateVersion() throws Exception {
 		String major = (String) getValue(F_MAJOR_VID);
 		String[] majorVersionSeq = getMajorVersionSeq();
 		for (int i = 0; i < majorVersionSeq.length; i++) {
@@ -356,18 +365,21 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				break;
 			}
 		}
-
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
 		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
-		DBCollection collection = getCollection();
-		collection.update(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append(
-						"$set", //$NON-NLS-1$
-						new BasicDBObject().append(F_MAJOR_VID, major)
-								.append(F_SECOND_VID, 0x0)
-								.append(F_LIFECYCLE, STATUS_WORKING_ID)));
+		if (setPDMUpdateVersion(STATUS_WORKING_ID)) {
+			DBCollection collection = getCollection();
+			collection.update(
+					new BasicDBObject().append(F__ID, get_id()),
+					new BasicDBObject().append(
+							"$set", //$NON-NLS-1$
+							new BasicDBObject().append(F_MAJOR_VID, major)
+									.append(F_SECOND_VID, 0x0)
+									.append(F_LIFECYCLE, STATUS_WORKING_ID)));
+		} else {
+			throw new Exception("无法对PDM进行进版!");
+		}
 	}
 
 	public String[] getMajorVersionSeq() {
@@ -512,12 +524,12 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
-		if (adapter == CommonHTMLLabel.class){
-			return (T)(new DocumentCommonHTMLLable(this));
+		if (adapter == CommonHTMLLabel.class) {
+			return (T) (new DocumentCommonHTMLLable(this));
 		}
 		return super.getAdapter(adapter);
 	}
-	
+
 	/**
 	 * 返回默认编辑器ID
 	 * 
@@ -602,9 +614,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return getDateValue(F_LOCKED_ON);
 	}
 
-//	public String getEditor() {
-//		return EDITOR;
-//	}
+	// public String getEditor() {
+	// return EDITOR;
+	// }
 
 	@Override
 	public boolean canDelete(IContext context) {
@@ -700,22 +712,27 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		if (status.equals(lc)) {
 			return;
 		}
-		setValue(F_LIFECYCLE, status);
-		Date newValue = new Date();
-		setValue(status + "_date", newValue); //$NON-NLS-1$
-		BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE, status)
-				.append(status + "_date", newValue); //$NON-NLS-1$
-		if (!STATUS_WORKING_ID.equals(getLifecycle())) {
-			setValue(F_LOCK, Boolean.FALSE);
-			setValue(F_LOCKED_BY, null);
-			setValue(F_LOCKED_ON, null);
-			object.put(F_LOCK, Boolean.FALSE);
-			object.put(F_LOCKED_BY, null);
-			object.put(F_LOCKED_ON, null);
+		if (setPDMLifeCycleStatus(status)) {
+			setValue(F_LIFECYCLE, status);
+			Date newValue = new Date();
+			setValue(status + "_date", newValue); //$NON-NLS-1$
+			BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE,
+					status).append(status + "_date", newValue); //$NON-NLS-1$
+			if (!STATUS_WORKING_ID.equals(lc)) {
+				setValue(F_LOCK, Boolean.FALSE);
+				setValue(F_LOCKED_BY, null);
+				setValue(F_LOCKED_ON, null);
+				object.put(F_LOCK, Boolean.FALSE);
+				object.put(F_LOCKED_BY, null);
+				object.put(F_LOCKED_ON, null);
+
+			}
+			DBCollection col = getCollection();
+			col.update(new BasicDBObject().append(F__ID, get_id()),
+					new BasicDBObject().append("$set", object)); //$NON-NLS-1$
+		} else {
+			throw new Exception("无法更改PDM文档状态");
 		}
-		DBCollection col = getCollection();
-		col.update(new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", object)); //$NON-NLS-1$
 	}
 
 	@Override
@@ -768,4 +785,36 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return null;
 	}
 
+	private boolean setPDMVersionNumber() {
+		if (isLinkedPDM()) {
+			String name = getCollectionName();
+			IFileServerDelegator fsd = ModelActivator
+					.getFileServerDelegator(name);
+			Assert.isNotNull(fsd, Messages.get().Document_4);
+			return fsd.doSetRev(this);
+		}
+		return true;
+	}
+
+	private boolean setPDMLifeCycleStatus(String status) {
+		if (isLinkedPDM()) {
+			String name = getCollectionName();
+			IFileServerDelegator fsd = ModelActivator
+					.getFileServerDelegator(name);
+			Assert.isNotNull(fsd, Messages.get().Document_4);
+			return fsd.doSetLifeCycleStatus(this, status);
+		}
+		return true;
+	}
+
+	private boolean setPDMUpdateVersion(String status) {
+		if (isLinkedPDM()) {
+			String name = getCollectionName();
+			IFileServerDelegator fsd = ModelActivator
+					.getFileServerDelegator(name);
+			Assert.isNotNull(fsd, Messages.get().Document_4);
+			return fsd.setUpdateVersion(this, status);
+		}
+		return true;
+	}
 }

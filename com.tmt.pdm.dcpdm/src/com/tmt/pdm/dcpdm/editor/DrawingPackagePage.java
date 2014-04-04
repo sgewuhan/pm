@@ -1,7 +1,7 @@
 package com.tmt.pdm.dcpdm.editor;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -118,53 +118,26 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 		return section;
 	}
 
-	// @SuppressWarnings({ "unchecked", "rawtypes" })
-	// protected void selectDCPDMObject(PrimaryObjectEditorInput input, Shell
-	// shell) {
-	// DCPDMObjectSelectWizard wiz = new DCPDMObjectSelectWizard();
-	//
-	// WizardDialog wizardDialog = new WizardDialog(shell, wiz);
-	//
-	// int ok = wizardDialog.open();
-	// if (ok == WizardDialog.OK) {
-	// Set<String> set = wiz.getSelectedObjectOuid();
-	// if (set.size() > 0) {
-	// BasicDBList value = new BasicDBList();
-	// value.addAll(set);
-	// Object oldValues = input.getData().getValue("pdm_ouids");
-	// if(oldValues instanceof List){
-	// List oldList = (List) oldValues;
-	// if(oldList.containsAll(value)&&value.containsAll(oldList)){
-	// return;
-	// }
-	// }
-	//
-	// input.getData().setValue("pdm_ouids", value);
-	// this.setDirty(true);
-	// try {
-	// loadFileValue(value);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	// }
-
 	@Override
 	public void commit(boolean onSave) {
 		super.commit(onSave);
 		setDirty(false);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	protected void downloadAll(PrimaryObjectEditorInput input, Shell shell)
 			throws Exception {
 		String pdm_ouid = (String) input.getData().getValue("pdm_ouid");
 		String zipFileName = (String) input.getData().getValue(
 				Document.F_DOCUMENT_NUMBER);
 		if (pdm_ouid != null) {
-			ArrayList fileList = Starter.dos.listFile((String) pdm_ouid);
+			ArrayList<Map<String, Object>> fileList = Starter.dos
+					.listFile((String) pdm_ouid);
+
 			if (fileList != null) {
+				ArrayList<Map<String, Object>> childFile = DCPDMUtil
+						.getChildFile(pdm_ouid);
+				fileList.addAll(childFile);
 				DCPDMUtil.download(zipFileName, fileList, shell);
 			}
 		}
@@ -201,10 +174,9 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 				return null;
 			}
 
-			@SuppressWarnings("rawtypes")
 			@Override
 			public Object[] getElements(Object inputElement) {
-				return ((List) inputElement).toArray();
+				return ((Object[]) inputElement);
 			}
 
 			@Override
@@ -237,7 +209,7 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 	@SuppressWarnings("rawtypes")
 	private void loadFileValue(String pdm_ouid) throws Exception {
 		if (pdm_ouid != null) {
-			fileViewer.setInput(new String[]{pdm_ouid});
+			fileViewer.setInput(new String[] { pdm_ouid });
 			return;
 		}
 		fileViewer.setInput(new ArrayList());

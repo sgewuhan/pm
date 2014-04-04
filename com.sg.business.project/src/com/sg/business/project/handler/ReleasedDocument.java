@@ -31,7 +31,7 @@ public class ReleasedDocument extends AbstractNavigatorHandler {
 			IStructuredSelection selection) {
 		if (selected instanceof Work) {
 			Work work = (Work) selected;
-			List<PrimaryObject> documents = work.getOutputDeliverableDocuments();
+			List<PrimaryObject> documents = work.getDeliverableDocuments();
 			for (PrimaryObject po : documents) {
 				Document document = (Document) po;
 				try {

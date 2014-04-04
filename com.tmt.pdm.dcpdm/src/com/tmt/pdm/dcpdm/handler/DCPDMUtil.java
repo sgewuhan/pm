@@ -9,7 +9,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -162,9 +164,10 @@ public class DCPDMUtil {
 		document = deli.getDocument();
 		writePDMInfo(ouid, document);
 	}
-	
+
 	@Deprecated
-	public static void createDocument(Work work, String ouid, IContext context) throws Exception {
+	public static void createDocument(Work work, String ouid, IContext context)
+			throws Exception {
 
 		// 取出PDM中的对象
 		DOSChangeable pdmObject = Starter.dos.get(ouid);
@@ -194,8 +197,9 @@ public class DCPDMUtil {
 		document = deli.getDocument();
 		writePDMInfo(ouid, document);
 	}
-	
-	public static void createDocument2(Work work, String ouid, IContext context) throws Exception {
+
+	public static void createDocument2(Work work, String ouid, IContext context)
+			throws Exception {
 
 		// 取出PDM中的对象
 		DOSChangeable pdmObject = Starter.dos.get(ouid);
@@ -204,24 +208,23 @@ public class DCPDMUtil {
 		String number = (String) pdmObject.get("md$number");
 		String pdmModelName = (String) pdmObject.get("name");
 		String desc;
-		if(pdmModelName!=null){
+		if (pdmModelName != null) {
 			desc = pdmModelName;
-		}else if(pdmDesc!=null){
+		} else if (pdmDesc != null) {
 			desc = pdmDesc;
-		}else{
+		} else {
 			desc = "";
 		}
-		
+
 		Document doc = null;
 		if (!Utils.isNullOrEmptyString(docId)) {
 			DBCollection docCol = DBActivator.getCollection(IModelConstants.DB,
 					IModelConstants.C_DOCUMENT);
 			DBObject docData = docCol.findOne(new BasicDBObject().append(
-					Document.F__ID, new ObjectId((String)docId)));
-			//可系统中查找到该文档
+					Document.F__ID, new ObjectId((String) docId)));
+			// 可系统中查找到该文档
 			if (docData != null) {
-				doc = ModelService.createModelObject(docData,
-						Document.class);
+				doc = ModelService.createModelObject(docData, Document.class);
 			}
 		}
 		Deliverable deli;
@@ -233,22 +236,18 @@ public class DCPDMUtil {
 			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
 			deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		}
-		deli.setValue(Deliverable.F_DESC, desc); 
+		deli.setValue(Deliverable.F_DESC, desc);
 		deli.doSave(context);
 		doc = deli.getDocument();
-		if(doc==null){
-			doc = ModelService.createModelObject(Document.class);
-			doc.setValue(Document.F__ID, new ObjectId());
-		}
 
-		doc.setValue(Document.F_DOCUMENT_NUMBER, number); 
-		doc.setValue(Document.F_DESC, desc); 
+		doc.setValue(Document.F_DOCUMENT_NUMBER, number);
+		doc.setValue(Document.F_DESC, desc);
 		doc.setValue(Document.F_PDM_OUID, ouid);
 		doc.setValue(Document.F__EDITOR, "editor.document.dcpdm");
-		doc.doSave(context);
 		pdmObject = Starter.dos.get(ouid);
 		pdmObject.put("pm_id", doc.get_id().toString());
 		Starter.dos.set(pdmObject);
+		doc.doSave(context);
 	}
 
 	@Deprecated
@@ -264,7 +263,7 @@ public class DCPDMUtil {
 
 		return createDocumentFromDCPDM(work, docContainer, partContainer, shell);
 	}
-	
+
 	@Deprecated
 	public static List<Document> getDocumentFromDCPDM(String userId, Shell shell)
 			throws Exception {
@@ -341,7 +340,8 @@ public class DCPDMUtil {
 		ip.syncItem(ouid, document);
 	}
 
-	public static void download(String fileNameWithoutExtension,ArrayList<Map<String, Object>> fileList, Shell shell) {
+	public static void download(String fileNameWithoutExtension,
+			ArrayList<Map<String, Object>> fileList, Shell shell) {
 		if (fileList == null || fileList.isEmpty()) {
 			return;
 		}
@@ -357,7 +357,7 @@ public class DCPDMUtil {
 
 			String zipFileName = pathname + "/" //$NON-NLS-1$
 					+ fileNameWithoutExtension //$NON-NLS-1$
-					+".zip"; //$NON-NLS-1$
+					+ ".zip"; //$NON-NLS-1$
 			FileOutputStream dest = new FileOutputStream(zipFileName);
 			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
 					dest), Charset.forName("GBK")); //$NON-NLS-1$
@@ -367,11 +367,11 @@ public class DCPDMUtil {
 			Set<String> fileNameSet = new HashSet<String>();
 			for (int i = 0; i < fileList.size(); i++) {
 				Map<String, Object> map = fileList.get(i);
-				
+
 				String desc = (String) map.get("md$description");
 				String filePath = (String) map.get("md$path");
 				File file = new File(desc);
-				
+
 				String fileName;
 				InputStream is;
 
@@ -397,8 +397,7 @@ public class DCPDMUtil {
 		}
 
 	}
-	
-	
+
 	private static String checkName(String fileName, Set<String> fileNameSet) {
 		fileName = fileName.replaceAll("/", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 		int i = 1;
@@ -410,25 +409,146 @@ public class DCPDMUtil {
 		fileNameSet.add(fileName);
 		return fileName;
 	}
-	
-	public static boolean lock(String ouid){
+
+	public static boolean doSetLifeCycleStatus(String ouid, String status) {
+		DOSChangeable pdmObject;
 		try {
-			Starter.dos.lock(ouid);
+			pdmObject = Starter.dos.get(ouid);
+			if (!Document.STATUS_WORKING_ID.equals(status)) {
+				Starter.dos.lock(ouid);
+				pdmObject.put("pm_status", Document.STATUS_DEPOSED_ID
+						.equals(status) ? Document.STATUS_DEPOSED_TEXT
+						: Document.STATUS_RELEASED_TEXT);
+			} else {
+				Starter.dos.unlock(ouid);
+				pdmObject.put("pm_status", Document.STATUS_WORKING_TEXT);
+			}
+			Starter.dos.set(pdmObject);
+
 			return true;
 		} catch (IIPRequestException e) {
 			return false;
 		}
 	}
 
-	
-	public static boolean unlock(String ouid){
+	public static boolean doSetRev(String ouid, String rev) {
+		DOSChangeable pdmObject;
 		try {
-			Starter.dos.unlock(ouid);
+			pdmObject = Starter.dos.get(ouid);
+			pdmObject.put("pm_rev", rev);
+			Starter.dos.set(pdmObject);
 			return true;
 		} catch (IIPRequestException e) {
 			return false;
 		}
 	}
-	
 
+	public static boolean doSetUpdateVersion(String ouid, String status,
+			String rev) {
+		DOSChangeable pdmObject;
+		try {
+			pdmObject = Starter.dos.get(ouid);
+			if (!Document.STATUS_WORKING_ID.equals(status)) {
+				Starter.dos.lock(ouid);
+				pdmObject.put("pm_status", Document.STATUS_DEPOSED_ID
+						.equals(status) ? Document.STATUS_DEPOSED_TEXT
+						: Document.STATUS_RELEASED_TEXT);
+			} else {
+				Starter.dos.unlock(ouid);
+				pdmObject.put("pm_status", Document.STATUS_WORKING_TEXT);
+			}
+			pdmObject.put("pm_rev", rev);
+			Starter.dos.set(pdmObject);
+
+			return true;
+		} catch (IIPRequestException e) {
+			return false;
+		}
+	}
+
+	public static Document createDocument(String ouid, IContext context)
+			throws Exception {
+
+		// 取出PDM中的对象
+		DOSChangeable pdmObject = Starter.dos.get(ouid);
+		Object docId = pdmObject.get("pm_id"); //$NON-NLS-1$
+		String pdmDesc = (String) pdmObject.get("md$description");
+		String number = (String) pdmObject.get("md$number");
+		String pdmModelName = (String) pdmObject.get("name");
+		String desc;
+		if (pdmModelName != null) {
+			desc = pdmModelName;
+		} else if (pdmDesc != null) {
+			desc = pdmDesc;
+		} else {
+			desc = "";
+		}
+
+		Document doc = null;
+		if (!Utils.isNullOrEmptyString(docId)) {
+			DBCollection docCol = DBActivator.getCollection(IModelConstants.DB,
+					IModelConstants.C_DOCUMENT);
+			DBObject docData = docCol.findOne(new BasicDBObject().append(
+					Document.F__ID, new ObjectId((String) docId)));
+			// 可系统中查找到该文档
+			if (docData != null) {
+				doc = ModelService.createModelObject(docData, Document.class);
+			}
+		}
+
+		// 没有对应的PDM对象
+		if (doc == null) {
+			doc = ModelService.createModelObject(Document.class);
+			doc.setValue(Document.F_DOCUMENT_NUMBER, number);
+			doc.setValue(Document.F_DESC, desc);
+			doc.setValue(Document.F_PDM_OUID, ouid);
+			doc.setValue(Document.F__EDITOR, "editor.document.dcpdm");
+		}
+		doc.doSave(context);
+
+		pdmObject = Starter.dos.get(ouid);
+		pdmObject.put("pm_id", doc.get_id().toString());
+		pdmObject.put("pm_rev", doc.getRevId());
+		Starter.dos.set(pdmObject);
+
+		return doc;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Map<String, Object>> getChildFile(String ouid) {
+		ArrayList<Map<String, Object>> resultOuids = new ArrayList<Map<String, Object>>();
+		try {
+			String classOuid = Starter.dos.getClassOuid(ouid);
+			ArrayList<?> asso = Starter.dos.listAssociationOfClass(classOuid);
+			for (Iterator<?> iterator = asso.iterator(); iterator.hasNext();) {
+				DOSChangeable dos = (DOSChangeable) iterator.next();
+				String end1Class = (String) dos.get("end1.ouid@class");
+				String assClass = (String) dos.get("ouid@class");
+				if (classOuid.equals(end1Class)) {
+					HashMap<String, String> filter = new HashMap<String, String>();
+					filter.put("list.mode", "aggregation");
+					filter.put("version.condition.type", "wip");
+					filter.put("ouid@association.class", assClass);
+					Starter.dos.setWorkingModel("80001764");
+					ArrayList<?> result = Starter.dos
+							.listLinkFrom(ouid, filter);
+					if (result != null) {
+						for (int i = 0; i < result.size(); i++) {
+							ArrayList<?> item = (ArrayList<?>) result.get(i);
+							if (item != null && item.size() > 0) {
+								String subItemOuid = (String) item.get(0);
+								@SuppressWarnings("rawtypes")
+								ArrayList subItemFile = Starter.dos
+										.listFile(subItemOuid);
+								resultOuids.addAll(subItemFile);
+							}
+						}
+					}
+				}
+			}
+			return resultOuids;
+		} catch (Exception e) {
+		}
+		return null;
+	}
 }

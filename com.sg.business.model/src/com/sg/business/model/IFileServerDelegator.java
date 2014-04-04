@@ -9,4 +9,10 @@ public interface IFileServerDelegator {
 
 	List<IServerFile> getFiles(PrimaryObject document);
 
+	boolean doSetLifeCycleStatus(PrimaryObject document,String status);
+
+	boolean doSetRev(PrimaryObject document);
+	
+	boolean setUpdateVersion(PrimaryObject document,String status);
+
 }
