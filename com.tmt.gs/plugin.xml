@@ -2471,7 +2471,7 @@
       </taskForm>
       <taskForm
             editorId="gsmutilfunctionapprove1.sign"
-            name="多功能小组会签"
+            name="多功能小组讨论"
             persistentFields="comment,accessory"
             processDefinitionId="gs.gsMutilFunctionApprove1">
       </taskForm>
@@ -2556,7 +2556,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="gsmutilfunctionapprove1.sign"
-            name="多功能小组会签">
+            name="多功能小组讨论">
          <basicpage
                id="basicpage1"
                title="审核">
@@ -3835,7 +3835,7 @@
       </navigator>
       <navigator
             id="gs.projectchange.customer"
-            table="gs.projectchange.customer">
+            tree="gs.projectchange.customer">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">
@@ -3896,6 +3896,26 @@
       <navigator
             id="gs.projectapplication.aimprjadmin.selector"
             tree="gs.projectapplication.aimprjadmin.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="gs.projectchange.otherdept"
+            tree="gs.projectchange.otherdept">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">
@@ -4032,6 +4052,32 @@
                modelRelation="organization_user">
          </structure>
       </tree>
+      <tree
+            dataSet="com.tmt.gs.dataset.OtherDept"
+            id="gs.projectchange.otherdept">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
+      <tree
+            dataSet="com.tmt.gs.dataset.CustomerOfGS"
+            id="gs.projectchange.customer">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -4149,13 +4195,6 @@
       <table
             dataSet="com.tmt.gs.dataset.TechnicalLeaderOfGS"
             id="gs.projectchange.related">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-      </table>
-      <table
-            dataSet="com.tmt.gs.dataset.CustomerOfGS"
-            id="gs.projectchange.customer">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -4561,7 +4600,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support"
-                        navigatorId="gschangeapprover.navigator"
+                        navigatorId="gs.projectchange.confirmprogram"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -5079,8 +5118,7 @@
             editorId="gs.gssubconcessions.application"
             name="转批申请"
             persistentFields="workorder,product,prj_manager,dept,accessory,data_audit"
-            processDefinitionId="gs.gsSubconcessions1"
-            saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
+            processDefinitionId="gs.gsSubconcessions1">
          <processParameter
                processParameterName="workorder"
                taskFormFieldName="workorder">
@@ -5097,11 +5135,6 @@
          <processParameter
                processParameterName="data_audit"
                taskFormFieldName="data_audit">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.DevelopmentDirectorOfGS"
-               processParameterName="development_director"
-               taskFormFieldName="dept">
          </processParameter>
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
@@ -5530,7 +5563,7 @@
                         name="choice"
                         option="评审实施计划"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                   <navigatorSelector
@@ -5656,7 +5689,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -6067,6 +6100,7 @@
                         name="choice"
                         option="是否受理"
                         persistable="true"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -6083,7 +6117,7 @@
                         navigatorId="gs.projectchange.confirmprogram"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -6163,7 +6197,7 @@
                         navigatorId="gs.projectchange.product"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
                <section
@@ -6179,7 +6213,7 @@
                         navigatorId="gs.projectchange.market"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
                <section
@@ -6195,7 +6229,7 @@
                         navigatorId="gs.projectchange.quality"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
                <section
@@ -6208,7 +6242,7 @@
                         name="hasother"
                         option="是\否"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                   <navigatorSelector
@@ -6220,10 +6254,10 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="other"
-                        navigatorId="gs.projectchange.related"
+                        navigatorId="gs.projectchange.otherdept"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
                <section
@@ -6252,7 +6286,7 @@
                         name="hascustomer"
                         option="是\否"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                   <navigatorSelector
@@ -6264,10 +6298,10 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="customer"
-                        navigatorId="gs.taskforms.user.selector"
+                        navigatorId="gs.projectchange.customer"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -6332,6 +6366,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
+                        required="true"
                         type="String">
                   </radio>
                </section>
