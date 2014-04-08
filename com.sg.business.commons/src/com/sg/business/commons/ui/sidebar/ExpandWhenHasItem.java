@@ -16,7 +16,7 @@ public class ExpandWhenHasItem implements ISidebarItemExpandedWhen {
 			AbstractListViewSideItem item = (AbstractListViewSideItem) control;
 			return item.isExpand();
 		}
-		return null;
+		return true;
 	}
 
 

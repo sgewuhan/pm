@@ -1828,12 +1828,11 @@
       <sidebar
             id="homenavigator">
          <expanditem
-               content="com.sg.business.commons.ui.sidebar.Todolist"
                expanded="true"
-               expandedWhen="com.sg.business.commons.ui.sidebar.ExpandWhenHasItem"
                id="1"
                image="image/tasks2_w_32_48.png"
-               label="%todolist">
+               label="%todolist"
+               navigatorId="work.processing.sidebar">
          </expanditem>
          <expanditem
                content="com.sg.business.commons.ui.sidebar.Launchablelist"
@@ -1861,11 +1860,11 @@
                navigatorId="vis.projectset.navigator.home">
          </expanditem>
          <expanditem
-               content="com.sg.business.commons.ui.sidebar.Todolist"
                expanded="false"
                id="1"
                image="image/tasks2_w_32_48.png"
-               label="%todolist">
+               label="%todolist"
+               navigatorId="work.processing.sidebar">
          </expanditem>
          <expanditem
                content="com.sg.business.commons.ui.sidebar.Launchablelist"
@@ -2020,6 +2019,39 @@
          <structure
                modelRelation="folder_document_released">
          </structure>
+      </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="work.processing.sidebar"
+            tree="work.processing.sidebar">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            contentProvider="com.sg.business.commons.ui.viewer.ProcessingWorkContentProvider"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.work.ProcessingSidebarSet"
+            editorId="view.work"
+            headerVisiable="false"
+            id="work.processing.sidebar"
+            markupEnabled="true"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.commons.column.labelprovider.ProcessingWorkLabelprovider"
+               lazyDisplay="true"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
 

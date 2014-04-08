@@ -216,7 +216,37 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 	}
 
 	private String getHTMLForList() {
+		StringBuffer sb = new StringBuffer();
+		// 标记
+		String selectbarUrl = null;
+		Date _planStart;
+		Date _actualStart;
+		Date _planFinish;
+		int remindBefore;
+		String imageUrl;
+		String lc = work.getLifecycleStatus();
 
+		if (work.isProjectWBSRoot()) {
+			Project project = work.getProject();
+			_planStart = project.getPlanStart();
+			_actualStart = project.getActualStart();
+			_planFinish = project.getPlanFinish();
+			remindBefore = 0;
+
+			lc = project.getLifecycleStatus();
+			imageUrl = "<img src='" + getHeaderImageURL(project) //$NON-NLS-1$
+					+ "' style='position:absolute; left:6px; top:1px;' width='16' height='16' />"; //$NON-NLS-1$
+		} else {
+			_planStart = work.getPlanStart();
+			_actualStart = work.getActualStart();
+			_planFinish = work.getPlanFinish();
+			remindBefore = work.getRemindBefore();
+
+			// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
+			lc = work.getLifecycleStatus();
+			imageUrl = "<img src='" + getHeaderImageURL(work) //$NON-NLS-1$
+					+ "' style='position:absolute; left:6px; top:1px;' width='16' height='16' />"; //$NON-NLS-1$
+		}
 		String userId = getContext().getAccountInfo().getConsignerId();
 		UserTask currentTask = null;
 		if (work.isExecuteWorkflowActivateAndAvailable()) {// 如果有流程
@@ -229,15 +259,6 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 		int code = getOperationCode(work, currentTask, userId);
 
-		// 标记
-		String selectbarUrl = null;
-		Date _planStart = work.getPlanStart();
-		Date _actualStart = work.getActualStart();
-		Date _planFinish = work.getPlanFinish();
-		int remindBefore = work.getRemindBefore();
-
-		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
-		String lc = work.getLifecycleStatus();
 		if (Work.STATUS_CANCELED_VALUE.equals(lc)
 				|| Work.STATUS_FINIHED_VALUE.equals(lc)) {
 		} else {
@@ -265,9 +286,6 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 			}
 		}
-
-		// ---------------------------------------------------------------------------
-		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='cursor:pointer;'>");
 
 		String selectbar = "<img src='" //$NON-NLS-1$
@@ -275,29 +293,26 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 				+ "' style='border-style:none;position:absolute; left:0; top:0; display:block;' width='4' height='36' />"; //$NON-NLS-1$
 		sb.append(selectbar);
 
-		String imageUrl = "<img src='" + getHeaderImageURL(work) //$NON-NLS-1$
-				+ "' style='position:absolute; left:6px; top:1px;' width='16' height='16' />"; //$NON-NLS-1$
 		sb.append(imageUrl);
 
 		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:24px;'>"); //$NON-NLS-1$
 
 		// 获得有关的项目信息
-		Project project = work.getProject();
-		if (project != null) {
-			String projectDesc = project.getDesc();
-			projectDesc = Utils.getPlainText(projectDesc);
-			sb.append(" ");
-			sb.append("<span style='font-weight:bold;'>");//$NON-NLS-1$
-			sb.append(projectDesc);
-			sb.append("</span>");//$NON-NLS-1$
-			sb.append(" ");//$NON-NLS-1$
-		}
+		// Project project = work.getProject();
+		// if (project != null) {
+		// String projectDesc = project.getDesc();
+		// projectDesc = Utils.getPlainText(projectDesc);
+		// sb.append(" ");
+		//				sb.append("<span style='font-weight:bold;'>");//$NON-NLS-1$
+		// sb.append(projectDesc);
+		//				sb.append("</span>");//$NON-NLS-1$
+		//				sb.append(" ");//$NON-NLS-1$
+		// }
 
 		// 工作desc
 		String workDesc = work.getDesc();
 		workDesc = Utils.getPlainText(workDesc);
 		sb.append(workDesc);
-
 
 		// 有关时间
 		sb.append("<br/>"); //$NON-NLS-1$
@@ -340,13 +355,11 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("~"); //$NON-NLS-1$
 		sb.append(finish);
 
-
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
 		sb.append("</div>"); //$NON-NLS-1$
-		
-		sb.append(HtmlUtil.createBottomLine(4)); //$NON-NLS-1$
 
+		sb.append(HtmlUtil.createBottomLine(4)); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -446,25 +459,43 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 				BusinessResource.IMAGE_FOLDER);
 	}
 
-	private String getHeaderImageURL(Work work) {
-		String lc = work.getLifecycleStatus();
-		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
+	private String getHeaderImageURL(PrimaryObject po) {
+		if (po instanceof Work) {
+			Work work = (Work) po;
+			String lc = work.getLifecycleStatus();
+			if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_CANCEL_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_FINISH_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_READY_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_WIP_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_PAUSE_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_READY_16,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			}
+		} else if (po instanceof Project) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
 		return null;
@@ -539,17 +570,25 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("<a href=\"gowork@" + work.get_id().toString() //$NON-NLS-1$ 
 				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
-		String imageURL = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49,
+		String imageURL = FileUtil.getImageURL(
+				BusinessResource.IMAGE_S_LEFT_49, BusinessResource.PLUGIN_ID);
+		String imageURL_Hover = FileUtil.getImageURL(
+				BusinessResource.IMAGE_S_LEFT_49_HOVER,
 				BusinessResource.PLUGIN_ID);
-		String imageURL_Hover = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49_HOVER,
-				BusinessResource.PLUGIN_ID);
-		String imageURL_Pressed = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49_PRESSED,
+		String imageURL_Pressed = FileUtil.getImageURL(
+				BusinessResource.IMAGE_S_LEFT_49_PRESSED,
 				BusinessResource.PLUGIN_ID);
 		sb.append(imageURL);
 		sb.append("' style='border-style:none;position:absolute; right:0; bottom:1; display:block;' width='50' height='49' "
-				+ " onmouseover=\"this.src='"+ imageURL_Hover + "'\";"
-				+ " onmouseout=\"this.src='"+imageURL+ "'\";"
-				+ " onmousedown=\"this.src='"+imageURL_Pressed+ "'\";"
+				+ " onmouseover=\"this.src='"
+				+ imageURL_Hover
+				+ "'\";"
+				+ " onmouseout=\"this.src='"
+				+ imageURL
+				+ "'\";"
+				+ " onmousedown=\"this.src='"
+				+ imageURL_Pressed
+				+ "'\";"
 				+ "/>"); //$NON-NLS-1$
 		sb.append("</a>");//$NON-NLS-1$
 

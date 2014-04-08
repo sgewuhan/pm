@@ -273,7 +273,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xtDocumentApprove.approve"
+            editorId="xt.xtSubconcessions.approve"
             name="审批"
             persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
@@ -923,7 +923,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtDocumentApprove.approve"
+            editorId="xt.xtSubconcessions.approve"
             name="审批"
             persistentFields="comment,choice"
             processDefinitionId="xt.xtSubconcessions">
@@ -1009,6 +1009,16 @@
       <taskForm
             editorId="xtProjectApprove.resultaudit"
             name="处理结果审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="xt.xtSubconcessions">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.approve"
+            name="签发会议纪要"
             persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtSubconcessions">
          <processParameter
@@ -1199,6 +1209,68 @@
             <pagecolumn>
                <section
                      label="%section.label.22">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xt.xtSubconcessions.approve"
+            name="审批">
+         <basicpage
+               id="page1"
+               title="%basicpage.title.2">
+            <pagecolumn>
+               <section
+                     label="%section.label.1">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="%text.label.0"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="%radio.label.0"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否整改"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="%basicpage.title.3">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.4">
+            <pagecolumn>
+               <section
+                     label="%section.label.2">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
