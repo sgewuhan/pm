@@ -26,28 +26,15 @@ public class ProjectApplicationOfGSAuditSaveHandler implements
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
 		List<String> userList = new ArrayList<String>();
-        TaskForm taskform = (TaskForm) input.getData();
-        Object standardset = taskform.getValue("prj_manager"); //$NON-NLS-1$
-        Object value = taskform.getValue("standardset");
-        Object projecttype = taskform.getValue("projecttype");
-        
-        if(value instanceof String){
-        	String userid=(String) value;
-        	 if(standardset instanceof String){
-        		 String standard=(String) standardset;
-             	if(projecttype instanceof String){
-             		String prjtype=(String) projecttype;
-             		userList.add(0,userid);
-                	userList.add(1,standard);
-                	userList.add(2,prjtype);
-             	}
-             	
-             }
-        	
-        	Work work = taskform.getWork();
-			work.doAddParticipateList(userList);
-        }
-       
+		TaskForm taskform = (TaskForm) input.getData();
+		Object value = taskform.getValue("prj_manager"); //$NON-NLS-1$
+
+		if (value instanceof String) {
+			userList.add((String) value);
+			Work work = taskform.getWork();
+			work.doAddParticipateList(userList);;
+		}
+
 		return true;
 	}
 
