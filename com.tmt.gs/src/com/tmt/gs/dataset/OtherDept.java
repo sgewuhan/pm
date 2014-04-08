@@ -36,17 +36,22 @@ public class OtherDept extends MasterDetailDataSetFactory {
 	public DataSet getDataSet() {
 		if (master != null) {
 			if (master instanceof TaskForm) {
-				List<PrimaryObject> result=new ArrayList<PrimaryObject>();
-				List<PrimaryObject> prjlist = user.getChargeProject(ILifecycle.STATUS_NONE_VALUE);
-				for (PrimaryObject po : prjlist) {
-					if(po instanceof Project){
-						Project project=(Project) po;
-						Organization org=project.getFunctionOrganization();
-						result.add(org);
+				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+				try {
+					List<PrimaryObject> prjlist = user
+							.getChargeProject(ILifecycle.STATUS_NONE_VALUE);
+					for (PrimaryObject po : prjlist) {
+						if (po instanceof Project) {
+							Project project = (Project) po;
+							Organization org = project
+									.getFunctionOrganization();
+							result.add(org);
+						}
 					}
-					
+					return new DataSet(result);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				return new DataSet(result);
 			}
 		}
 		return super.getDataSet();

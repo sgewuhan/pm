@@ -39,6 +39,7 @@ public class SubConcessionDataAuditSelectorOfGS extends
 		if (master != null) {
 			if (master instanceof TaskForm) {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+				try {
 				Organization organization = user.getOrganization();
 				Role role = organization.getRole(Role.ROLE_PROJECT_ADMIN_ID,
 						Organization.ROLE_SEARCH_UP);
@@ -57,6 +58,9 @@ public class SubConcessionDataAuditSelectorOfGS extends
 				}*/
 				
 				return new DataSet(result);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return super.getDataSet();

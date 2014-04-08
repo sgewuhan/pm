@@ -37,6 +37,7 @@ public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
 		if (master != null) {
 			if (master instanceof TaskForm) {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+				try {
 				List<PrimaryObject> roles = user
 						.getRoles(IRoleConstance.ROLE_TECHNICAL_LEADER_CHECKER_ID);
 				for (PrimaryObject po : roles) {
@@ -44,10 +45,12 @@ public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
 						Role role = (Role) po;
 						Organization org = role.getOrganization();
 						result.add(org);
-						
 					}
 				}
 				return new DataSet(result);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return super.getDataSet();
