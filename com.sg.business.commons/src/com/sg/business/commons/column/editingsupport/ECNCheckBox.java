@@ -51,8 +51,6 @@ public class ECNCheckBox implements IEditingSupportor {
 
 			@Override
 			protected boolean canEdit(Object element) {
-				System.out.println(((PrimaryObject) element)
-							.getValue("ecn_canedit"));
 				if (element instanceof PrimaryObject) {
 					return !Boolean.FALSE.equals(((PrimaryObject) element)
 							.getValue("ecn_canedit"));
