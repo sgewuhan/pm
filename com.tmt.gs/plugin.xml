@@ -6153,7 +6153,7 @@
                         navigatorId="gs.projectchange.otherdept"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                </section>
                <section
@@ -6197,7 +6197,7 @@
                         navigatorId="gs.projectchange.customer"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                </section>
             </pagecolumn>
