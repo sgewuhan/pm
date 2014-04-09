@@ -1,15 +1,14 @@
 package com.tmt.gs.validation;
 
-
 public class InspectChangeOfGSActivityValidator extends
-AbstractChangeOfGSActivityValidator {
+		AbstractChangeOfGSActivityValidator {
 
-public InspectChangeOfGSActivityValidator() {
-}
+	public InspectChangeOfGSActivityValidator() {
+	}
 
-@Override
-public String getECNName() {
-return "检验变更"; //$NON-NLS-1$
-}
+	@Override
+	public String getECNName() {
+		return "检验变更"; //$NON-NLS-1$
+	}
 
 }

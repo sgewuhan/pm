@@ -32,7 +32,8 @@ public class ConfirmProgramOfGS extends MasterDetailDataSetFactory {
 	public DataSet getDataSet() {
 		if (master != null) {
 			// 1.获取当前登录用户承担的角色
-			List<PrimaryObject> orglist = user.getRoleGrantedInAllOrganization(IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID);
+			List<PrimaryObject> orglist = user
+					.getRoleGrantedInAllOrganization(IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID);
 			// 2.获取角色所在组织
 			return new DataSet(orglist);
 		}

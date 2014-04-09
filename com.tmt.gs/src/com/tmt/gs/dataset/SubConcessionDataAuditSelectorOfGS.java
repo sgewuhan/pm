@@ -16,6 +16,12 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
+/***
+ * 为什么这样写？而不是直接继承AbstractRoleAssignmentDataSetFactory
+ * @author yangjun
+ *
+ */
+@Deprecated
 public class SubConcessionDataAuditSelectorOfGS extends
 		MasterDetailDataSetFactory {
 

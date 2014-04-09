@@ -5664,7 +5664,7 @@
             name="确认变更方案"
             persistentFields="plan,other,qc,market,customer,project_supervisor,hasother,choice,hascustomer,ecn"
             processDefinitionId="gs.gsProjectChange"
-            saveHandler="com.tmt.gs.editor.ProjectChangeConfirmProgramOfGSSaveHandler">
+            saveHandler="com.tmt.gs.handler.ProjectChangeConfirmProgramOfGSSaveHandler">
          <processParameter
                processParameterName="ecn"
                taskFormFieldName="ecn">
@@ -6050,7 +6050,7 @@
             dbName="pm2"
             id="gsprojectchange.confirmProgram"
             name="确认变更方案"
-            saveHandler="com.tmt.gs.editor.ProjectChangeConfirmProgramOfGSSaveHandler">
+            saveHandler="com.tmt.gs.handler.ProjectChangeConfirmProgramOfGSSaveHandler">
          <basicpage
                id="page1"
                title="审核变更申请">

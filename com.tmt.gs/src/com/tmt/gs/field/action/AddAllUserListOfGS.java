@@ -13,6 +13,13 @@ import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
 
+/***
+ * 同{@link com.sg.business.commons.field.action.AddParticipateFromAllUser}一样,为什么还要重写
+ * @author Administrator
+ *
+ */
+
+@Deprecated
 public class AddAllUserListOfGS implements IAddTableItemHandler {
 
 	public AddAllUserListOfGS() {
