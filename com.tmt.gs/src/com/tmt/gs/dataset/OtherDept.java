@@ -6,10 +6,8 @@ import java.util.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Project;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -38,17 +36,11 @@ public class OtherDept extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
-					List<PrimaryObject> prjlist = user
-							.getChargeProject(ILifecycle.STATUS_NONE_VALUE);
-					for (PrimaryObject po : prjlist) {
-						if (po instanceof Project) {
-							Project project = (Project) po;
-							Organization org = project
-									.getFunctionOrganization();
-							result.add(org);
-						}
+					Organization org = user.getFunctionOrganization();
+					if (org != null) {
+						result.add(org);
+						return new DataSet(result);
 					}
-					return new DataSet(result);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

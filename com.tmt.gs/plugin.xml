@@ -3994,6 +3994,7 @@
          </structure>
       </tree>
       <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.gs.dataset.OtherDept"
             id="gs.projectchange.otherdept">
          <column
@@ -5645,6 +5646,7 @@
       </taskForm>
       <taskForm
             editorId="gsprojectchange.technicalcheck"
+            inputHandler="com.tmt.gs.handler.ProjectChangeOfGSInputHandler"
             name="技术部审核"
             persistentFields="project_manager,choice,accessory,comment"
             processDefinitionId="gs.gsProjectChange">
@@ -6194,7 +6196,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="customer"
-                        navigatorId="gs.projectchange.customer"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
