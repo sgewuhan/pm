@@ -23,6 +23,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
+import com.sg.business.model.WorkflowSynchronizer;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProcessingSidebarSet extends DataSetFactory {
@@ -44,6 +45,9 @@ public class ProcessingSidebarSet extends DataSetFactory {
 
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
+		WorkflowSynchronizer synchronizer = new WorkflowSynchronizer();
+		synchronizer.synchronizeUserTask(userId);
+		
 		// 前提：（项目必须是进行中）
 		// 并且（本人负责，参与或者是指派者或者是流程任务的执行人）
 		// 并且（工作必须是准备中或进行中）
