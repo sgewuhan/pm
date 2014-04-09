@@ -267,6 +267,30 @@
                value="不受理">
          </option>
       </option>
+      <option
+            id="评审方式整改"
+            label="%option.label.27">
+         <option
+               id="会签评审"
+               label="%option.label.28"
+               value="会签评审">
+         </option>
+         <option
+               id="会议评审"
+               label="%option.label.29"
+               value="会议评审">
+         </option>
+         <option
+               id="不评审"
+               label="%option.label.30"
+               value="不评审">
+         </option>
+         <option
+               id="整改"
+               label="整改"
+               value="整改">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

@@ -13,6 +13,12 @@ import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
+/***
+ * 为什么不用项目指派者角色
+ * @author yangjun
+ *
+ */
+@Deprecated
 public class AimToPrjManager extends MasterDetailDataSetFactory {
 
 	public IContext context;
