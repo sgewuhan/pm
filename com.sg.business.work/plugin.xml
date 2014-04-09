@@ -4415,13 +4415,14 @@
             canCreate="false"
             canDelete="false"
             canEdit="false"
-            canRead="false"
+            canRead="true"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.usertask.TaskHistoryDataSet"
             headerVisiable="false"
             id="workflow.taskhistory"
             lineVisiable="false"
             markupEnabled="true"
+            selectionListener="com.sg.business.commons.operation.link.ProcessHistoryLinkAdapter"
             virtual="true">
          <column
                column="desc"

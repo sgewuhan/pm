@@ -1,14 +1,11 @@
 package com.sg.business.commons.ui.flow;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.UrlLauncher;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
 import org.jbpm.task.Status;
 
@@ -19,69 +16,17 @@ import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.utils.DBUtil;
 import com.mongodb.DBObject;
+import com.sg.business.commons.operation.link.ProcessHistoryLinkAdapter;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
-import com.sg.business.model.TaskForm;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.resource.nls.Messages;
-import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class ProcessHistoryUIToolkit {
 
 	public static void handleProcessHistoryTable(Table table) {
-		table.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				if (event.detail == RWT.HYPERLINK) {
-					try {
-						String _id = event.text.substring(
-								event.text.lastIndexOf("/") + 1, //$NON-NLS-1$
-								event.text.indexOf("@")); //$NON-NLS-1$
-						String action = event.text.substring(event.text
-								.indexOf("@") + 1); //$NON-NLS-1$
-						if ("open".equals(action)) { //$NON-NLS-1$
-							UserTask userTask = ModelService.createModelObject(
-									UserTask.class, new ObjectId(_id));
-							doOpenTaskForm(userTask);
-						}
-					} catch (Exception e) {
-					}
-				}
-			}
-		});
-	}
-
-	private static void doOpenTaskForm(UserTask userTask) {
-		String editorId = (String) userTask.getStringValue(TaskForm.F_EDITOR);
-		if (editorId == null) {
-			return;
-		}
-		TaskForm taskForm = userTask.makeTaskForm();
-
-//		BasicDBObject taskData = new BasicDBObject();
-		Iterator<String> iter = userTask.get_data().keySet().iterator();
-		while (iter.hasNext()) {
-			String key = iter.next();
-			if (key.startsWith("form_")) { //$NON-NLS-1$
-				String nkey = key.substring(5);
-				taskForm.setValue(nkey, userTask.getValue(key));
-			}
-		}
-//		taskData.put(TaskForm.F_WORK_ID, userTask.getWorkId());
-//		taskData.put(TaskForm.F_USER_TASK_ID, userTask.get_id());
-		DataEditorConfigurator ec = (DataEditorConfigurator) Widgets
-				.getEditorRegistry().getConfigurator(editorId);
-//		TaskForm taskForm = ModelService.createModelObject(taskData,
-//				TaskForm.class);
-		try {
-			DataObjectDialog.openDialog(taskForm, ec, false, null, Messages.get().ProcessHistoryUIToolkit_5);
-		} catch (Exception e) {
-			MessageUtil.showToast(e);
-		}
+		table.addSelectionListener(new ProcessHistoryLinkAdapter());
 	}
 
 	@SuppressWarnings("unchecked")
