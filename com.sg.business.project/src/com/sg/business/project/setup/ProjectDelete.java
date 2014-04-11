@@ -10,8 +10,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -25,18 +26,41 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	public boolean run() {
 
 		DBCollection workCol = getCol(IModelConstants.C_WORK);
+		DBCollection userTaskCol = getCol(IModelConstants.C_USERTASK);
 		DBCursor workCursor = workCol.find(new BasicDBObject().append(
-				Work.F_WORK_DEFINITION_ID,
-				new BasicDBObject().append("$in", new ObjectId[] {
-						new ObjectId("52b81d5fe0ccc44c11e6d187"),
-						new ObjectId("52d4acb1e0cc1c60f8f4d05d"),
-						new ObjectId("5292c9a9e0cc84d8d5965df8"),
-						new ObjectId("5270837629f2f33902f9b538") })));
+				Work.F_WORK_DEFINITION_ID, new ObjectId(
+						"528577fae0cc39282b921faf")));
 		while (workCursor.hasNext()) {
 			DBObject workData = workCursor.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-			work.doSaveProcessHistoryToDocument(new CurrentAccountContext());
+			DBCursor userTaskCursor = userTaskCol.find(new BasicDBObject()
+					.append(UserTask.F_WORK_ID, work.get_id()));
+			while (userTaskCursor.hasNext()) {
+				DBObject userTaskData = userTaskCursor.next();
+				ObjectId projectId = (ObjectId) userTaskData
+						.get("form_project");
+				if (projectId != null) {
+					Project project = ModelService.createModelObject(
+							Project.class, projectId);
+					System.out.println(project.getProjectNumber() + "|"
+							+ project.getDesc());
+				}
+			}
 		}
+
+		// DBCollection workCol = getCol(IModelConstants.C_WORK);
+		// DBCursor workCursor = workCol.find(new BasicDBObject().append(
+		// Work.F_WORK_DEFINITION_ID,
+		// new BasicDBObject().append("$in", new ObjectId[] {
+		// new ObjectId("52b81d5fe0ccc44c11e6d187"),
+		// new ObjectId("52d4acb1e0cc1c60f8f4d05d"),
+		// new ObjectId("5292c9a9e0cc84d8d5965df8"),
+		// new ObjectId("5270837629f2f33902f9b538") })));
+		// while (workCursor.hasNext()) {
+		// DBObject workData = workCursor.next();
+		// Work work = ModelService.createModelObject(workData, Work.class);
+		// work.doSaveProcessHistoryToDocument(new CurrentAccountContext());
+		// }
 
 		// DBCollection deliverableCol = getCol(IModelConstants.C_DELIEVERABLE);
 		// DBCollection documentCol = getCol(IModelConstants.C_DOCUMENT);

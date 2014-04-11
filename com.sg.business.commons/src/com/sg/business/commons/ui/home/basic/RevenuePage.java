@@ -312,7 +312,6 @@ public class RevenuePage extends TabBlockPage implements
 
 	private double[] getProjectMonthETL(Calendar cal,
 			double[] sumSales) {
-		// year = 2013;
 		double[] monthSales = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0 };
 		BasicDBObject query = new BasicDBObject();
@@ -327,14 +326,11 @@ public class RevenuePage extends TabBlockPage implements
 		DBCursor projectMonthCursor = projectMonthDataCol.find(query);
 		while (projectMonthCursor.hasNext()) {
 			DBObject dbo = projectMonthCursor.next();
-			double salesRevenue = (double) dbo.get(ProjectETL.F_SALES_REVENUE);
-			double salesCost = (double) dbo.get(ProjectETL.F_SALES_COST);
-			double salesProfit = salesRevenue - salesCost;
+			double salesRevenue = (double) dbo.get(ProjectETL.F_MONTH_SALES_REVENUE);
+			double salesProfit =  (double) dbo.get(ProjectETL.F_MONTH_SALES_PROFIT);
 			monthSales[0] = monthSales[0] + salesRevenue;
 			monthSales[1] = monthSales[1] + salesProfit;
 		}
-		monthSales[0] = sumSales[0] - monthSales[0];
-		monthSales[1] = sumSales[1] - monthSales[1];
 		monthSales[2] = monthSales[0] != 0 ? (monthSales[1] / monthSales[0] * 100)
 				: 0;
 
