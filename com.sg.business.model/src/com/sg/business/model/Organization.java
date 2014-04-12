@@ -1764,7 +1764,7 @@ public class Organization extends PrimaryObject {
 		if (role != null) {
 			// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 			IRoleParameter roleParameter;
-			if (!po.isEmpty()) {
+			if (po != null && !po.isEmpty()) {
 				if (po instanceof Project) {
 					Project project = (Project) po;
 					roleParameter = project.getAdapter(IRoleParameter.class);
@@ -1794,10 +1794,13 @@ public class Organization extends PrimaryObject {
 	 * @param selectType
 	 * @return
 	 */
-	public String[] getRoleAssignmentUserIds(String roleNumber, int selectType) {
+	@Deprecated
+	public List<String> getRoleAssignmentUserIds(String roleNumber,
+			int selectType) {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
+			// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null) {
 				for (int i = 0; i < assignment.size(); i++) {
@@ -1805,7 +1808,7 @@ public class Organization extends PrimaryObject {
 				}
 			}
 		}
-		return result.toArray(new String[0]);
+		return result;
 	}
 
 	public PrimaryObject getFunctionOrganization() {
