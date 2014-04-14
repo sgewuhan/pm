@@ -18,9 +18,9 @@ public class DeptSelectContorOfGS implements INavigatorSelectorControl {
 		Object element = is.getFirstElement();
 		if (element instanceof Organization) {
 			Organization org =  (Organization)element;
-			if (!org.isFunctionDepartment()) {
+			/*if (!org.isFunctionDepartment()) {
 				return false;
-			}
+			}*/
 		}
 		return true;
 	}

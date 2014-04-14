@@ -38,7 +38,13 @@ public class UserSelectorOfGS extends MasterDetailDataSetFactory {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
 					Organization org = user.getOrganization();
-					result.add(org);
+					boolean isfunc = org.isFunctionDepartment();
+					if (isfunc == false) {
+						org = (Organization) org.getFunctionOrganization();
+						result.add(org);
+					} else {
+						result.add(org);
+					}
 					return new DataSet(result);
 				} catch (Exception e) {
 					e.printStackTrace();

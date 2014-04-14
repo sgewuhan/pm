@@ -6196,7 +6196,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="customer"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.taskforms.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
