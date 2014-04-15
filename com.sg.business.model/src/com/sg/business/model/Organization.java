@@ -1788,14 +1788,13 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
-	 * 搜索角色的用户
+	 * 搜索角色的用户,角色脚本中使用，老版本中返回的为List<String>
 	 * 
 	 * @param roleNumber
 	 * @param selectType
 	 * @return
 	 */
-	@Deprecated
-	public List<String> getRoleAssignmentUserIds(String roleNumber,
+	public String[] getRoleAssignmentUserIds(String roleNumber,
 			int selectType) {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
@@ -1808,7 +1807,7 @@ public class Organization extends PrimaryObject {
 				}
 			}
 		}
-		return result;
+		return result.toArray(new String[0]);
 	}
 
 	public PrimaryObject getFunctionOrganization() {
