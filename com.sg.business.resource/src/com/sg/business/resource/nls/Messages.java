@@ -404,6 +404,8 @@ public class Messages {
 	public String IRoleConstance_33;
 	public String IRoleConstance_34;
 	public String IRoleConstance_35;
+	public String IRoleConstance_36;
+	public String IRoleConstance_37;
 	public String LaunchWorkWizard_1;
 	public String LifeCycleActionCancel_0;
 	public String LifeCycleActionCancel_2;

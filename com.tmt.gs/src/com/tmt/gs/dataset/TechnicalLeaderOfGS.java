@@ -13,7 +13,7 @@ public class TechnicalLeaderOfGS extends AbstractRoleAssignmentDataSetFactory{
 
 	@Override
 	protected String getRoleNumber() {
-		return IRoleConstance.ROLE_TECHNICAL_LEADER_CHECKER_ID;
+		return IRoleConstance.ROLE_TECHNICAL_LEADER_CHECKER_STANDLONE_ID;
 	}
 
 

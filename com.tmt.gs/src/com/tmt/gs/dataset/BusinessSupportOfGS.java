@@ -13,7 +13,7 @@ public class BusinessSupportOfGS extends AbstractRoleAssignmentDataSetFactory{
 
 	@Override
 	protected String getRoleNumber() {
-		return IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID;
+		return IRoleConstance.ROLE_TECHNOLOGY_CHECKER_STANDLONE_ID;
 	}
 
 

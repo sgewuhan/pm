@@ -147,5 +147,15 @@ public interface IRoleConstance {
 	public static final String ROLE_SENIOR_DESIGNER_ID = "Senior Designer";
 	public static final String ROLE_SENIOR_DESIGNER_TEXT=Messages.get().IRoleConstance_35;
 	
+	/**
+	 * 技术部审核（独立工作）
+	 */
+	public static final String ROLE_TECHNOLOGY_CHECKER_STANDLONE_ID="Technology Checker Standlone";
+	public static final String ROLE_TECHNOLOGY_CHECKER_STANDLONE_TEXT=Messages.get().IRoleConstance_36;
 	
+	/**
+	 * 技术负责人审核（独立工作）
+	 */
+	public static final String ROLE_TECHNICAL_LEADER_CHECKER_STANDLONE_ID = "Technical Leader Checker Standlone";
+	public static final String ROLE_TECHNICAL_LEADER_CHECKER_STANDLONE_TEXT=Messages.get().IRoleConstance_37;
 }
