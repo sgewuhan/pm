@@ -119,7 +119,7 @@
                         editable="true"
                         id="comment"
                         inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="说明"
+                        label="意见"
                         labelVisible="true"
                         name="comment"
                         persistable="true"
@@ -802,7 +802,7 @@
                         labelVisible="true"
                         name="com.tmt.gs.text1"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -813,7 +813,7 @@
                         labelVisible="true"
                         name="mold_amount"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Double">
                   </text>
                   <text
@@ -824,7 +824,7 @@
                         labelVisible="true"
                         name="mold_ask"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -2572,7 +2572,7 @@
                         labelVisible="true"
                         name="comment"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -4439,6 +4439,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
@@ -4517,6 +4518,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
@@ -4636,7 +4638,7 @@
                         navigatorId="gs.bussinesssupport.cbcchecker"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -4649,7 +4651,7 @@
                         navigatorId="gs.bussinesssupport.support"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -4662,7 +4664,7 @@
                         navigatorId="gs.projectchange.related"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -4713,7 +4715,7 @@
                         navigatorId="gs.bussinesssupport.cbcchecker"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -4726,7 +4728,7 @@
                         navigatorId="gs.bussinesssupport.support"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -4739,7 +4741,7 @@
                         navigatorId="gs.projectchange.related"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -5277,6 +5279,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
@@ -5338,6 +5341,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
@@ -5354,7 +5358,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -5577,6 +5581,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
@@ -5982,6 +5987,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="true"
                         name="comment"
@@ -6247,6 +6253,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
                         name="comment"
