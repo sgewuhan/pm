@@ -14,6 +14,6 @@ public class BusinessSupportApproverOfGS extends AbstractRoleAssignmentDataSetFa
 	@Override
 	protected String getRoleNumber() {
 		// TODO Auto-generated method stub
-		return IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID;
+		return IRoleConstance.ROLE_TECHNOLOGY_CHECKER_STANDLONE_ID;
 	}
 }
