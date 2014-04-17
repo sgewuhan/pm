@@ -44,6 +44,19 @@ public class Opportunity extends CompanyRelativeTeamControl implements
 			throw new Exception(MESSAGE_NOT_PERMISSION);
 		}
 	}
+	
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		checkStatus(context);
+		super.doInsert(context);
+	}
+
+	private void checkStatus(IContext context) {
+		Object value = getValue(F_STATUS);
+		if(value == null){
+			setValue(F_STATUS, IDataStatusControl.BASIC_VALUE_EDITING);
+		}
+	}
 
 	@Override
 	public void doUpdate(IContext context) throws Exception {
@@ -81,7 +94,8 @@ public class Opportunity extends CompanyRelativeTeamControl implements
 
 	@Override
 	public void checkDataStatusForUpdate(IContext context) throws Exception {
-		if (!BASIC_VALUE_DEPOSITE.equals(getValue(F_STATUS))) {
+		Object value = getValue(F_STATUS);
+		if (!BASIC_VALUE_DEPOSITE.equals(value)&&!BASIC_VALUE_EDITING.equals(value)) {
 			throw new Exception(MESSAGE_CANNOT_MODIFY);
 		}
 	}
