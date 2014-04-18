@@ -1169,7 +1169,6 @@
             processDefinitionId="gs.gsProjectApprove1"
             saveHandler="com.tmt.gs.handler.ProjectApproveOfGSSaveHandler">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -1186,7 +1185,6 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -1332,7 +1330,7 @@
                         required="true">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"
