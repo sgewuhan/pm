@@ -1625,6 +1625,14 @@
             run="com.sg.business.pm2.setup.SetUserScenario"
             time="0:0:0">
       </schedualJob>
+      <schedualJob
+            day="999999"
+            id="pm2.data"
+            name="同步数据"
+            rule="month"
+            run="com.sg.business.pm2.setup.LoadData"
+            time="0:0:0">
+      </schedualJob>
    </extension>
    <extension
          point="com.mobnut.portal.portalNotice">

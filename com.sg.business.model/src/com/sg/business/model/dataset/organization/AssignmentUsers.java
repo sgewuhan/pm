@@ -28,7 +28,7 @@ public class AssignmentUsers extends SingleDBCollectionDataSetFactory {
 		
 		User user = UserToolkit.getUserById(useid);
 		List<PrimaryObject> userList=new ArrayList<PrimaryObject>();
-		userList.add(user);
+//		userList.add(user);
 		List<PrimaryObject> roles = user.getRoles(Role.ROLE_ASSIGNMENT_ID);
 		for(PrimaryObject po:roles){
 			Organization organization = ((Role)po).getOrganization();
