@@ -62,10 +62,11 @@ public class ProcessingWorkContentProvider extends RelationContentProvider {
 			List<?> pWorkId = userTaskCol.distinct(UserTask.F_WORK_ID, q);
 
 			// 查询本人参与的工作
+			//2014-04-18 按舒传玉提出的要求将原有的显示本人参与的工作改为只显示本人负责的工作
 			q = new BasicDBObject();
 			q.put("$or", //$NON-NLS-1$
 					new BasicDBObject[] {
-							new BasicDBObject().append(Work.F_PARTICIPATE,
+							new BasicDBObject().append(Work.F_CHARGER,
 									userId),
 							new BasicDBObject().append(Work.F_ASSIGNER, userId),
 							new BasicDBObject().append(Work.F__ID,
