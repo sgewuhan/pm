@@ -90,9 +90,9 @@ public class Contract extends CompanyRelativeTeamControl implements
 
 	@Override
 	public void checkDataStatusForUpdate(IContext context) throws Exception {
-		if (!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))) {
-			throw new Exception(MESSAGE_CANNOT_MODIFY);
-		}
+//		if (!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))) {
+//			throw new Exception(MESSAGE_CANNOT_MODIFY);
+//		}
 	}
 
 	@Override

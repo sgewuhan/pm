@@ -54,8 +54,17 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		generateCode();
+		checkStatus(context);
 		super.doInsert(context);
 	}
+	
+	private void checkStatus(IContext context) {
+		Object value = getValue(F_STATUS);
+		if(value == null){
+			setValue(F_STATUS, IDataStatusControl.BASIC_VALUE_EDITING);
+		}
+	}
+
 
 	private void generateCode() {
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
