@@ -705,6 +705,8 @@ public class Messages {
 	public String ProjectCommit_1;
 	public String ProjectCommit_3;
 	public String ProjectCommit_5;
+	public String ProjectCommit_6;
+	public String ProjectCommit_7;
 	public String ProjectDashboardAllInv_0;
 	public String ProjectDashboardDesInv_0;
 	public String ProjectDashboardRevenue_0;

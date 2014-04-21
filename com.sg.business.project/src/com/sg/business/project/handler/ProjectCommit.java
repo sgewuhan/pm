@@ -25,8 +25,8 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
-			ViewerControl vc, Command command,
-			Map<String, Object> parameters, IStructuredSelection selection) {
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
 		if (selected instanceof Project) {
 			Project project = (Project) selected;
 			try {
@@ -59,11 +59,12 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 
 				Shell shell = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell();
-				int i = MessageUtil.showMessage(shell, Messages.get().ProjectCommit_0,
+				int i = MessageUtil.showMessage(shell,
+						Messages.get().ProjectCommit_0,
 						Messages.get().ProjectCommit_1 + "\n" //$NON-NLS-2$
 								+ Messages.get().ProjectCommit_3 + "\n" //$NON-NLS-2$
-								+ Messages.get().ProjectCommit_5, SWT.YES | SWT.NO
-								| SWT.ICON_QUESTION);
+								+ Messages.get().ProjectCommit_5, SWT.YES
+								| SWT.NO | SWT.ICON_QUESTION);
 				if (i == SWT.YES) {
 					// 在该编辑器确定后启动工作
 					work.doStart(context);
@@ -72,9 +73,17 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 				}
 			}
 		} else {
-			project.doCommitWithSendMessage(context);
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getShell();
+			int i = MessageUtil.showMessage(shell, Messages.get().ProjectCommit_6,
+					Messages.get().ProjectCommit_7, SWT.YES
+							| SWT.NO | SWT.ICON_QUESTION);
+			if (i == SWT.YES) {
+				// 在该编辑器确定后启动工作
+				project.doCommitWithSendMessage(context);
+			} else {
+			}
 		}
 	}
-
 
 }
