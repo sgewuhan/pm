@@ -17,8 +17,8 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 
 public class LoadData implements ISchedualJobRunnable {
-	String DB1 = "pm2";// 新数据
-	String DB2 = "pm2-master";// 历史数据
+	String DB1 = "pm2-test";// 新数据
+	String DB2 = "pm2";// 历史数据
 
 	public LoadData() {
 	}
@@ -35,6 +35,7 @@ public class LoadData implements ISchedualJobRunnable {
 	private void initUser() {
 		DBCollection db1UserCol = getCol(DB1, IModelConstants.C_USER);
 		DBCollection db2UserCol = getCol(DB2, IModelConstants.C_USER);
+
 		List<Object> db1user_Ids = db1UserCol.distinct(User.F_USER_ID);
 		List<Object> db2user_Ids = db2UserCol.distinct(User.F_USER_ID);
 
@@ -44,6 +45,15 @@ public class LoadData implements ISchedualJobRunnable {
 				new BasicDBObject().append("$in", removeOrg_Ids)),
 				new BasicDBObject().append("$set", new BasicDBObject().append(
 						User.F_ACTIVATED, Boolean.FALSE)), false, true);
+
+		db2UserCol.update(
+				new BasicDBObject().append(User.F_ACTIVATED, Boolean.FALSE),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject()
+								.append(User.F_ORGANIZATION_ID, null)
+								.append(User.F_ORGANIZATION_NAME, null)
+								.append("_temp", null)));
 
 		DBCursor db1Cursor = db1UserCol.find();
 		while (db1Cursor.hasNext()) {

@@ -89,7 +89,7 @@ public class RevenuePage extends TabBlockPage implements
 
 		textContent1 = new Label(parent, SWT.NONE);
 		HtmlUtil.enableMarkup(textContent1);
-		
+
 		FormData fd = new FormData();
 		textContent1.setLayoutData(fd);
 		fd.top = new FormAttachment();
@@ -109,7 +109,7 @@ public class RevenuePage extends TabBlockPage implements
 
 		Label label = new Label(parent, SWT.NONE);
 		HtmlUtil.enableMarkup(label);
-		
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='" + "font-family:微软雅黑;" + "margin:8;"
 				+ "width:100%;" + "'>");
@@ -134,7 +134,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 		fd.bottom = new FormAttachment(100);
-		
+
 		createPageControl(parent);
 
 	}
@@ -145,8 +145,8 @@ public class RevenuePage extends TabBlockPage implements
 
 		FormData fd = new FormData();
 		pageRight.setLayoutData(fd);
-		fd.top = new FormAttachment(50,-24);
-		fd.right = new FormAttachment(100,-1);
+		fd.top = new FormAttachment(50, -24);
+		fd.right = new FormAttachment(100, -1);
 		fd.width = 48;
 		fd.height = 48;
 		pageRight.addSelectionListener(new SelectionAdapter() {
@@ -155,15 +155,14 @@ public class RevenuePage extends TabBlockPage implements
 				pageRight();
 			}
 		});
-		
-	
+
 		Button pageLeft = new Button(parent, SWT.NONE);
 		pageLeft.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT2_48);
 
 		fd = new FormData();
 		pageLeft.setLayoutData(fd);
-		fd.top = new FormAttachment(50,-24);
-		fd.left = new FormAttachment(0,1);
+		fd.top = new FormAttachment(50, -24);
+		fd.left = new FormAttachment(0, 1);
 		fd.width = 48;
 		fd.height = 48;
 		pageLeft.addSelectionListener(new SelectionAdapter() {
@@ -175,7 +174,6 @@ public class RevenuePage extends TabBlockPage implements
 		pageRight.moveAbove(null);
 		pageLeft.moveAbove(null);
 	}
-	
 
 	protected void pageLeft() {
 		now.add(Calendar.MONTH, -1);
@@ -198,7 +196,7 @@ public class RevenuePage extends TabBlockPage implements
 
 		projectMonthDataCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT_MONTH_DATA);
-		
+
 		now = Calendar.getInstance();
 
 	}
@@ -218,11 +216,10 @@ public class RevenuePage extends TabBlockPage implements
 	protected Object doGetData() {
 		double[] sumSales = getProjectETL();
 
-		
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, now.get(Calendar.MONTH));
 		cal.set(Calendar.YEAR, now.get(Calendar.YEAR));
-		
+
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		cal.add(Calendar.DAY_OF_MONTH, -1);
 
@@ -244,8 +241,8 @@ public class RevenuePage extends TabBlockPage implements
 		 * 获取当前的月份
 		 */
 		// String month = MONTHS[cal.get(Calendar.MONTH)];
-		String month = ""+(cal.get(Calendar.MONTH)+1);
-		String year = ""+(cal.get(Calendar.YEAR));
+		String month = "" + (cal.get(Calendar.MONTH) + 1);
+		String year = "" + (cal.get(Calendar.YEAR));
 		/*
 		 * 获取当前的月份，当前用户所有项目的销售收入
 		 */
@@ -310,8 +307,7 @@ public class RevenuePage extends TabBlockPage implements
 		return dataMap;
 	}
 
-	private double[] getProjectMonthETL(Calendar cal,
-			double[] sumSales) {
+	private double[] getProjectMonthETL(Calendar cal, double[] sumSales) {
 		double[] monthSales = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0 };
 		BasicDBObject query = new BasicDBObject();
@@ -326,8 +322,10 @@ public class RevenuePage extends TabBlockPage implements
 		DBCursor projectMonthCursor = projectMonthDataCol.find(query);
 		while (projectMonthCursor.hasNext()) {
 			DBObject dbo = projectMonthCursor.next();
-			double salesRevenue = (double) dbo.get(ProjectETL.F_MONTH_SALES_REVENUE);
-			double salesProfit =  (double) dbo.get(ProjectETL.F_MONTH_SALES_PROFIT);
+			double salesRevenue = (double) dbo
+					.get(ProjectETL.F_MONTH_SALES_REVENUE);
+			double salesProfit = (double) dbo
+					.get(ProjectETL.F_MONTH_SALES_PROFIT);
 			monthSales[0] = monthSales[0] + salesRevenue;
 			monthSales[1] = monthSales[1] + salesProfit;
 		}
@@ -337,7 +335,8 @@ public class RevenuePage extends TabBlockPage implements
 		query = new BasicDBObject();
 		query.put(
 				"$match",
-				new BasicDBObject().append(ProjectETL.F_YEAR, cal.get(Calendar.YEAR)).append(
+				new BasicDBObject().append(ProjectETL.F_YEAR,
+						cal.get(Calendar.YEAR)).append(
 						"$or",
 						new BasicDBObject[] {
 								new BasicDBObject().append(Project.F_CHARGER,
@@ -395,10 +394,14 @@ public class RevenuePage extends TabBlockPage implements
 			DBObject dbo = projectCursor.next();
 			Object etl = dbo.get(ProjectETL.F_ETL);
 			if (etl != null && etl instanceof DBObject) {
-				double salesRevenue = (double) ((DBObject) etl)
+				Object sales_revenue = ((DBObject) etl)
 						.get(ProjectETL.F_SALES_REVENUE);
-				double salesCost = (double) ((DBObject) etl)
+				double salesRevenue = (double) (sales_revenue != null ? sales_revenue
+						: 0d);
+				Object sales_cost = ((DBObject) etl)
 						.get(ProjectETL.F_SALES_COST);
+				double salesCost = (double) (sales_cost != null ? sales_cost
+						: 0d);
 				double salesProfit = salesRevenue - salesCost;
 				sumSales[0] = sumSales[0] + salesRevenue;
 				sumSales[1] = sumSales[1] + salesProfit;
@@ -583,7 +586,8 @@ public class RevenuePage extends TabBlockPage implements
 	}
 
 	protected void select(Work work) {
-		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,false);
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,
+				false);
 	}
 
 }
