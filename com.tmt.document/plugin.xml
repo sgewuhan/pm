@@ -103,7 +103,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="4"
+                        heightHint="40"
                         id="samplesource"
                         label="样品来源"
                         labelVisible="false"
@@ -121,7 +121,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="6"
+                        heightHint="60"
                         id="projectdescription"
                         label="项目简介及市场预测"
                         labelVisible="false"
@@ -136,7 +136,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="3"
+                        heightHint="30"
                         id="technicalrequirements"
                         label="产品技术要求（包括功能、性能、尺寸及特殊特性等）："
                         labelVisible="true"
@@ -148,7 +148,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="3"
+                        heightHint="30"
                         id="packagerequirements"
                         label="产品包装/标识要求"
                         labelVisible="true"
@@ -160,7 +160,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="3"
+                        heightHint="30"
                         id="schedulerequirements"
                         label="进度要求"
                         labelVisible="true"
@@ -256,9 +256,10 @@
                   <table
                         ctableId="document.prodectproposal.table"
                         editable="true"
-                        id="com.tmt.document.table1"
+                        id="product"
+                        label="产品"
                         labelVisible="false"
-                        name="com.tmt.document.table1"
+                        name="product"
                         persistable="true"
                         required="false">
                   </table>
@@ -275,21 +276,29 @@
    <extension
          point="com.sg.widgets.table">
       <table
+            dataSet="com.tmt.document.tb.ProdectProposalSet"
             id="document.prodectproposal.table">
          <column
+               column="productnumber"
                name="物资编号"></column>
          <column
+               column="productdesc"
                name="产品名称"></column>
          <column
+               column="customerno"
                name="用户图号"></column>
          <column
+               column="companyno"
                name="公司图号"></column>
          <column
+               column="docno"
                name="文件编号"></column>
          <column
+               column="number"
                name="台份数">
          </column>
          <column
+               column="qty"
                name="发货数量">
          </column>
       </table>
