@@ -719,6 +719,7 @@
             name="编制"
             persistentFields="mold_use,mold_amount,mold_ask,accessory"
             processDefinitionId="gs.gsOpenMoldApprove1"
+            saveHandler="com.tmt.gs.handler.OpenMoldEditOfGSSaveHandler"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="mold_use"
@@ -735,9 +736,11 @@
       </taskForm>
       <taskForm
             editorId="gsopenmoldapprove1.technology"
+            inputHandler="com.tmt.gs.handler.OpenMoldEditOfGSInputHandler"
             name="技术负责人审核"
             persistentFields="mold_amount,mold_ask,choice,comment,accessory"
-            processDefinitionId="gs.gsOpenMoldApprove1">
+            processDefinitionId="gs.gsOpenMoldApprove1"
+            saveHandler="com.tmt.gs.handler.OpenMoldEditOfGSSaveHandler">
          <processParameter
                processParameterDelegator="com.tmt.gs.field.parameter.ApproverForAmountOfGS"
                processParameterName="approver"
@@ -800,7 +803,7 @@
                         id="mold_use"
                         label="模具用途"
                         labelVisible="true"
-                        name="com.tmt.gs.text1"
+                        name="mold_use"
                         persistable="true"
                         required="true"
                         type="String">
@@ -897,7 +900,7 @@
                         labelVisible="true"
                         name="mold_amount"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Double">
                   </text>
                   <text
@@ -908,7 +911,7 @@
                         labelVisible="true"
                         name="mold_ask"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -1959,7 +1962,7 @@
                         required="true">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"
