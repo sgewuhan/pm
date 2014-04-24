@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
@@ -36,7 +37,7 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 	}
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		setFormInput(input);
 		setDirty(true);

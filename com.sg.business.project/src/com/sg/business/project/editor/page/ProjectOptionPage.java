@@ -51,7 +51,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 	}
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());

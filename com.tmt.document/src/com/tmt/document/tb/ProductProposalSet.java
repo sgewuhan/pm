@@ -11,11 +11,11 @@ import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class ProdectProposalSet extends MasterDetailDataSetFactory {
+public class ProductProposalSet extends MasterDetailDataSetFactory {
 
 	private static final String PRODUCT = "product";
 
-	public ProdectProposalSet() {
+	public ProductProposalSet() {
 		super(IModelConstants.DB, IModelConstants.C_DOCUMENT);
 	}
 

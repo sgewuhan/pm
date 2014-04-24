@@ -1,6 +1,7 @@
 package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
@@ -18,12 +19,10 @@ public class ProjectSetDashboard extends AbstractFormPageDelegator {
 	}
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		
-		
-		
-		return super.createPageContent(parent, input, conf);
+
+		return super.createPageContent(mForm, parent, input, conf);
 	}
 
 }

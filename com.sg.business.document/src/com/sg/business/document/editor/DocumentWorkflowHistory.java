@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.jbpm.task.Status;
 
@@ -52,9 +53,9 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 	private Document doc;
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		super.createPageContent(parent, input, conf);
+		super.createPageContent(mForm, parent, input, conf);
 
 		doc = (Document) input.getData();
 		Composite panel = new Composite(parent, SWT.NONE);
@@ -217,12 +218,14 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
 		if (sel != null && !sel.isEmpty()) {
-			DBObject processItem = (DBObject) sel
-					.getFirstElement();
-			List<?> history = (List<?>) processItem.get(IDocumentProcess.F_HISTORY);
+			DBObject processItem = (DBObject) sel.getFirstElement();
+			List<?> history = (List<?>) processItem
+					.get(IDocumentProcess.F_HISTORY);
 			for (Object object : history) {
-				if( Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
-					input.add(ModelService.createModelObject((DBObject)object, UserTask.class));
+				if (Status.Completed.name().equals(
+						((DBObject) object).get(UserTask.F_STATUS))) {
+					input.add(ModelService.createModelObject((DBObject) object,
+							UserTask.class));
 				}
 			}
 		}

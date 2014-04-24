@@ -93,8 +93,10 @@ public class WorkFlowSettingPage extends WizardPage {
 								.getValue(RoleDefinition.F_WORK_ID);
 						IRoleParameter roleParameter;
 						if (work_id != null) {
-							Work work = ModelService.createModelObject(Work.class, work_id);
-							 roleParameter = work.getAdapter(IRoleParameter.class);
+							Work work = ModelService.createModelObject(
+									Work.class, work_id);
+							roleParameter = work
+									.getAdapter(IRoleParameter.class);
 						} else {
 							roleParameter = new RoleParameter();
 						}
@@ -121,7 +123,7 @@ public class WorkFlowSettingPage extends WizardPage {
 			}
 
 		};
-		page.createPageContent(parent, input, null);
+		page.createPageContent(null, parent, input, null);
 		ProcessSettingPanel psp = page.getProcessSettingPanel();
 		psp.setRoleSelectEnable(false);
 		setControl(psp);

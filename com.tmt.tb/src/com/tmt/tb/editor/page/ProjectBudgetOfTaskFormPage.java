@@ -41,7 +41,7 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 	}
 	
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		Project project = (Project) input.getData();
 

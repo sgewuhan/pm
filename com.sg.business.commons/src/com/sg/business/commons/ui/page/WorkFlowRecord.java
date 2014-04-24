@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IFormPart;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.commons.util.Utils;
 import com.mongodb.DBObject;
@@ -36,7 +37,7 @@ public class WorkFlowRecord implements IPageDelegator {
 	}
 	
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
@@ -51,9 +52,11 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 	}
 
 	@Override
-	public ProcessSettingPanel createPageContent(Composite parent,
-			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		ProcessSettingPanel psp = super.createPageContent(parent, input, conf);
+	public ProcessSettingPanel createPageContent(IManagedForm mForm,
+			Composite parent, PrimaryObjectEditorInput input,
+			BasicPageConfigurator conf) {
+		ProcessSettingPanel psp = super.createPageContent(mForm, parent, input,
+				conf);
 		// 控制角色限定在工作中不可被修改
 		psp.setRoleSelectEnable(false);
 		return psp;
@@ -119,7 +122,8 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			Role role = roledef.getOrganizationRole();
 			if (role != null) {
 				// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-				IRoleParameter roleParameter = work.getAdapter(IRoleParameter.class);
+				IRoleParameter roleParameter = work
+						.getAdapter(IRoleParameter.class);
 				assignments = role.getAssignment(roleParameter);
 			}
 		}

@@ -41,7 +41,7 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 	}
 	
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		this.input = input;
 		boolean ediable = input.isEditable();

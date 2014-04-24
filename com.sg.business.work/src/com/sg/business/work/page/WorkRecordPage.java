@@ -13,6 +13,7 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.commons.html.HtmlUtil;
 import com.sg.business.model.Work;
@@ -32,7 +33,7 @@ public class WorkRecordPage extends AbstractFormPageDelegator {
 	}
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		createTable(parent);
 		Work work = (Work) input.getData();

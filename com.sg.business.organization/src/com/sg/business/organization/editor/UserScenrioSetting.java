@@ -9,6 +9,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.portal.Portal;
@@ -22,7 +23,7 @@ public class UserScenrioSetting extends AbstractFormPageDelegator {
 	private Button[] buttons;
 	
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		final User user;
 		try {

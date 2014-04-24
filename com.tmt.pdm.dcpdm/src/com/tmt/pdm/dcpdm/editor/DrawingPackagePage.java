@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.commons.html.HtmlUtil;
@@ -41,11 +42,11 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 	private TreeViewer fileViewer;
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		setFormInput(input);
 		Composite panel = new Composite(parent, SWT.NONE);
-		Composite flow = super.createPageContent(panel, input, conf);
+		Composite flow = super.createPageContent(mForm, panel, input, conf);
 		Composite file = createFileContent(panel, input);
 
 		panel.setLayout(new FormLayout());

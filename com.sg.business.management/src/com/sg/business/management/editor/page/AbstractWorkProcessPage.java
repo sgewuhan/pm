@@ -30,7 +30,7 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 	
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);

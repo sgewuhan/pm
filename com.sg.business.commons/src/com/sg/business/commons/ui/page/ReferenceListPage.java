@@ -12,6 +12,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.DocumentModelDefinition;
 import com.mobnut.db.model.ModelService;
@@ -30,7 +31,7 @@ import com.sg.widgets.registry.config.BasicPageConfigurator;
 public class ReferenceListPage extends AbstractFormPageDelegator {
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		IReferenceContainer message = (IReferenceContainer) input.getData();
 		Composite content = new Composite(parent,SWT.NONE);

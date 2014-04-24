@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.menus.IMenuService;
 import org.jbpm.task.Task;
 
@@ -63,7 +64,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	}
 
 	@Override
-	public Composite createPageContent(Composite parent,
+	public Composite createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 
 		context = new CurrentAccountContext();

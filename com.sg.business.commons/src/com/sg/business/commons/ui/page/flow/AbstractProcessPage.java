@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
@@ -26,7 +27,7 @@ public abstract class AbstractProcessPage extends
 	private ProcessSettingPanel psp2;
 
 	@Override
-	public ProcessSettingPanel createPageContent(Composite parent,
+	public ProcessSettingPanel createPageContent(IManagedForm mForm,Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setFormInput(input);

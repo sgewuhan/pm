@@ -6,12 +6,14 @@
       <editor
             collectionName="document"
             dbName="pm2"
-            id="document.prodectproposal"
+            exportHandler="com.tmt.document.tb.ExportProductProposalHandler"
+            id="document.productproposal"
             name="新产品开发建议及立项书"
             titleToolTips="新产品开发建议及立项书">
          <basicpage
                description="基本信息"
                id="page1"
+               pageDelegator="com.sg.widgets.commons.exporttool.ExportablePageDelegator"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -258,7 +260,8 @@
                <section
                      label="产品简介">
                   <table
-                        ctableId="document.prodectproposal.table"
+                        addTableItemHandler="com.tmt.document.tb.AddProductProposal"
+                        ctableId="document.productproposal.table"
                         editable="true"
                         id="product"
                         label="产品"
@@ -276,12 +279,105 @@
             </fieldname>
          </versionControl>
       </editor>
+      <editor
+            collectionName="dummy"
+            dbName="pm2"
+            id="document.productproposal.product"
+            name="产品简介">
+         <basicpage
+               id="page1"
+               title="产品简介">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="产品简介">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="productnumber"
+                        label="物资编号"
+                        labelVisible="true"
+                        name="productnumber"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="productdesc"
+                        label="产品名称"
+                        labelVisible="true"
+                        name="productdesc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="customerno"
+                        label="用户图号"
+                        labelVisible="true"
+                        name="customerno"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="companyno"
+                        label="公司图号"
+                        labelVisible="true"
+                        name="companyno"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="docno"
+                        label="文件编号"
+                        labelVisible="true"
+                        name="docno"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="number"
+                        label="台份数"
+                        labelVisible="true"
+                        name="number"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="qty"
+                        label="发货数量"
+                        labelVisible="true"
+                        name="qty"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.table">
       <table
-            dataSet="com.tmt.document.tb.ProdectProposalSet"
-            id="document.prodectproposal.table">
+            dataSet="com.tmt.document.tb.ProductProposalSet"
+            id="document.productproposal.table">
          <column
                column="productnumber"
                name="物资编号"></column>
