@@ -199,13 +199,12 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 		return table;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void loadFileValue(String pdm_ouid) throws Exception {
 		if (pdm_ouid != null) {
 			fileViewer.setInput(new String[] { pdm_ouid });
 			return;
 		}
-		fileViewer.setInput(new ArrayList());
+		fileViewer.setInput(new String[0]);
 	}
 
 	@Override
