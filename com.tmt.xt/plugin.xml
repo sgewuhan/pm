@@ -1251,7 +1251,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="organization.user"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -1368,18 +1368,18 @@
                         type="String"
                         widthHint="320">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
+                  <radio
                         editable="true"
                         id="confirmtype"
                         inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
                         label="评审会会议类型"
                         labelVisible="true"
                         name="confirmtype"
+                        option="会议类型"
                         persistable="true"
                         required="false"
                         type="String">
-                  </text>
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -2373,6 +2373,24 @@
             operation="message"
             serviceProvider="com.tmt.xt.bpmservice.SupportServiceOfXT">
       </service>
+      <service
+            interface="xtmeetingmessage.service.action"
+            name="立项评审通知"
+            operation="projectapplication"
+            serviceProvider="com.tmt.xt.bpmservice.MeetingMessageOfXT">
+      </service>
+      <service
+            interface="xtmeetingmessage.service.action"
+            name="项目评审通知"
+            operation="projectapprove"
+            serviceProvider="com.tmt.xt.bpmservice.MeetingMessageOfXT">
+      </service>
+      <service
+            interface="xtmeetingmessage.service.action"
+            name="转批评审通知"
+            operation="subconcessions"
+            serviceProvider="com.tmt.xt.bpmservice.MeetingMessageOfXT">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -2999,6 +3017,39 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.option">
+      <option
+            id="会议类型"
+            label="会议类型"
+            value="会议类型">
+         <option
+               id="立项评审会"
+               label="立项评审会"
+               value="立项评审会">
+         </option>
+         <option
+               id="设计评审会"
+               label="设计评审会"
+               value="设计评审会">
+         </option>
+         <option
+               id="工艺评审会"
+               label="工艺评审会"
+               value="工艺评审会">
+         </option>
+         <option
+               id="结题评审会"
+               label="结题评审会"
+               value="结题评审会">
+         </option>
+         <option
+               id="转批评审会"
+               label="转批评审会"
+               value="转批评审会">
+         </option>
+      </option>
    </extension>
 
 </plugin>

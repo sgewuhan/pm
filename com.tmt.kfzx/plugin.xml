@@ -599,7 +599,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="organization.user"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -823,7 +823,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="organization.user"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
