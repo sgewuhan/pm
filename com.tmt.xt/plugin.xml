@@ -388,15 +388,27 @@
       <taskForm
             editorId="xtProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="messagecontent,choice,accessory"
+            persistentFields="choice,accessory,confirmtime,confirmaddress,confirmdate,confirmtype"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="messagecontent"
-               taskFormFieldName="messagecontent">
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmtype"
+               taskFormFieldName="confirmtype">
          </processParameter>
       </taskForm>
       <taskForm
@@ -524,23 +536,11 @@
                title="%basicpage.title.11">
             <pagecolumn>
                <section
-                     label="%section.label.7">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="messagecontent"
-                        label="%text.label.3"
-                        labelVisible="false"
-                        name="messagecontent"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
+                     label="请确认评审方式">
                   <radio
                         editable="true"
                         id="choice"
-                        label="%radio.label.3"
+                        label="评审方式"
                         labelVisible="false"
                         name="choice"
                         option="评审实施计划"
@@ -548,6 +548,59 @@
                         required="true"
                         type="String">
                   </radio>
+               </section>
+               <section
+                     label="请填写评审会时间及地点">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmdate"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会日期"
+                        labelVisible="true"
+                        name="confirmdate"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtype"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会会议类型"
+                        labelVisible="true"
+                        name="confirmtype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -852,9 +905,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tbprojectapplication.reviewer"
+            editorId="xtprojectapplication.reviewer"
             name="确认评审组"
-            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory,confirmdate"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory,confirmdate,confirmtype"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -877,6 +930,10 @@
          <processParameter
                processParameterName="confirmdate"
                taskFormFieldName="confirmdate">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmtype"
+               taskFormFieldName="confirmtype">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1039,15 +1096,27 @@
       <taskForm
             editorId="xtSubconcessions.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,choice,accessory"
+            persistentFields="choice,accessory,confirmtime,confirmaddress,confirmdate,confirmtype"
             processDefinitionId="xt.xtSubconcessions">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="messagecontent"
-               taskFormFieldName="messagecontent">
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmtype"
+               taskFormFieldName="confirmtype">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1246,29 +1315,71 @@
                title="%basicpage.title.32">
             <pagecolumn>
                <section
-                     label="%section.label.21">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="messagecontent"
-                        label="%text.label.8"
-                        labelVisible="true"
-                        name="messagecontent"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
+                     label="请确认评审方式">
                   <radio
                         editable="true"
                         id="choice"
-                        label="%radio.label.9"
+                        label="评审方式"
                         labelVisible="false"
                         name="choice"
                         option="评审实施计划"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
+               </section>
+               <section
+                     label="请填写评审会时间及地点">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmdate"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会日期"
+                        labelVisible="true"
+                        name="confirmdate"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtype"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会会议类型"
+                        labelVisible="true"
+                        name="confirmtype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1345,6 +1456,118 @@
             <pagecolumn>
                <section
                      label="%section.label.2">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtprojectapplication.reviewer"
+            name="确认评审组">
+         <basicpage
+               id="basicpage1"
+               title="%basicpage.title.5">
+            <pagecolumn>
+               <section
+                     label="请确认评审方式">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审方式"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审方式"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+               <section
+                     label="请填写评审会时间及地点">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmdate"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会日期"
+                        labelVisible="true"
+                        name="confirmdate"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtype"
+                        inputValidator="com.tmt.xt.field.CheckConfirmOfXTProjectApplication"
+                        label="评审会会议类型"
+                        labelVisible="true"
+                        name="confirmtype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="请确认评审组">
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
+                        editable="true"
+                        id="reviewer_list"
+                        inputValidator="com.tmt.xt.field.CheckReviewerOfXTProjectApplication"
+                        label="%list.label"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.6">
+            <pagecolumn>
+               <section
+                     label="%section.label.7">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"

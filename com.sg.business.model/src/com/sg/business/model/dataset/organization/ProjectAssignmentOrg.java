@@ -12,7 +12,6 @@ import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
 public class ProjectAssignmentOrg extends MasterDetailDataSetFactory {
 
-
 	public ProjectAssignmentOrg() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 	}
@@ -24,14 +23,17 @@ public class ProjectAssignmentOrg extends MasterDetailDataSetFactory {
 
 	@Override
 	protected Object getMasterValue() {
-		 ObjectId _id = (ObjectId) master.getValue(Work.F_ASSIGNMENT_CHARGER_ROLE_ID);
-		 ProjectRole projectRole = ModelService.createModelObject(ProjectRole.class, _id);
-		 Role role = projectRole.getOrganizationRole();
-		 if(role != null){
-			 return role.getOrganization_id();
-		 }else{
-			 return null;
-		 }
+		ObjectId _id = (ObjectId) master
+				.getValue(Work.F_ASSIGNMENT_CHARGER_ROLE_ID);
+		if (_id != null) {
+			ProjectRole projectRole = ModelService.createModelObject(
+					ProjectRole.class, _id);
+			Role role = projectRole.getOrganizationRole();
+			if (role != null) {
+				return role.getOrganization_id();
+			}
+		}
+		return null;
 	}
 
 }

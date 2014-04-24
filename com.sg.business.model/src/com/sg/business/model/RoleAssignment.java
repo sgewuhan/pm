@@ -2,7 +2,10 @@ package com.sg.business.model;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -55,5 +58,17 @@ public class RoleAssignment extends AbstractRoleAssignment {
 	@Override
 	public String getDefaultEditorId() {
 		return "editorscenario.organization.roleassignment"; //$NON-NLS-1$
+	}
+
+	public Role getRole() {
+		ObjectId roleId = getRoleId();
+		if(roleId != null){
+			return ModelService.createModelObject(Role.class, roleId);
+		}
+		return null;
+	}
+
+	public ObjectId getRoleId() {
+		return getObjectIdValue(F_ROLE_ID);
 	}
 }
