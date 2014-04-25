@@ -1,0 +1,40 @@
+  <?xml version="1.0" encoding="utf-8" ?>
+ <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ <xs:element name="document.productproposal">
+ <xs:complexType>
+ <xs:sequence>
+  <xs:element name="mold" type="xs:string" /> 
+  <xs:element name="iron" type="xs:string" /> 
+  <xs:element name="projectdescription" type="xs:string" /> 
+  <xs:element name="test" type="xs:string" /> 
+  <xs:element name="projectdesc" type="xs:string" /> 
+  <xs:element name="customerlinkman" type="xs:string" /> 
+  <xs:element name="tooling" type="xs:string" /> 
+ <xs:element name="product" maxOccurs="unbounded">
+ <xs:complexType>
+ <xs:sequence>
+  <xs:element name="productnumber" type="xs:string" /> 
+  <xs:element name="productdesc" type="xs:string" /> 
+  <xs:element name="customerno" type="xs:string" /> 
+  <xs:element name="companyno" type="xs:string" /> 
+  <xs:element name="docno" type="xs:string" /> 
+  <xs:element name="number" type="xs:string" /> 
+  <xs:element name="qty" type="xs:string" /> 
+  </xs:sequence>
+  </xs:complexType>
+  </xs:element>
+  <xs:element name="customermail" type="xs:string" /> 
+  <xs:element name="customertel" type="xs:string" /> 
+  <xs:element name="technicalrequirements" type="xs:string" /> 
+  <xs:element name="customerdesc" type="xs:string" /> 
+  <xs:element name="packagerequirements" type="xs:string" /> 
+  <xs:element name="workorder" type="xs:string" /> 
+  <xs:element name="schedulerequirements" type="xs:string" /> 
+  <xs:element name="trial" type="xs:string" /> 
+  <xs:element name="customerfax" type="xs:string" /> 
+  <xs:element name="samplesource" type="xs:string" /> 
+  <xs:element name="other" type="xs:string" /> 
+  </xs:sequence>
+  </xs:complexType>
+  </xs:element>
+  </xs:schema>

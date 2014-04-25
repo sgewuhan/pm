@@ -9,6 +9,7 @@
             exportHandler="com.tmt.document.tb.ExportProductProposalHandler"
             id="document.productproposal"
             name="新产品开发建议及立项书"
+            reportDataSourceXSD="dataset/document_productproposal.xsd"
             titleToolTips="新产品开发建议及立项书">
          <basicpage
                description="基本信息"
