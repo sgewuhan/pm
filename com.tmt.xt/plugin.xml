@@ -730,6 +730,7 @@
          </basicpage>
          <basicpage
                id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.18">
          </basicpage>
          <basicpage
@@ -1563,11 +1564,16 @@
             </pagecolumn>
          </basicpage>
          <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="%basicpage.title.3">
+         </basicpage>
+         <basicpage
                id="page3"
-               title="%basicpage.title.6">
+               title="%basicpage.title.4">
             <pagecolumn>
                <section
-                     label="%section.label.7">
+                     label="%section.label.2">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -2122,6 +2128,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.42">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.40">
+            <pagecolumn>
+               <section
+                     label="%section.label.27">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2795,6 +2819,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.42">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.40">
+            <pagecolumn>
+               <section
+                     label="%section.label.27">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor

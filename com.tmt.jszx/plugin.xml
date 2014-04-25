@@ -1327,6 +1327,25 @@
                pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.39">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.37">
+            <pagecolumn>
+               <section
+                     label="%section.label.25">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="%file.label.11"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -1494,6 +1513,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.47">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.37">
+            <pagecolumn>
+               <section
+                     label="%section.label.25">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="%file.label.11"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
    </extension>

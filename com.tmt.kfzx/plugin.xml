@@ -969,6 +969,25 @@
                pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.27">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.25">
+            <pagecolumn>
+               <section
+                     label="%section.label.16">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="%file.label.6"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
