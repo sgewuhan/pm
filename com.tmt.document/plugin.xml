@@ -6,7 +6,6 @@
       <editor
             collectionName="document"
             dbName="pm2"
-            exportHandler="com.tmt.document.tb.ExportProductProposalHandler"
             id="document.productproposal"
             name="新产品开发建议及立项书"
             reportDataSourceXSD="dataset/document_productproposal.xsd"
@@ -381,26 +380,33 @@
             id="document.productproposal.table">
          <column
                column="productnumber"
-               name="物资编号"></column>
+               name="物资编号"
+               type="String"></column>
          <column
                column="productdesc"
-               name="产品名称"></column>
+               name="产品名称"
+               type="String"></column>
          <column
                column="customerno"
-               name="用户图号"></column>
+               name="用户图号"
+               type="String"></column>
          <column
                column="companyno"
-               name="公司图号"></column>
+               name="公司图号"
+               type="String"></column>
          <column
                column="docno"
-               name="文件编号"></column>
+               name="文件编号"
+               type="String"></column>
          <column
                column="number"
-               name="台份数">
+               name="台份数"
+               type="String">
          </column>
          <column
                column="qty"
-               name="发货数量">
+               name="发货数量"
+               type="String">
          </column>
       </table>
    </extension>
