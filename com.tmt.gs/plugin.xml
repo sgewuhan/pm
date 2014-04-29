@@ -759,7 +759,8 @@
             editorId="gsopenmoldapprove1.approve"
             name="批准"
             persistentFields="choice,comment,accessory"
-            processDefinitionId="gs.gsOpenMoldApprove1">
+            processDefinitionId="gs.gsOpenMoldApprove1"
+            saveHandler="com.tmt.gs.handler.OpenMoldEditOfGSSaveHandler">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -767,9 +768,11 @@
       </taskForm>
       <taskForm
             editorId="gsopenmoldapprove1.edit"
+            inputHandler="com.tmt.gs.handler.OpenMoldEditOfGSInputHandler"
             name="整改"
             persistentFields="mold_use,mold_amount,mold_ask,accessory"
-            processDefinitionId="gs.gsOpenMoldApprove1">
+            processDefinitionId="gs.gsOpenMoldApprove1"
+            saveHandler="com.tmt.gs.handler.OpenMoldEditOfGSSaveHandler">
          <processParameter
                processParameterName="mold_use"
                taskFormFieldName="mold_use">

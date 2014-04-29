@@ -20,7 +20,7 @@ public class WorkRoleParameter implements IRoleParameter {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(IRoleParameter.TYPE, IRoleParameter.TYPE_WORK);
 		parameters.put(IRoleParameter.WORK_ID, work.get_id());
-		parameters.put(IRoleParameter.WORK, this);
+		parameters.put(IRoleParameter.WORK, work);
 		User charger = work.getCharger();
 		if (charger != null) {
 			parameters.put(IRoleParameter.WORK_CHARGER, work.getCharger()

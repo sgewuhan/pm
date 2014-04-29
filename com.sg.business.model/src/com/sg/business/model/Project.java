@@ -2468,4 +2468,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return (af.getTime() - pf.getTime()) / (1000 * 60 * 60);
 	}
 
+	public ProjectTemplate getTemplate() {
+		return (ProjectTemplate) getRelationById(F_PROJECT_TEMPLATE_ID, ProjectTemplate.F__ID,
+				ProjectTemplate.class);
+	}
+
 }

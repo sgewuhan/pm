@@ -21,7 +21,7 @@ public class TaskFormRoleParameter implements IRoleParameter {
 		Work work = taskForm.getWork();
 		parameters.put(IRoleParameter.TYPE, IRoleParameter.TYPE_WORK_PROCESS);
 		parameters.put(IRoleParameter.WORK_ID, work.get_id());
-		parameters.put(IRoleParameter.WORK, this);
+		parameters.put(IRoleParameter.WORK, work);
 		User charger = work.getCharger();
 		if (charger != null) {
 			parameters.put(IRoleParameter.WORK_CHARGER, work.getCharger()

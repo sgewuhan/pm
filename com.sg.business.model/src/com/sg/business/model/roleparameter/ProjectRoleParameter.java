@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.User;
 
 public class ProjectRoleParameter implements IRoleParameter {
@@ -21,10 +22,17 @@ public class ProjectRoleParameter implements IRoleParameter {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(IRoleParameter.TYPE, IRoleParameter.TYPE_PROJECT);
 		parameters.put(IRoleParameter.PROJECT_ID, project.get_id());
-		parameters.put(IRoleParameter.PROJECT, this);
+		parameters.put(IRoleParameter.PROJECT, project);
 		parameters.put(IRoleParameter.PROJECT_BUSINESS_ORGANIZATION,
 				project.getBusinessOrganization());
 		User charger = project.getCharger();
+		ProjectTemplate projectTemplate = project.getTemplate();
+		if (projectTemplate != null) {
+			parameters.put(IRoleParameter.PROJECT_TEMPLATE_DESC,
+					projectTemplate.getDesc());
+		} else {
+			parameters.put(IRoleParameter.PROJECT_TEMPLATE_DESC, "");
+		}
 		if (charger != null) {
 			parameters.put(IRoleParameter.PROJECT_CHARGER, charger.getUserid());
 		} else {
