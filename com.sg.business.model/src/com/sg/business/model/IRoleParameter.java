@@ -70,6 +70,11 @@ public interface IRoleParameter {
 	 * 项目承担部门，用于项目取角色成员
 	 */
 	public static final String PROJECT_LAUNCH_ORGANIZATION = "launchOrganizationList";
+	/**
+	 * 项目模板名称，用于项目取角色成员
+	 */
+	public static final String PROJECT_TEMPLATE_DESC = "projectTemplateDesc";
+
 
 	/**
 	 * 工作ID，用于工作、流程取角色成员

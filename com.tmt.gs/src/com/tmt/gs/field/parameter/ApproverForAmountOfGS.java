@@ -41,13 +41,14 @@ public class ApproverForAmountOfGS extends AbstractRoleParameterDelegator {
 	@Override
 	protected String getRoldNumber(Object type) {
 		String roleId = IRoleConstance.ROLE_MOLD_GENERAL_MANAGER_ID;
+		double money=10000d;
 		if (type instanceof Double) {
 			Double amount = (Double) type;
-			if (amount < 10000d) {
+			if (amount < money) {
 				roleId = IRoleConstance.ROLE_MOLD_APPROVER_DEPT_ID;
-			} else if (amount >= 10000d && amount < 100000d) {
+			} else if (amount >= money && amount < 10*money) {
 				roleId = IRoleConstance.ROLE_MOLD_APPROVER_DEVICE_ID;
-			} else if (amount >= 100000d && amount < 200000d) {
+			} else if (amount >= 10*money && amount < 20*money) {
 				roleId = IRoleConstance.ROLE_CHIEF_ENGINEER_APPROVER_ID;
 			}
 		}
