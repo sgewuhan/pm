@@ -1259,6 +1259,12 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="gsProjectApprove.reviewteamleader"
+            name="专家意见回复"
+            persistentFields="choice,accessory,comment"
+            processDefinitionId="gs.gsProjectApprove1">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -2479,6 +2485,16 @@
             persistentFields="comment,accessory"
             processDefinitionId="gs.gsMutilFunctionApprove1">
       </taskForm>
+      <taskForm
+            editorId="gsmutilfunctionapprove1.groupsign"
+            name="多功能小组会签"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="gs.gsMutilFunctionApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -2593,6 +2609,68 @@
             <pagecolumn>
                <section
                      label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsmutilfunctionapprove1.groupsign"
+            name="多功能小组会签">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写会签意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="会签意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="会签结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
