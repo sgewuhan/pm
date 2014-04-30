@@ -1326,6 +1326,10 @@
                   type="String">
             </column>
             <column
+                  column="budget_text"
+                  name="Budget">
+            </column>
+            <column
                   columnDefinitionId="chargerid">
             </column>
             <column
@@ -2036,6 +2040,9 @@
                type="String">
          </column>
          <column
+               column="budget_text"
+               name="Budget"></column>
+         <column
                columnDefinitionId="chargerid">
          </column>
          <column
@@ -2045,13 +2052,13 @@
                columnDefinitionId="planstart">
          </column>
          <column
-               columnDefinitionId="planfinish">
-         </column>
-         <column
                columnDefinitionId="actualstart">
          </column>
          <column
                columnDefinitionId="actualfinish">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
          </column>
          <columnGroup
                defaultGroup="false"
@@ -6651,6 +6658,21 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:project.navigator.admin">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               label="编辑"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.save"
+               label="保存"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.export"
+               label="导出"
+               style="push">
+         </command>
          <command
                commandId="project.admin.combin1"
                icon="image/project_24.png"

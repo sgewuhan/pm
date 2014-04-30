@@ -9,6 +9,7 @@ import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectBudget;
 
 public class AllProjects extends SingleDBCollectionDataSetFactory {
 
@@ -47,6 +48,16 @@ public class AllProjects extends SingleDBCollectionDataSetFactory {
 			sb.append(" ,");
 		}
 		item.setValue("workorder_text", sb.toString());
+
+		ProjectBudget budget = item.getBudget();
+		if (budget != null) {
+			sb = new StringBuffer();
+			Double budgetValue = budget.getBudgetValue();
+			sb.append(budgetValue);
+			item.setValue("budget_text", sb.toString());
+		}  else {
+			item.setValue("budget_text", null);
+		}
 
 		return item;
 	}
