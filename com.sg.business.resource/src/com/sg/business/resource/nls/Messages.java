@@ -1164,5 +1164,8 @@ public class Messages {
 	public String AssignWork_2;
 
 	public String Role_44;
+	
+	public String OnlyOwnerDepartmentWorks;
+	public String OnlyProjectWorks;
 
 }

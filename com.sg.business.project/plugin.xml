@@ -2700,6 +2700,11 @@
                   type="Boolean">
             </column>
             <column
+                  column="parax"
+                  labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+                  name="%paraxbasicpage.title.24">
+            </column>
+            <column
                   columnDefinitionId="chargerid">
             </column>
             <column
@@ -2722,11 +2727,6 @@
                   name="%column.name.70"
                   type="Boolean"
                   width="48">
-            </column>
-            <column
-                  column="parax"
-                  labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
-                  name="%paraxbasicpage.title.24">
             </column>
          </columnGroup>
       </tree>

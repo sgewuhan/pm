@@ -848,6 +848,13 @@ public class ProjectToolkit {
 		work.setValue(Work.F_ROOT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PARENT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PROJECT_ID, projectId);
+		
+		//********************************************************
+		//雷成洋 2014 6 16 当独立工作添加到项目中时，如果该独立工作的工时设置为需要重算，进行以下的处理
+		double aw = work.calculateActualWorks();
+		work.setValue(Work.F_ACTUAL_WORKS, aw);
+		//*********************************************************
+		
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
 		work.doSave(context);

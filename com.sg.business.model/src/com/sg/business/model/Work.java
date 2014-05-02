@@ -3184,7 +3184,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		job.schedule();
 	}
 
-	private double calculateActualWorks() throws Exception {
+	public double calculateActualWorks() throws Exception {
 		Double actualWorks = null;
 		// 获取计量方式F_MEASUREMENT
 		Object measurement = getValue(F_MEASUREMENT);

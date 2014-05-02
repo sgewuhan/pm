@@ -785,6 +785,7 @@
                column="parax"
                labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
                name="%paraxbasicpage.title.24"
+               style="SWT.CENTER"
                width="160">
          </column>
          <column
@@ -2190,18 +2191,6 @@
                         labelVisible="false"
                         labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
                         name="worktimeprograms"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-               <section
-                     label="%statisticsstep">
-                  <list
-                        editable="true"
-                        id="statisticsstep"
-                        label="%statisticsstep"
-                        labelVisible="false"
-                        name="statisticsstep"
                         persistable="true"
                         required="false">
                   </list>

@@ -32,7 +32,7 @@ public class EmployeeWorksNode extends WorksNode {
 	@Override
 	public String getLabel() {
 		User user = (User) getData();
-		return user.getDesc();
+		return user.getLabel();
 	}
 
 	/**

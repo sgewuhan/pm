@@ -55,12 +55,12 @@ public abstract class WorksNode {
 	public double getWorks(){
 		double summary = 0d;
 		List<WorksNode> children = getChildren();
-		if(children!=null){
+		if(children!=null&&!children.isEmpty()){
 			for (int i = 0; i < children.size(); i++) {
 				WorksNode child = children.get(i);
 				summary+=child.getWorks();
 			}
-		}else if(children==null || children.isEmpty()){
+		}else{
 			PrimaryObject data = getData();
 			if(data instanceof Work){
 				Double value=((Work) data).getActualWorks();

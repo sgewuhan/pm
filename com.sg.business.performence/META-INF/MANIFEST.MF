@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.business.commons,
  com.sg.business.model,
  com.sg.thirdparty,
- com.sg.business.resource
+ com.sg.business.resource,
+ com.mobnut.design
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

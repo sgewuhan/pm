@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             category="work"
-            class="com.sg.business.performence.user.EmployeeWorksFromWork"
+            class="com.sg.business.performence.ui.EmployeeWorksFromWork"
             id="performence.workssummary"
             name="%view.name.4">
       </view>
@@ -86,6 +86,26 @@
             class="com.sg.business.performence.ui.handler.QueryWorks"
             commandId="performence.works.query">
       </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.WorksExpandAll"
+            commandId="performence.works.expandAll">
+      </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.WorksCollapse"
+            commandId="performence.works.collapse">
+      </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.OnlyProjectWorks"
+            commandId="performence.works.onlyproject">
+      </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.OnlyDepartWorks"
+            commandId="performence.works.onlydepart">
+      </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.ExportWorksOfExcel"
+            commandId="performence.works.export">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -137,6 +157,26 @@
       <command
             id="performence.works.query"
             name="%performence.works.query">
+      </command>
+      <command
+            id="performence.works.collapse"
+            name="%command.label.3">
+      </command>
+      <command
+            id="performence.works.expandAll"
+            name="%command.label.4">
+      </command>
+      <command
+            id="performence.works.onlyproject"
+            name="%performence.works.onlyproject">
+      </command>
+      <command
+            id="performence.works.onlydepart"
+            name="%performence.works.onlydepart">
+      </command>
+      <command
+            id="performence.works.export"
+            name="%performence.works.export">
       </command>
    </extension>
    <extension
@@ -500,6 +540,21 @@
             allPopups="false"
             locationURI="toolbar:performence.workssummary?after=additions">
          <command
+               commandId="performence.works.export"
+               label="%performence.works.export"
+               style="push">
+         </command>
+         <command
+               commandId="performence.works.onlyproject"
+               label="%performence.works.onlyproject"
+               style="toggle">
+         </command>
+         <command
+               commandId="performence.works.onlydepart"
+               label="%performence.works.onlydepart"
+               style="toggle">
+         </command>
+         <command
                commandId="performence.works.query"
                icon="image/cal1_16.png"
                label="%performence.works.query"
@@ -507,13 +562,13 @@
                style="push">
          </command>
          <command
-               commandId="performence.collapse"
+               commandId="performence.works.collapse"
                label="%command.label.3"
                mode="FORCE_TEXT"
                style="push">
          </command>
          <command
-               commandId="performence.expandAll"
+               commandId="performence.works.expandAll"
                label="%command.label.4"
                mode="FORCE_TEXT"
                style="push">
