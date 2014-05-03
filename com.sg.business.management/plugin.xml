@@ -393,6 +393,14 @@
                   </column>
                </exportAction>
             </navigator>
+            <navigator
+                  id="management.foldertemplate"
+                  tree="management.foldertemplate">
+               <createEditor
+                     createHandler="com.sg.business.commons.editor.CreateFolderOfProject"
+                     editorId="editor.folder">
+               </createEditor>
+            </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -798,6 +806,23 @@
                type="Boolean">
          </column>
       </tree>
+      <tree
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            id="management.foldertemplate">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -975,6 +1000,12 @@
                navigatorId="management.deliverables"
                pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
                title="%navigatorpage.title.1">
+         </navigatorpage>
+         <navigatorpage
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
+               id="project.foldertemplate"
+               navigatorId="management.foldertemplate"
+               title="%project.foldertemplate">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"

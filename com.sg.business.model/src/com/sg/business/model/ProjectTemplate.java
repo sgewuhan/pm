@@ -104,6 +104,9 @@ public class ProjectTemplate extends PrimaryObject{
 	 */
 	public static final String F_STATISTICSSTEP="statisticsstep";
 
+
+	private static final String F_FOLDER_ID = "folder_id";
+
 	/**
 	 * 返回显示图标
 	 * 
@@ -134,7 +137,15 @@ public class ProjectTemplate extends PrimaryObject{
 			WorkDefinition wbsRoot = ModelService.createModelObject(
 					wbsRootData, WorkDefinition.class);
 			wbsRoot.doInsert(context);
+			
+			//2014.6.16 雷成洋
+			//********************************************
+			Folder folderRoot = makeFolderRoot();
+			folderRoot.doInsert(context);
+			setValue(F_FOLDER_ID, folderRoot.get_id());
+			//********************************************
 
+			
 			setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
 		}
 
@@ -458,6 +469,28 @@ public class ProjectTemplate extends PrimaryObject{
 			return ModelService.createModelObject(ProjectRole.class, roleId);
 		}
 		return null;
+	}
+	
+	/**
+	 * 2014.6.16日，为文件夹模板添加，用于创建根文件夹
+	 * @return
+	 */
+	public Folder makeFolderRoot() {
+		BasicDBObject folderRootData = new BasicDBObject();
+		folderRootData.put(Folder.F_DESC, getDesc());
+		folderRootData.put(Folder.F_PROJECT_ID, get_id());
+		ObjectId folderRootId = new ObjectId();
+		folderRootData.put(Folder.F__ID, folderRootId);
+		folderRootData.put(Folder.F_ROOT_ID, folderRootId);
+		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+		String containerCollection, containerDB;
+		containerCollection = IModelConstants.C_ORGANIZATION;
+		Container container = Container.adapter(this,
+				Container.TYPE_ADMIN_GRANTED);
+		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
+		return ModelService.createModelObject(folderRootData, Folder.class);
 	}
 
 }

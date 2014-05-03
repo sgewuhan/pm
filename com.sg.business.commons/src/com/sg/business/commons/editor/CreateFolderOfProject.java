@@ -1,4 +1,4 @@
-package com.sg.business.project.editor;
+package com.sg.business.commons.editor;
 
 import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.IInputProvider;

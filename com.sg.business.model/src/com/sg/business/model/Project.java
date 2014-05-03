@@ -521,7 +521,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
-	private Folder makeFolderRoot() {
+	public Folder makeFolderRoot() {
 		BasicDBObject folderRootData = new BasicDBObject();
 		folderRootData.put(Folder.F_DESC, getDesc());
 		folderRootData.put(Folder.F_PROJECT_ID, get_id());

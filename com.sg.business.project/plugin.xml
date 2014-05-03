@@ -732,7 +732,7 @@
             </column>
          </searchAction>
          <createEditor
-               createHandler="com.sg.business.project.editor.CreateFolderOfProject"
+               createHandler="com.sg.business.commons.editor.CreateFolderOfProject"
                editorId="editor.folder">
          </createEditor>
       </navigator>
