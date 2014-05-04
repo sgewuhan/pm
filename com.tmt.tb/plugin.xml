@@ -951,7 +951,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
-                        navigatorId="tb.taskforms.user.selector"
+                        navigatorId="tb.taskforms.manager.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -2266,6 +2266,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="tb.taskforms.manager.selector"
+            tree="tb.taskforms.manager.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -2323,6 +2343,21 @@
          <column
                columnDefinitionId="work.desc.1">
          </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.tb.dataset.ManagerSelectorOfTaskforms"
+            headerVisiable="false"
+            id="tb.taskforms.manager.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
       </tree>
    </extension>
    <extension
