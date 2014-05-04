@@ -2469,8 +2469,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public ProjectTemplate getTemplate() {
-		return (ProjectTemplate) getRelationById(F_PROJECT_TEMPLATE_ID, ProjectTemplate.F__ID,
-				ProjectTemplate.class);
+		ObjectId projectTemplateId = getObjectIdValue(F_PROJECT_TEMPLATE_ID);
+		if(projectTemplateId != null){
+			return ModelService.createModelObject(ProjectTemplate.class, projectTemplateId);
+		}
+		return null;
 	}
 
 }
