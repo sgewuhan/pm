@@ -123,10 +123,10 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		return true;
 	}
 
-	public void doProjectMonthETL(int year, int month, List<DBObject> projectETLList) {
-		projectMonthCol.remove(new BasicDBObject().append(
-				IProjectETL.F_YEAR, year)
-				.append(IProjectETL.F_MONTH, month));
+	public void doProjectMonthETL(int year, int month,
+			List<DBObject> projectETLList) {
+		projectMonthCol.remove(new BasicDBObject().append(IProjectETL.F_YEAR,
+				year).append(IProjectETL.F_MONTH, month));
 		projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
 	}
 
@@ -149,14 +149,14 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 			if (id != null) {
 				Project project = ModelService.createModelObject(Project.class,
 						id);
-				if (day == 1) {
-					ProjectMonthlyETL pres = project.getMonthlyETL();
-					DBObject etl = pres.doETL(cal);
-					projectETLList.add(etl);
-				} else {
-					ProjectETL pres = project.getETL();
-					pres.doETL(cal);
-				}
+				// if (day == 1) {
+				ProjectMonthlyETL pres = project.getMonthlyETL();
+				DBObject etl = pres.doETL(cal);
+				projectETLList.add(etl);
+				// } else {
+				// ProjectETL pres = project.getETL();
+				// pres.doETL(cal);
+				// }
 				if (Portal.getDefault().isDevelopMode()) {
 					Commons.loginfo(project.getLabel() + " ETL finished."); //$NON-NLS-1$
 				}
@@ -197,22 +197,18 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 	private String[] getCostCodeArray(int year, int month) {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
-		List<?> distinct = col
-				.distinct(
-						Organization.F_COST_CENTER_CODE,
-						new BasicDBObject().append(
-								"$and", //$NON-NLS-1$
-								new BasicDBObject[] {
-										new BasicDBObject()
-												.append(Organization.F_COST_CENTER_CODE,
-														new BasicDBObject()
-																.append("$ne", //$NON-NLS-1$
-																		null)),
-										new BasicDBObject()
-												.append(Organization.F_COST_CENTER_CODE,
-														new BasicDBObject()
-																.append("$ne", //$NON-NLS-1$
-																		"")) })); //$NON-NLS-1$
+		List<?> distinct = col.distinct(Organization.F_COST_CENTER_CODE,
+				new BasicDBObject().append(
+						"$and", //$NON-NLS-1$
+						new BasicDBObject[] {
+								new BasicDBObject().append(
+										Organization.F_COST_CENTER_CODE,
+										new BasicDBObject().append("$ne", //$NON-NLS-1$
+												null)),
+								new BasicDBObject().append(
+										Organization.F_COST_CENTER_CODE,
+										new BasicDBObject().append("$ne", //$NON-NLS-1$
+												"")) })); //$NON-NLS-1$
 		return (String[]) distinct.toArray(new String[0]);
 
 	}

@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.sqldb,
  com.sg.thirdparty,
  com.mobnut.db,
- com.mobnut.admin
+ com.mobnut.admin,
+ org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.organization.editor

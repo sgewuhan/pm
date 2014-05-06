@@ -1544,6 +1544,13 @@
             properties="action"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.sg.business.commons.operation.test.SystemAdminTest"
+            id="systemadmin.organization.test"
+            namespace="system"
+            properties="admin"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

@@ -53,109 +53,113 @@ public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 //			
 //		}
 //		System.out.println("-----End-----");
-		DBCollection col = getCol(IModelConstants.C_PROJECT);
-		BasicDBObject append = new BasicDBObject().append(Project.F_WORK_ID,
-				null);//$NON-NLS-1$
-		DBCursor cursor = col.find(append);
-		IContext context = new CurrentAccountContext();
-		while (cursor.hasNext()) {
-			DBObject object = cursor.next();
-			Project project = ModelService.createModelObject(object,
-					Project.class);
-			BasicDBObject wbsRootData = new BasicDBObject();
-			wbsRootData.put(Work.F_DESC, project.getDesc());
-			wbsRootData.put(Work.F_LIFECYCLE, project.getLifecycleStatus());
-			wbsRootData.put(Work.F_PROJECT_ID, project.get_id());
-			ObjectId wbsRootId = new ObjectId();
-			wbsRootData.put(Work.F__ID, wbsRootId);
-			wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
-			wbsRootData.put(Work.F_IS_PROJECT_WBSROOT, Boolean.TRUE);
-			wbsRootData.put(Work.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
-			Work root = ModelService.createModelObject(wbsRootData, Work.class);
-			try {
-				root.doInsert(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			BasicDBObject folderRootData = new BasicDBObject();
-			folderRootData.put(Folder.F_DESC, project.getDesc());
-			folderRootData.put(Folder.F_PROJECT_ID, project.get_id());
-			ObjectId folderRootId = new ObjectId();
-			folderRootData.put(Folder.F__ID, folderRootId);
-			folderRootData.put(Folder.F_ROOT_ID, folderRootId);
-			folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
-			String containerCollection, containerDB;
-			containerCollection = IModelConstants.C_ORGANIZATION;
-			Container container = Container.adapter(project,
-					Container.TYPE_ADMIN_GRANTED);
-			containerDB = (String) container.getValue(Container.F_SOURCE_DB);
-			folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
-			folderRootData.put(Folder.F_CONTAINER_COLLECTION,
-					containerCollection);
-			Folder folderRoot = ModelService.createModelObject(folderRootData,
-					Folder.class);
-
-			try {
-				folderRoot.doInsert(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			DBCollection tgtcol = getCol(IModelConstants.C_BUDGET_ITEM);
-			DBObject srcdata = tgtcol.findOne(new BasicDBObject().append(
-					WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID, null));
-			DBObject tgtData = new BasicDBObject();
-			tgtData.put(ProjectBudget.F_PROJECT_ID, project.get_id());
-			tgtData.put(ProjectBudget.F__ID, new ObjectId());
-			tgtData.put(ProjectBudget.F_DESC, project.getDesc());
-			tgtData.put(ProjectBudget.F_DESC_EN, project.getDesc_e());
-			tgtData.put(ProjectBudget.F_CHILDREN,
-					srcdata.get(BudgetItem.F_CHILDREN));
-			tgtData.put(ProjectBudget.F_BUDGET_VALUE,
-					project.getValue("_budget_code"));//$NON-NLS-1$
-
-			ProjectBudget budget = ModelService.createModelObject(tgtData,
-					ProjectBudget.class);
-			try {
-				budget.doInsert(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			BasicBSONList items = (BasicBSONList) project
-					.getValue("_temp_itemcode");//$NON-NLS-1$
-			if (items != null) {
-				for (Object item : items) {
-					ProductItem productItem = ModelService
-							.createModelObject(ProductItem.class);
-					productItem.setValue(ProductItem.F_PROJECT_ID,
-							project.get_id());
-					productItem.setValue(ProductItem.F_DESC, item.toString());
-					try {
-						productItem.doSave(new CurrentAccountContext());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			DBCollection updatecol = getCol(IModelConstants.C_PROJECT);
-			updatecol
-					.update(new BasicDBObject().append(Project.F__ID,
-							project.get_id()), new BasicDBObject().append(
-							"$set",//$NON-NLS-1$
-							new BasicDBObject().append(Project.F_WORK_ID,
-									root.get_id()).append(Project.F_FOLDER_ID,
-									folderRoot.get_id())));
-		}
-
-		col.update(append, new BasicDBObject().append("$unset", //$NON-NLS-1$
-				new BasicDBObject().append("_temp_itemcode", 1)),//$NON-NLS-1$
-				false, true);
-		col.update(append, new BasicDBObject().append("$unset", //$NON-NLS-1$
-				new BasicDBObject().append("_budget_code", 1)), //$NON-NLS-1$
-				false, true);
+		
+		DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
+		
+		
+//		DBCollection col = getCol(IModelConstants.C_PROJECT);
+//		BasicDBObject append = new BasicDBObject().append(Project.F_WORK_ID,
+//				null);//$NON-NLS-1$
+//		DBCursor cursor = col.find(append);
+//		IContext context = new CurrentAccountContext();
+//		while (cursor.hasNext()) {
+//			DBObject object = cursor.next();
+//			Project project = ModelService.createModelObject(object,
+//					Project.class);
+//			BasicDBObject wbsRootData = new BasicDBObject();
+//			wbsRootData.put(Work.F_DESC, project.getDesc());
+//			wbsRootData.put(Work.F_LIFECYCLE, project.getLifecycleStatus());
+//			wbsRootData.put(Work.F_PROJECT_ID, project.get_id());
+//			ObjectId wbsRootId = new ObjectId();
+//			wbsRootData.put(Work.F__ID, wbsRootId);
+//			wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
+//			wbsRootData.put(Work.F_IS_PROJECT_WBSROOT, Boolean.TRUE);
+//			wbsRootData.put(Work.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
+//			Work root = ModelService.createModelObject(wbsRootData, Work.class);
+//			try {
+//				root.doInsert(context);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			BasicDBObject folderRootData = new BasicDBObject();
+//			folderRootData.put(Folder.F_DESC, project.getDesc());
+//			folderRootData.put(Folder.F_PROJECT_ID, project.get_id());
+//			ObjectId folderRootId = new ObjectId();
+//			folderRootData.put(Folder.F__ID, folderRootId);
+//			folderRootData.put(Folder.F_ROOT_ID, folderRootId);
+//			folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+//			String containerCollection, containerDB;
+//			containerCollection = IModelConstants.C_ORGANIZATION;
+//			Container container = Container.adapter(project,
+//					Container.TYPE_ADMIN_GRANTED);
+//			containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+//			folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+//			folderRootData.put(Folder.F_CONTAINER_COLLECTION,
+//					containerCollection);
+//			Folder folderRoot = ModelService.createModelObject(folderRootData,
+//					Folder.class);
+//
+//			try {
+//				folderRoot.doInsert(context);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			DBCollection tgtcol = getCol(IModelConstants.C_BUDGET_ITEM);
+//			DBObject srcdata = tgtcol.findOne(new BasicDBObject().append(
+//					WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID, null));
+//			DBObject tgtData = new BasicDBObject();
+//			tgtData.put(ProjectBudget.F_PROJECT_ID, project.get_id());
+//			tgtData.put(ProjectBudget.F__ID, new ObjectId());
+//			tgtData.put(ProjectBudget.F_DESC, project.getDesc());
+//			tgtData.put(ProjectBudget.F_DESC_EN, project.getDesc_e());
+//			tgtData.put(ProjectBudget.F_CHILDREN,
+//					srcdata.get(BudgetItem.F_CHILDREN));
+//			tgtData.put(ProjectBudget.F_BUDGET_VALUE,
+//					project.getValue("_budget_code"));//$NON-NLS-1$
+//
+//			ProjectBudget budget = ModelService.createModelObject(tgtData,
+//					ProjectBudget.class);
+//			try {
+//				budget.doInsert(context);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			BasicBSONList items = (BasicBSONList) project
+//					.getValue("_temp_itemcode");//$NON-NLS-1$
+//			if (items != null) {
+//				for (Object item : items) {
+//					ProductItem productItem = ModelService
+//							.createModelObject(ProductItem.class);
+//					productItem.setValue(ProductItem.F_PROJECT_ID,
+//							project.get_id());
+//					productItem.setValue(ProductItem.F_DESC, item.toString());
+//					try {
+//						productItem.doSave(new CurrentAccountContext());
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//
+//			DBCollection updatecol = getCol(IModelConstants.C_PROJECT);
+//			updatecol
+//					.update(new BasicDBObject().append(Project.F__ID,
+//							project.get_id()), new BasicDBObject().append(
+//							"$set",//$NON-NLS-1$
+//							new BasicDBObject().append(Project.F_WORK_ID,
+//									root.get_id()).append(Project.F_FOLDER_ID,
+//									folderRoot.get_id())));
+//		}
+//
+//		col.update(append, new BasicDBObject().append("$unset", //$NON-NLS-1$
+//				new BasicDBObject().append("_temp_itemcode", 1)),//$NON-NLS-1$
+//				false, true);
+//		col.update(append, new BasicDBObject().append("$unset", //$NON-NLS-1$
+//				new BasicDBObject().append("_budget_code", 1)), //$NON-NLS-1$
+//				false, true);
 
 //		try {
 //			SQLResult result = SQLUtil.SQL_QUERY("budget", "select * from jy");

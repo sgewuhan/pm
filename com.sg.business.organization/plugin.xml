@@ -1480,12 +1480,18 @@
                tooltip="将HR的组织数据同步到系统">
             <visibleWhen
                   checkEnabled="false">
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <equals
-                        value="perspective.organization">
-                  </equals>
-               </with>
+               <and>
+                  <with
+                        variable="activeWorkbenchWindow.activePerspective">
+                     <equals
+                           value="perspective.organization">
+                     </equals>
+                  </with>
+                  <test
+                        args="synchr"
+                        property="system.admin">
+                  </test>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>
