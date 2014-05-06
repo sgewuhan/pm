@@ -3987,6 +3987,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="gs.gsprintdoc.doc"
+            table="gs.gsprintdoc.doc">
+         <filterAction>
+            <column
+                  columnDefinitionId="document.documentNumber">
+            </column>
+            <column
+                  columnDefinitionId="document.documentType">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="document.documentNumber">
+            </column>
+            <column
+                  columnDefinitionId="document.documentType">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -4196,6 +4216,13 @@
       <table
             dataSet="com.tmt.gs.dataset.SeniorDesignerOfGS"
             id="gs.bussinesssupport.cbcchecker">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.PrintDocOfGS"
+            id="gs.gsprintdoc.doc">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -6465,6 +6492,86 @@
             operation="applicationfinishmessage"
             serviceProvider="com.tmt.gs.bpmservice.ApplicationMessageOfGS">
       </service>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            name="打印申请"
+            persistentFields="releasedoc"
+            processDefinitionId="gs.gsPrintDoc">
+         <processParameter
+               processParameterName="releasedoc"
+               taskFormFieldName="releasedoc">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="打印"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsPrintDoc">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsprintdoc.apply"
+            name="打印申请">
+         <basicpage
+               id="page1"
+               title="申请">
+            <pagecolumn>
+               <section
+                     label="请确认要打印的文档">
+                  <navigatorSelector
+                        editable="true"
+                        id="releasedoc"
+                        label="文档"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Document"
+                        name="releasedoc"
+                        navigatorId="gs.gsprintdoc.doc"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="com.tmt.gs.editor2"
+            dbName="com.tmt.gs.editor2"
+            id="com.tmt.gs.editor2"
+            name="name">
+      </editor>
    </extension>
 
 </plugin>

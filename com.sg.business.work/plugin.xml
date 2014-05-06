@@ -312,8 +312,8 @@
             table="work.workperformenceofwork">
       </navigator>
       <navigator
-            id="organization.user.assignment"
-            table="organization.user.assignment">
+            id="organization.user.assignment1"
+            tree="organization.user.assignment1">
          <filterAction>
             <column
                   column="username"
@@ -547,6 +547,19 @@
             autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.organization.ProjectAssignmentOrg"
             id="work.organization.user">
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.AssignmentUsers"
+            id="organization.user.assignment1">
          <structure
                modelRelation="organization_organization">
          </structure>

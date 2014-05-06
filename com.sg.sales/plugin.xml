@@ -6069,6 +6069,11 @@
             id="sales.data.mnt"
             name="销售系统数据维护">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="sales.works"
+            name="工作">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -6098,6 +6103,9 @@
          </perspective>
          <perspective
                id="sales.contact">
+         </perspective>
+         <perspective
+               id="sales.works">
          </perspective>
       </scenario>
       <scenario
@@ -6253,6 +6261,20 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.works">
+         <view
+               closeable="false"
+               id="sales.works.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.design.perspectiveDefinition">
@@ -6315,6 +6337,12 @@
             class="com.sg.sales.ui.home.SalesHome"
             id="sales.home"
             name="HOME"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.works.navigator"
+            name="销售工作"
             restorable="true">
       </view>
    </extension>
@@ -6440,6 +6468,16 @@
             <column
                   column="address"
                   name="地址"
+                  type="String">
+            </column>
+            <column
+                  column="createtime"
+                  name="创建时间"
+                  type="Date">
+            </column>
+            <column
+                  column="industrialzone"
+                  name="所在工业区"
                   type="String">
             </column>
          </searchAction>
@@ -7992,6 +8030,10 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="sales.works.navigator"
+            table="sales.works.navigator">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -8309,6 +8351,11 @@
                type="Date">
          </column>
          <column
+               column="createtime"
+               name="创建时间"
+               type="Date">
+         </column>
+         <column
                column="annual"
                name="年产值"
                type="Float">
@@ -8323,6 +8370,11 @@
                column="city"
                name="所在城市"
                type="String"
+               width="60">
+         </column>
+         <column
+               column="industrialzone"
+               name="所在工业区"
                width="60">
          </column>
          <column
@@ -9561,6 +9613,52 @@
                type="String">
          </column>
       </table>
+      <table
+            dataSet="com.sg.sales.model.dataset.SalesWorkDataSet"
+            id="sales.works.navigator">
+         <column
+               labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
+               name="状态"
+               width="60">
+         </column>
+         <column
+               column="actiontype"
+               name="活动类型">
+         </column>
+         <column
+               columnDefinitionId="work.desc"
+               width="240">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="planstart_c">
+         </column>
+         <column
+               columnDefinitionId="planfinish_c">
+         </column>
+         <column
+               column="actionbudget"
+               name="预算"
+               type="Double">
+         </column>
+         <column
+               columnDefinitionId="actualstart_c">
+         </column>
+         <column
+               columnDefinitionId="actualfinish_c">
+         </column>
+         <column
+               columnDefinitionId="participate">
+         </column>
+         <column
+               column="description"
+               name="要求"
+               type="String"
+               width="-1">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -10010,6 +10108,17 @@
                         required="false"
                         type="String">
                   </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="industrialzone"
+                        label="所在工业区"
+                        labelVisible="true"
+                        name="industrialzone"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <fieldgroup
                         columnCount="2">
                      <text
@@ -10056,6 +10165,17 @@
                            required="false"
                            type="String">
                      </text>
+                     <dateTime
+                           editPart="DateDialog"
+                           editable="true"
+                           id="createtime"
+                           label="创建时间"
+                           labelVisible="true"
+                           name="createtime"
+                           persistable="true"
+                           required="false"
+                           type="Date">
+                     </dateTime>
                   </fieldgroup>
                </section>
             </pagecolumn>
@@ -12541,7 +12661,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="signby"
-                        navigatorId="organization.user.assignment"
+                        navigatorId="organization.user.assignment1"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -13819,7 +13939,7 @@
                         required="true">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         heightHint="105"
                         id="participate"
