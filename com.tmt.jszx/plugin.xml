@@ -1879,7 +1879,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.organization.OrgRoot"
             id="taskforms.organization.navigator">
          <column

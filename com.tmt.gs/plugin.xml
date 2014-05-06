@@ -6496,15 +6496,18 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="gsprintdoc.apply"
             name="打印申请"
             persistentFields="releasedoc"
             processDefinitionId="gs.gsPrintDoc">
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="releasedoc"
                taskFormFieldName="releasedoc">
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="gsprintdoc.printer"
             name="打印"
             persistentFields="choice,comment"
             processDefinitionId="gs.gsPrintDoc">
@@ -6567,11 +6570,108 @@
          </basicpage>
       </editor>
       <editor
-            collectionName="com.tmt.gs.editor2"
-            dbName="com.tmt.gs.editor2"
-            id="com.tmt.gs.editor2"
-            name="name">
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsprintdoc.printer"
+            name="打印">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="审核"
+            processDefinitionId="gs.gsWorkChange">
+      </taskForm>
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="技术审核"
+            processDefinitionId="gs.gsWorkChange">
+      </taskForm>
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="批准"
+            processDefinitionId="gs.gsWorkChange">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="市场审核"
+            processDefinitionId="gs.gsChangeInProject">
+      </taskForm>
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="相关部门审核"
+            processDefinitionId="gs.gsChangeInProject">
+      </taskForm>
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="技术审核"
+            processDefinitionId="gs.gsChangeInProject">
+      </taskForm>
+      <taskForm
+            editorId="gsprintdoc.printer"
+            name="批准"
+            processDefinitionId="gs.gsChangeInProject">
+      </taskForm>
    </extension>
 
 </plugin>
