@@ -302,7 +302,7 @@ public class DeliveryLinkAdapter implements SelectionListener {
 						public void widgetDefaultSelected(SelectionEvent e) {
 						}
 					});
-				} else {
+				} else if (doc.canUnLock(context)) {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("½âËø");

@@ -187,7 +187,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 		return saved;
 	}
-	
+
 	@Override
 	public void doUpdate(IContext context) throws Exception {
 		super.doUpdate(context);
@@ -816,5 +816,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			return fsd.setUpdateVersion(this, status);
 		}
 		return true;
+	}
+
+	public boolean canUpload() {
+		if (isLocked()) {
+			return false;
+		}
+		String lc = getLifecycle();
+		if (STATUS_WORKING_ID.equals(lc)) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }
