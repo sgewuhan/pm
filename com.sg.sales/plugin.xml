@@ -8034,6 +8034,34 @@
             id="sales.works.navigator"
             table="sales.works.navigator">
       </navigator>
+      <navigator
+            id="sales.organization.user.assignment"
+            tree="sales.organization.user.assignment">
+         <filterAction>
+            <column
+                  column="username"
+                  name="%column.name.1"
+                  type="String">
+            </column>
+            <column
+                  column="userid"
+                  name="%column.name.2"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="username"
+                  name="%column.name.3"
+                  type="String">
+            </column>
+            <column
+                  column="userid"
+                  name="%column.name.4"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -12661,7 +12689,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="signby"
-                        navigatorId="organization.user.assignment1"
+                        navigatorId="sales.organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -15606,5 +15634,21 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.AssignmentUsers"
+            id="sales.organization.user.assignment">
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </tree>
    </extension>
 </plugin>
