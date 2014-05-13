@@ -42,6 +42,13 @@
             name="%view.name.3"
             restorable="true">
       </view>
+      <view
+            category="management"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="management.worktime"
+            name="工时方案"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -248,6 +255,18 @@
             id="management.organization.standlonework"
             tree="management.organization.standlonework">
       </navigator>
+      <navigator
+            id="management.worktime"
+            table="management.worktime">
+      </navigator>
+      <navigator
+            id="columntypepage.navigator"
+            tree="columntypepage.navigator">
+      </navigator>
+      <navigator
+            id="worktimepage.navigator"
+            tree="worktimepage.navigator">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -392,6 +411,9 @@
          <column
                columnDefinitionId="roledefinition.description">
          </column>
+      </table>
+      <table
+            id="management.worktime">
       </table>
    </extension>
    <extension
@@ -550,6 +572,12 @@
          <structure
                modelRelation="organization_standlonework">
          </structure>
+      </tree>
+      <tree
+            id="columntypepage.navigator">
+      </tree>
+      <tree
+            id="worktimepage.navigator">
       </tree>
    </extension>
    <extension
@@ -1229,6 +1257,71 @@
                </section>
             </pagecolumn>
          </basicpage>
+      </editor>
+      <editor
+            collectionName="worktime"
+            dbName="pm2"
+            id="editor.worktime"
+            name="工时方案"
+            titleToolTips="工时方案">
+         <basicpage
+               description="%basicpage.description"
+               id="basicpage"
+               image="image/projecttemplate_24.png"
+               title="%basicpage.title">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="%section.label">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="方案名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="activated"
+                        label="%checkbox.label"
+                        labelVisible="true"
+                        name="activated"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="%section.label.0">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="240"
+                        id="description"
+                        label="方案说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <navigatorpage
+               id="columntypepage"
+               navigatorId="columntypepage.navigator"
+               title="列类型">
+         </navigatorpage>
+         <navigatorpage
+               id="worktimepage"
+               navigatorId="worktimepage.navigator"
+               title="工时类型">
+         </navigatorpage>
       </editor>
    </extension>
    <extension
@@ -2700,6 +2793,88 @@
                   <instanceof
                         value="com.sg.widgets.part.IRefreshablePart">
                   </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.worktime">
+         <command
+               commandId="com.sg.widgets.command.worktime.editprogram"
+               label="编辑"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.worktime.editcolumn"
+               label="编辑列类型"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.worktime.editworktimetype"
+               label="编辑工时类型"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="generic.activateswith"
+               icon="image/status_24.png"
+               label="%command.label.19"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="%command.label.20"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="%command.label.21"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
                </with>
             </visibleWhen>
          </command>
