@@ -291,6 +291,25 @@
                value="整改">
          </option>
       </option>
+      <option
+            id="支持类型"
+            label="支持类型">
+         <option
+               id="技术类支持"
+               label="技术类支持"
+               value="技术类支持">
+         </option>
+         <option
+               id="管理类支持"
+               label="管理类支持"
+               value="管理类支持">
+         </option>
+         <option
+               id="生产类支持"
+               label="生产类支持"
+               value="生产类支持">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
