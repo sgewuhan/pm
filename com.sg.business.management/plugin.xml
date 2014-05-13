@@ -165,6 +165,33 @@
                   columnDefinitionId="work.desc">
             </column>
          </searchAction>
+         <exportAction>
+            <column
+                  column="_id"
+                  exportValueDelegator="com.sg.business.management.exportvaluedelegator.WBSCodeExecuteValueDelegator"
+                  name="WBS序号"></column>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  column="wf_execute_activated"
+                  name="%column.name.6"
+                  type="Boolean">
+            </column>
+            <column
+                  column="wf_execute"
+                  exportValueDelegator="com.sg.business.management.exportvaluedelegator.WFExecuteValueDelegator"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
+                  name="%column.name.7"
+                  width="100">
+            </column>
+            <column
+                  columnDefinitionId="workdefinition.chargerrole"
+                  exportValueDelegator="com.sg.business.management.exportvaluedelegator.ChargerRoleExecuteValueDelegator">
+            </column></exportAction>
       </navigator>
       <navigator
             id="management.roleselector"
@@ -707,6 +734,9 @@
                id="wbstemplatepage"
                navigatorId="management.wbstemplate"
                title="WBS">
+            <navigatoraction
+                  action="com.sg.business.mangement.action.ExportProjectTemplateWBS">
+            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"

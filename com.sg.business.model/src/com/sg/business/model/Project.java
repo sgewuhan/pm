@@ -932,7 +932,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkWriteResult(ws);
 	}
 
-	private Map<ObjectId, DBObject> doMakeRolesWithTemplate(
+	public Map<ObjectId, DBObject> doMakeRolesWithTemplate(
 			ObjectId projectTemplateId, IContext context) throws Exception {
 		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
 		DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
