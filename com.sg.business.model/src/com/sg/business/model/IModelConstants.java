@@ -52,6 +52,11 @@ public interface IModelConstants {
 	 * 项目模板
 	 */
 	public static final String C_PROJECT_TEMPLATE = "projecttemplate"; //$NON-NLS-1$
+	
+	/**
+	 * 工时方案
+	 */
+	public static final String C_WORKTIMEPROGRAM="worktimeprogram";
 
 	/**
 	 * 预算科目

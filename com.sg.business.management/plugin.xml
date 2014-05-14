@@ -38,15 +38,15 @@
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
-            id="management.documentdefinition"
-            name="%view.name.3"
+            id="management.worktimeprogram"
+            name="%view.management.worktimeprogram"
             restorable="true">
       </view>
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
-            id="management.worktime"
-            name="工时方案"
+            id="management.documentdefinition"
+            name="%view.name.3"
             restorable="true">
       </view>
    </extension>
@@ -77,6 +77,10 @@
          <createEditor
                createHandler="com.sg.business.management.editor.CreateStandloneWorkDefinition"
                editorId="editor.standloneWorkDefinition">
+         </createEditor>
+         <createEditor
+               createHandler="com.sg.business.management.editor.CreateWorkTimeProgram"
+               editorId="editor.worktimeprogram">
          </createEditor>
          <createEditor
                createHandler="com.sg.business.management.editor.CreateDocumentDefinition"
@@ -184,9 +188,7 @@
             <column
                   column="wf_execute"
                   exportValueDelegator="com.sg.business.management.exportvaluedelegator.WFExecuteValueDelegator"
-                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
-                  name="%column.name.7"
-                  width="100">
+                  name="%column.name.7">
             </column>
             <column
                   columnDefinitionId="workdefinition.chargerrole"
@@ -282,18 +284,40 @@
             id="management.organization.standlonework"
             tree="management.organization.standlonework">
       </navigator>
-      <navigator
-            id="management.worktime"
-            table="management.worktime">
-      </navigator>
-      <navigator
-            id="columntypepage.navigator"
-            tree="columntypepage.navigator">
-      </navigator>
-      <navigator
-            id="worktimepage.navigator"
-            tree="worktimepage.navigator">
-      </navigator>
+            <navigator
+                  id="management.worktimeprogram"
+                  table="management.worktimeprogram">
+               <filterAction>
+                  <column
+                        columnDefinitionId="work.desc.1">
+                  </column>
+                  <column
+                        column="description"
+                        name="%description"
+                        type="String"
+                        >
+                  </column>
+                  <column
+                        columnDefinitionId="generic.activated">
+                  </column>
+               </filterAction>
+               <searchAction>
+                  <column
+                        columnDefinitionId="work.desc.1">
+                  </column>
+                  <column
+                        column="description"
+                        name="%description"
+                        type="String">
+                  </column>
+                  <column
+                        columnDefinitionId="generic.activated">
+                  </column>
+               </searchAction>
+               <masterProvider
+                     id="management.organization.navigaor">
+               </masterProvider>
+            </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -440,7 +464,24 @@
          </column>
       </table>
       <table
-            id="management.worktime">
+            dataSet="com.sg.business.model.dataset.WorkTimeProgramDataSetFactory"
+            editorId="editor.worktimeprogram"
+            headerVisiable="true"
+            id="management.worktimeprogram"
+            popupMenu="popup:management.worktimeprogram">
+         <column
+               columnDefinitionId="work.desc.1">
+         </column>
+         <column
+               column="description"
+               name="%description"
+               style="SWT.LEFT"
+               type="String"
+               width="200">
+         </column>
+         <column
+               columnDefinitionId="generic.activated">
+         </column>
       </table>
    </extension>
    <extension
@@ -599,12 +640,6 @@
          <structure
                modelRelation="organization_standlonework">
          </structure>
-      </tree>
-      <tree
-            id="columntypepage.navigator">
-      </tree>
-      <tree
-            id="worktimepage.navigator">
       </tree>
    </extension>
    <extension
@@ -1289,9 +1324,9 @@
          </basicpage>
       </editor>
       <editor
-            collectionName="worktime"
+            collectionName="worktimeprogram"
             dbName="pm2"
-            id="editor.worktime"
+            id="editor.worktimeprogram"
             name="工时方案"
             titleToolTips="工时方案">
          <basicpage
@@ -1342,16 +1377,6 @@
                </section>
             </pagecolumn>
          </basicpage>
-         <navigatorpage
-               id="columntypepage"
-               navigatorId="columntypepage.navigator"
-               title="列类型">
-         </navigatorpage>
-         <navigatorpage
-               id="worktimepage"
-               navigatorId="worktimepage.navigator"
-               title="工时类型">
-         </navigatorpage>
       </editor>
    </extension>
    <extension
@@ -2829,10 +2854,11 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="popup:management.worktime">
+            locationURI="popup:management.worktimeprogram">
          <command
-               commandId="com.sg.widgets.command.worktime.editprogram"
-               label="编辑"
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="%command.label.41"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2844,44 +2870,20 @@
                </with>
             </visibleWhen>
          </command>
-         <command
-               commandId="com.sg.widgets.command.worktime.editcolumn"
-               label="编辑列类型"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="com.sg.widgets.command.worktime.editworktimetype"
-               label="编辑工时类型"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
+         <separator
+               name="management.projecttemplates.separator1"
+               visible="true">
+         </separator>
          <command
                commandId="generic.activateswith"
                icon="image/status_24.png"
-               label="%command.label.19"
+               label="%command.label.43"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="%command.label.20"
+               label="%command.label.44"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2896,7 +2898,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="%command.label.21"
+               label="%command.label.45"
                style="push">
             <visibleWhen
                   checkEnabled="false">

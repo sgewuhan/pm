@@ -928,6 +928,17 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="management.worktimeprogram"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="management.standlonework.definitions"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.organization">

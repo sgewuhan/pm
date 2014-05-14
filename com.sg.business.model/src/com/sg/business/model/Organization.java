@@ -842,6 +842,18 @@ public class Organization extends PrimaryObject {
 		return po;
 
 	}
+	/**
+	 * 创建组织下的工时方案
+	 * @param po
+	 */
+	public WorkTimeProgram makeWorkTimeProgram(WorkTimeProgram po) {
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					WorkTimeProgram.class);
+		}
+		po.setValue(WorkTimeProgram.F_ORGANIZATION_ID, get_id());
+		return po;
+	}
 
 	/**
 	 * 新建文档模板
@@ -1901,4 +1913,6 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
+
+
 }

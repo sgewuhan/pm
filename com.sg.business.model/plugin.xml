@@ -235,6 +235,11 @@
             collection="userpref"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.WorkTimeProgram"
+            collection="worktimeprogram"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
