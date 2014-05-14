@@ -249,18 +249,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	private void checkDocumentNumber() throws Exception {
-		String documentNumber = getDocumentNumber();
-		if (documentNumber != null) {
-			BasicDBObject condition = new BasicDBObject();
-			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
-			condition.put(Document.F__ID,
-					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
-			long l = getRelationCountByCondition(Document.class, condition);
-			if (l > 0) {
-				//DCPDM文档编号可重复
-//				throw new Exception(Messages.get().Document_3);
-			}
-		}
+//		String documentNumber = getDocumentNumber();
+//		if (documentNumber != null) {
+//			BasicDBObject condition = new BasicDBObject();
+//			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
+//			condition.put(Document.F__ID,
+//					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
+//			long l = getRelationCountByCondition(Document.class, condition);
+//			if (l > 0) {
+//				//DCPDM文档编号编号可重复
+////				throw new Exception(Messages.get().Document_3);
+//			}
+//		}
 	}
 
 	protected void generatePreview() {
