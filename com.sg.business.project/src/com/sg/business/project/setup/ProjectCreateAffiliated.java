@@ -14,7 +14,7 @@ public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 		// System.out.println("-----Start-----");
-		// DBCollection col1 =
+		// DBCollection col1 =d
 		// getCol(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
 		// DBCursor cursor1 = col1.find();
 		// while (cursor1.hasNext()) {

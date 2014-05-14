@@ -177,9 +177,7 @@
             <column
                   column="wf_execute"
                   exportValueDelegator="com.sg.business.management.exportvaluedelegator.WFExecuteValueDelegator"
-                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
-                  name="%column.name.7"
-                  width="100">
+                  name="%column.name.7">
             </column>
             <column
                   columnDefinitionId="workdefinition.chargerrole"
