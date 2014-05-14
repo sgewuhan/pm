@@ -257,7 +257,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
 			long l = getRelationCountByCondition(Document.class, condition);
 			if (l > 0) {
-				throw new Exception(Messages.get().Document_3);
+				//DCPDMŒƒµµ±‡∫≈ø…÷ÿ∏¥
+//				throw new Exception(Messages.get().Document_3);
 			}
 		}
 	}
