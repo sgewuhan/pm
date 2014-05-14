@@ -32,6 +32,7 @@ public class LinkPDMDocAndDraw extends AbstractNavigatorHandler {
 			try {
 				DCPDMUtil.createDocument2((Work) selected, ouid, new CurrentAccountContext());
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

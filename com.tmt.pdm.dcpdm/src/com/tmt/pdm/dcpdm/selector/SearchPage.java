@@ -122,7 +122,7 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 										field);
 							}
 						} catch (IIPRequestException e) {
-							e.printStackTrace();
+//							e.printStackTrace();
 						}
 					}
 				}
