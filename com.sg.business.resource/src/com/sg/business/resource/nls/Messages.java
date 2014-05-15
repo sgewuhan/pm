@@ -13,6 +13,7 @@ public class Messages {
 	
 	
 	
+	
 	public static Messages get() {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
@@ -1143,4 +1144,7 @@ public class Messages {
 	
 	public String CreateWorkTimeProgram_0;
 
+	public String AddOption;
+	public String CanNotEmpty;
+	public String DuplicateName;
 }

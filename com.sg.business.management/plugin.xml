@@ -1377,6 +1377,12 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="%columntypebasicpage.description.23"
+               id="columntypebasicpage"
+               pageDelegator="com.sg.business.management.editor.ColumnTypePageDelegator"
+               title="%columntypebasicpage.title.22">
+         </basicpage>
       </editor>
    </extension>
    <extension
