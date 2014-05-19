@@ -2,14 +2,14 @@ package com.sg.business.management.editor;
 
 import com.sg.business.model.WorkTimeProgram;
 
-public class ColumnTypePageDelegator extends AbstractTypePageDelegator {
+public class WorkTimeTypePageDelegator extends AbstractTypePageDelegator {
 
-	public ColumnTypePageDelegator() {
+	public WorkTimeTypePageDelegator() {
 	}
 
 	@Override
 	protected String getFieldName() {
-		return WorkTimeProgram.F_COLUMNTYPES;
+		return WorkTimeProgram.F_WORKTIMETYPES;
 	}
 
 }

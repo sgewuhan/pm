@@ -18,6 +18,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.bpm.service,
  com.sg.bpm.workflow,
  com.sg.business.commons,
- com.mobnut.commons
+ com.mobnut.commons,
+ org.eclipse.rap.nebula.jface.gridviewer,
+ org.eclipse.rap.nebula.widgets.grid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
