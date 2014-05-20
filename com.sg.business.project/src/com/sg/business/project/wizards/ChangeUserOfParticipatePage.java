@@ -15,6 +15,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -42,7 +44,14 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 
 		Project project = (Project) master;
 		parent.setLayout(new FillLayout());
+		
 		table = createParticipateList(parent, project);
+		FormData fd = new FormData();
+		table.getControl().setLayoutData(fd);
+		fd.top = new FormAttachment(0, 0);
+		fd.bottom = new FormAttachment(100, 0);
+		fd.left = new FormAttachment(0, 0);
+		fd.right = new FormAttachment(100, 0);
 
 		setControl(table.getControl());
 
