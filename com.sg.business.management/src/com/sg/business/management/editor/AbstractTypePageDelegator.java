@@ -8,10 +8,8 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,7 +23,6 @@ import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.commons.util.Utils;
 import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.business.resource.nls.Messages;
@@ -34,45 +31,6 @@ import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegator {
-
-	private class OptionProvider implements ITreeContentProvider {
-
-		@Override
-		public void dispose() {
-
-		}
-
-		@Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-
-		}
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return ((BasicDBList) inputElement).toArray();
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			DBObject parent = ((DBObject) parentElement);
-			Object options = parent.get(WorkTimeProgram.F_TYPE_OPTIONS);
-			if (options instanceof BasicBSONList) {
-				return ((BasicBSONList) options).toArray();
-			}
-			return new Object[0];
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return getChildren(element).length > 0;
-		}
-
-	}
 
 	private TreeViewer treeViewer;
 	private WorkTimeProgram workTimeProgram;
@@ -175,35 +133,18 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 		DBObject element = (DBObject) selection.getFirstElement();
 		//获取所选元素的id
 		ObjectId _id = (ObjectId) element.get(WorkTimeProgram.F__ID);
-		//获取列类型的集合
-		BasicBSONList types=(BasicBSONList) workTimeProgram.getValue(getFieldName());
-		//遍历列类型集合
-		for (int i = 0; i < types.size(); i++) {
-			DBObject type = (DBObject) types.get(i);
-			//判断所选元素的id是否与列类型id一致，一致就删除、刷新、保存
-			if(_id.equals(type.get(WorkTimeProgram.F__ID))){
-				types.remove(i);
-				treeViewer.refresh();
-				setDirty(true);
-				return;
-			}else{
-				//所选元素的id与列类型id不一致，就获取列类型的选项集合
-				BasicBSONList options = (BasicBSONList) type.get(WorkTimeProgram.F_TYPE_OPTIONS);
-				//遍历列类型选项集合
-				for (int j = 0; j < options.size(); j++) {
-					DBObject option = (DBObject) options.get(j);
-					//判断所选元素id与选项id一致的话，就删除、刷新所选的列类型、保存
-					if(_id.equals(option.get(WorkTimeProgram.F__ID))){
-						options.remove(j);
-						treeViewer.refresh(type);
-						setDirty(true);
-						return;
-					}
-				}
-			}
+		DBObject type = workTimeProgram.removeTypeOrOption(_id,getFieldName());
+		if(type!=null){
+			treeViewer.refresh(type);
+		}else{
+			treeViewer.refresh();
 		}
+		setDirty(true);
+		return;
 		
 	}
+
+
 
 	protected void doAddType(Shell shell) {
 		IInputValidator validator = new IInputValidator() {
@@ -240,23 +181,15 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 		// 获取文本输入框的值
 		String typeName = ip.getValue();
 		// 构造一个列类型对象
-		DBObject type = new BasicDBObject();
-		type.put(WorkTimeProgram.F__ID, new ObjectId());
-		type.put(WorkTimeProgram.F_DESC, typeName);
-		type.put(WorkTimeProgram.F_TYPE_OPTIONS, new BasicDBList());
-		Object value = workTimeProgram.getValue(getFieldName());
-		if (!(value instanceof BasicBSONList)) {
-			value = new BasicDBList();
-			workTimeProgram.setValue(getFieldName(), value);
-		}
-		// 将列类型插入到工时方案中
-		((BasicBSONList) value).add(type);
+		workTimeProgram.appendType(typeName,getFieldName());
 		// 刷新
 		treeViewer.refresh();
 		// 设置编辑器可以保存
 
 		setDirty(true);
 	}
+
+	
 
 	protected void doAddTypeOption(Shell shell) {
 		// 判断是否选中一个列类型
@@ -302,17 +235,7 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 		}
 		// 获取文本输入框的值
 		String optionName = ip.getValue();
-		// 构造一个列类型选项对象
-		DBObject option = new BasicDBObject();
-		option.put(WorkTimeProgram.F__ID, new ObjectId());
-		option.put(WorkTimeProgram.F_DESC, optionName);
-		Object options = type.get(WorkTimeProgram.F_TYPE_OPTIONS);
-		if (!(options instanceof BasicBSONList)) {
-			options = new BasicDBList();
-			type.put(WorkTimeProgram.F_TYPE_OPTIONS, options);
-		}
-		// 将列类型选项插入到列类型下
-		((BasicBSONList) options).add(option);
+		workTimeProgram.appendOption(type, optionName);
 		// 刷新
 		treeViewer.refresh(type);
 		Object[] elements = treeViewer.getExpandedElements();
@@ -321,6 +244,8 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 
 		setDirty(true);
 	}
+
+	
 
 	protected abstract String getFieldName();
 

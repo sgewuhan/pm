@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ViewerColumn;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.commons.util.Utils;
@@ -23,13 +22,7 @@ public class PlanWorksEditing implements IEditingSupportor {
 	@Override
 	public EditingSupport createEditingSupport(ColumnViewer viewer,
 			ViewerColumn viewerColumn, final ColumnConfigurator configurator) {
-		String type = configurator.getType();
-		int style = SWT.DROP_DOWN;
-		if (Utils.TYPE_DATE.equals(type)) {
-			style = style | SWT.MEDIUM;
-		} else if (Utils.TYPE_DATETIME.equals(type)) {
-			style = style | SWT.LONG;
-		}
+
 		final IContext content = new CurrentAccountContext();
 		
 		final CellEditor editor = new TextPopupCellEditor((Composite) viewer.getControl(),Utils.TYPE_DOUBLE);
