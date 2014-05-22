@@ -334,6 +334,7 @@ public class Organization extends PrimaryObject {
 				true);
 	}
 
+
 	/**
 	 * 添加用户到组织中
 	 * 
@@ -842,8 +843,10 @@ public class Organization extends PrimaryObject {
 		return po;
 
 	}
+
 	/**
 	 * 创建组织下的工时方案
+	 * 
 	 * @param po
 	 */
 	public WorkTimeProgram makeWorkTimeProgram(WorkTimeProgram po) {
@@ -1806,8 +1809,7 @@ public class Organization extends PrimaryObject {
 	 * @param selectType
 	 * @return
 	 */
-	public String[] getRoleAssignmentUserIds(String roleNumber,
-			int selectType) {
+	public String[] getRoleAssignmentUserIds(String roleNumber, int selectType) {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
@@ -1913,6 +1915,5 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
-
 
 }

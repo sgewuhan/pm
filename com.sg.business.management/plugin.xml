@@ -318,6 +318,36 @@
                      id="management.organization.navigaor">
                </masterProvider>
             </navigator>
+            <navigator
+                  id="management.selectworktimeprogram"
+                  table="management.selectworktimeprogram">
+               <filterAction>
+                  <column
+                        columnDefinitionId="work.desc.1">
+                  </column>
+                  <column
+                        column="description"
+                        name="%description"
+                        type="String">
+                  </column>
+                  <column
+                        columnDefinitionId="generic.activated">
+                  </column>
+               </filterAction>
+               <searchAction>
+                  <column
+                        columnDefinitionId="work.desc.1">
+                  </column>
+                  <column
+                        column="description"
+                        name="%description"
+                        type="String">
+                  </column>
+                  <column
+                        columnDefinitionId="generic.activated">
+                  </column>
+               </searchAction>
+            </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -465,12 +495,33 @@
       </table>
       <table
             dataSet="com.sg.business.model.dataset.WorkTimeProgramDataSetFactory"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             editorId="editor.worktimeprogram"
             headerVisiable="true"
             id="management.worktimeprogram"
+            multiSelection="true"
             popupMenu="popup:management.worktimeprogram">
          <column
-               columnDefinitionId="work.desc.1">
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <column
+               column="description"
+               name="%description"
+               style="SWT.LEFT"
+               type="String"
+               width="200">
+         </column>
+         <column
+               columnDefinitionId="generic.activated">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.SelectWorkTimeProgramDataSetFactory"
+            headerVisiable="true"
+            id="management.selectworktimeprogram"
+            multiSelection="true">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
          </column>
          <column
                column="description"
@@ -744,6 +795,39 @@
                         label="%list.label.1"
                         labelVisible="false"
                         name="projecttype"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="%view.management.worktimeprogram"
+               id="worktimeprogrampage"
+               title="%view.management.worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%view.management.worktimeprogram">
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeProgramToProgramTemplateAction"
+                        editable="true"
+                        id="worktimeprograms"
+                        label="%view.management.worktimeprogram"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        name="worktimeprograms"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
                         persistable="true"
                         required="false">
                   </list>

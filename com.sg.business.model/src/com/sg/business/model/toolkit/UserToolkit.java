@@ -104,6 +104,7 @@ public class UserToolkit {
 			updateUser(userId);
 		}
 	}
+	
 
 	public static Organization getRootOrganization() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
@@ -111,4 +112,9 @@ public class UserToolkit {
 		DBObject data = col.findOne(new BasicDBObject().append(Organization.F_PARENT_ID, null));
 		return ModelService.createModelObject(data, Organization.class);
 	}
+	
+	
 }
+
+
+
