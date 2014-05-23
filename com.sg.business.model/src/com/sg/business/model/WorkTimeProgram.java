@@ -10,9 +10,11 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 public class WorkTimeProgram extends PrimaryObject {
+
 	/**
 	 * 列类型
 	 */
@@ -212,4 +214,19 @@ public class WorkTimeProgram extends PrimaryObject {
 		}
 		return result;
 	}
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		// 同步引用工时方案的项目模板
+		// {$pull:{worktimeprograms:ObjectId('53730d6980737491eb208ee3')}}
+		// 获取项目模板的集合
+		DBCollection projectTemplateCollection = getCollection(IModelConstants.C_PROJECT_TEMPLATE);
+		projectTemplateCollection.update(new BasicDBObject().append(
+				ProjectTemplate.F_WORKTIMEPROGRAMS, get_id()),
+				new BasicDBObject().append("$pull", new BasicDBObject().append(
+						ProjectTemplate.F_WORKTIMEPROGRAMS, get_id())), false,
+				true);
+		super.doRemove(context);
+	}
+
 }

@@ -93,6 +93,16 @@ public class ProjectTemplate extends PrimaryObject{
 
 
 	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
+	
+	/**
+	 * 工时方案，保存的是由工时方案的_id组成的数组
+	 */
+	public static final String F_WORKTIMEPROGRAMS="worktimeprograms";
+	
+	/**
+	 * 统计阶段，字符串数组
+	 */
+	public static final String F_STATISTICSSTEP="stasticsstep";
 
 	/**
 	 * 返回显示图标
