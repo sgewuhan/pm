@@ -49,6 +49,7 @@ public class WorkDefinition extends AbstractWork implements
 	/**
 	 * 通用工作定义的编辑器Id
 	 */
+	@Deprecated
 	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1"; //$NON-NLS-1$
 
 	/**
@@ -59,6 +60,7 @@ public class WorkDefinition extends AbstractWork implements
 	/**
 	 * 独立工作定义的编辑器Id
 	 */
+	@Deprecated
 	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition.1"; //$NON-NLS-1$
 
 	/**
@@ -78,14 +80,31 @@ public class WorkDefinition extends AbstractWork implements
 	/**
 	 * 用于内部工作的id，工作定义的编辑器中输入，预留于程序控制
 	 */
-	public static final String F_INTERNAL_ID = "internalid";
+	public static final String F_INTERNAL_ID = "internalid";//$NON-NLS-1$
 
 	/**
 	 * 是否禁止手工发起
 	 */
-	public static final String F_LAUNCHABLE = "launchforbidden";
+	public static final String F_LAUNCHABLE = "launchforbidden";//$NON-NLS-1$
 
-	
+	/**
+	 * 计量方式
+	 */
+	public static final String F_MEASUREMENT = "measurement";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_NO_ID = "no";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_NO_VALUE = Messages.get().WorkDefinitionNoMeasurement;
+
+	public static final String MEASUREMENT_TYPE_COMMIT_ID = "commit";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_COMMIT_VALUE = Messages.get().WorkDefinitionCommitMeasurement;
+
+	public static final String MEASUREMENT_TYPE_PLAN_ID = "plan";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_PLAN_VALUE = Messages.get().WorkDefinitionPlanMeasurement;
+
+	public static final String F_WORKTIMETYPE = "worktimetype";
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
@@ -149,7 +168,7 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	@Override
 	public DeliverableDefinition makeDeliverableDefinition(String type) {
-		return makeDeliverableDefinition(null,type);
+		return makeDeliverableDefinition(null, type);
 	}
 
 	/**
@@ -160,7 +179,7 @@ public class WorkDefinition extends AbstractWork implements
 	 * @return 交付物定义
 	 */
 	public DeliverableDefinition makeDeliverableDefinition(
-			DocumentDefinition docd,String deliverableType) {
+			DocumentDefinition docd, String deliverableType) {
 		DBObject data = new BasicDBObject();
 		data.put(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
 		data.put(DeliverableDefinition.F_TYPE, deliverableType);
@@ -361,7 +380,8 @@ public class WorkDefinition extends AbstractWork implements
 		for (PrimaryObject po : srcDeliverableDefinitions) {
 			DeliverableDefinition srcDeliverableDefinition = (DeliverableDefinition) po;
 			DeliverableDefinition childDeliverable = child
-					.makeDeliverableDefinition(srcDeliverableDefinition.getType());
+					.makeDeliverableDefinition(srcDeliverableDefinition
+							.getType());
 			// 复制文档模板的Id
 			childDeliverable
 					.setValue(
@@ -513,9 +533,9 @@ public class WorkDefinition extends AbstractWork implements
 			} else {
 				return null;
 			}
-		}else if(adapter == CommonHTMLLabel.class){
-			return (T)(new WorkDefinitionCommonHTMLLable(this));
-		}else if(adapter == IEditorInputFactory.class){
+		} else if (adapter == CommonHTMLLabel.class) {
+			return (T) (new WorkDefinitionCommonHTMLLable(this));
+		} else if (adapter == IEditorInputFactory.class) {
 			return (T) (new WorkDefinitionEditorInputFactory(this));
 		}
 		return super.getAdapter(adapter);
@@ -571,18 +591,40 @@ public class WorkDefinition extends AbstractWork implements
 		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		work.setValue(Work.F_WORK_DEFINITION_ID, get_id());
 		work.setValue(Work.F_WORK_DEFINITION_NAME, getDesc());
-		//传递内部参数
-		work.setValue(Work.F_INTERNAL_PARA_CHARGERID, getValue(F_INTERNAL_PARA_CHARGERID));
-		work.setValue(Work.F_INTERNAL_PARA_NOSKIP, getValue(F_INTERNAL_PARA_NOSKIP));
-		work.setValue(Work.F_INTERNAL_DEFAULTSELECTED, getValue(F_INTERNAL_DEFAULTSELECTED));
+		// 传递内部参数
+		work.setValue(Work.F_INTERNAL_PARA_CHARGERID,
+				getValue(F_INTERNAL_PARA_CHARGERID));
+		work.setValue(Work.F_INTERNAL_PARA_NOSKIP,
+				getValue(F_INTERNAL_PARA_NOSKIP));
+		work.setValue(Work.F_INTERNAL_DEFAULTSELECTED,
+				getValue(F_INTERNAL_DEFAULTSELECTED));
 		work.setValue(Work.F_INTERNAL_ECAPARA, getValue(F_INTERNAL_ECAPARA));
-
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		DBObject wfdef = pc.getWorkflowDefinition(F_WF_EXECUTE);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
 	}
+
+	public String getMeasurementLabel() {
+		String measurement =getMeasurement();
+		if (measurement != null) {
+			if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
+				return MEASUREMENT_TYPE_NO_VALUE;
+			}else if(MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)){
+				return MEASUREMENT_TYPE_COMMIT_VALUE;
+			}else if(MEASUREMENT_TYPE_PLAN_ID.equals(measurement)){
+				return MEASUREMENT_TYPE_PLAN_VALUE;
+			}
+		}
+		return "";
+	}
+	
+	public String getMeasurement(){
+		return getStringValue(F_MEASUREMENT); 
+	}
+
+	
 	
 
 }

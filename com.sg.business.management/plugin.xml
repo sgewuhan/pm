@@ -348,6 +348,10 @@
                   </column>
                </searchAction>
             </navigator>
+            <navigator
+                  id="management.selectworktimetype"
+                  tree="management.selectworktimetype">
+            </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -567,6 +571,34 @@
          <structure
                modelRelation="workd_workd">
          </structure>
+         <columnGroup
+               defaultGroup="false"
+               name="%worktimepage">
+            <column
+                  column="measurement"
+                  labelProvider="com.sg.business.management.column.labelprovider.MeasurementLabelProvider"
+                  name="%measurement">
+            </column>
+            <column
+                  column="worktimedata"
+                  name="%spinner.label"
+                  type="Double">
+            </column>
+            <column
+                  column="worktimetype"
+                  labelProvider="com.sg.business.management.column.labelprovider.WorkTimeTypeLabelProvider"
+                  name="%worktimetypebasicpage.title.24">
+            </column>
+            <column
+                  column="statisticsstep"
+                  name="%statisticsstep">
+            </column>
+            <column
+                  column="statisticspoint"
+                  name="%statisticspoint"
+                  type="Boolean">
+            </column>
+         </columnGroup>
       </tree>
       <tree
             autoExpandLevel="2"
@@ -691,6 +723,19 @@
          <structure
                modelRelation="organization_standlonework">
          </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            contentProvider="com.sg.business.management.contentprovider.WorkTimeTypeOfProgram"
+            dataSet="com.sg.business.model.dataset.WorkTimeProgramOfProjectTemplate"
+            id="management.selectworktimetype">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.management.labelprovider.WorkTimeProgramAndTypeLabel"
+               name="%column.name.12"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension
@@ -943,16 +988,6 @@
                         persistable="true"
                         required="false">
                   </checkbox>
-                  <spinner
-                        editable="true"
-                        id="standardworks"
-                        label="%spinner.label"
-                        labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
-                        required="false"
-                        spinnerSetting="0,9999,1,10">
-                  </spinner>
                   <fieldgroup
                         columnCount="1">
                      <spinner
@@ -1102,6 +1137,74 @@
                         persistable="true"
                         required="false">
                   </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="worktimepage"
+               title="%worktimepage">
+            <pagecolumn>
+               <section
+                     label="%worktimepage.label">
+                  <radio
+                        defaultValue="no"
+                        editable="true"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="true"
+                        type="DBObject">
+                  </radio>
+                  <spinner
+                        editable="true"
+                        id="standardworks"
+                        label="%spinner.label"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,9999,1,10">
+                  </spinner>
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetypebasicpage.title.24"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="statisticsstep"
+                           label="%statisticsstep"
+                           labelVisible="true"
+                           name="statisticsstep"
+                           optionProvider="com.sg.business.management.editor.option.StatisticsStepOption"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <checkbox
+                           editable="true"
+                           id="statisticspoint"
+                           label="%statisticspoint"
+                           labelVisible="true"
+                           name="statisticspoint"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                  </fieldgroup>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1558,6 +1661,72 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="%view.management.worktimeprogram"
+               id="worktimeprogrampage"
+               title="%view.management.worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%view.management.worktimeprogram">
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeProgramToProgramTemplateAction"
+                        editable="true"
+                        id="worktimeprograms"
+                        label="%view.management.worktimeprogram"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        name="worktimeprograms"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="worktimepage"
+               title="%worktimepage">
+            <pagecolumn>
+               <section
+                     label="%worktimepage.label">
+                  <radio
+                        editable="true"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetypebasicpage.title.24"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="80">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="wbspage"
@@ -1598,7 +1767,8 @@
             image="image/work_24.png"
             isDefault="false"
             name="%editor.name.6"
-            titleToolTips="%editor.titleToolTips.4">
+            titleToolTips="%editor.titleToolTips.4"
+            memo="没有使用">
          <basicpage
                description="%basicpage.description.14"
                id="basicpage"
@@ -1660,7 +1830,8 @@
             image="image/work_24.png"
             isDefault="false"
             name="%editor.name.7"
-            titleToolTips="%editor.titleToolTips.5">
+            titleToolTips="%editor.titleToolTips.5"
+            memo="没有使用">
          <basicpage
                description="%basicpage.description.17"
                id="basicpage"
@@ -1935,6 +2106,93 @@
                            required="false">
                      </checkbox>
                   </fieldgroup>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="%view.management.worktimeprogram"
+               id="worktimeprogrampage"
+               title="%view.management.worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%view.management.worktimeprogram">
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeProgramToProgramTemplateAction"
+                        editable="true"
+                        id="worktimeprograms"
+                        label="%view.management.worktimeprogram"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        name="worktimeprograms"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="worktimepage"
+               title="%worktimepage">
+            <pagecolumn>
+               <section
+                     label="%worktimepage.label">
+                  <radio
+                        editable="true"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="worktimedata"
+                        label="%spinner.label"
+                        labelVisible="true"
+                        name="worktimedata"
+                        persistable="true"
+                        required="false"
+                        type="Double"
+                        widthHint="80">
+                  </text>
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetypebasicpage.title.24"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="80">
+                  </list>
+                  <checkbox
+                        editable="true"
+                        id="statisticspoint"
+                        label="%statisticspoint"
+                        labelVisible="true"
+                        name="statisticspoint"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>

@@ -577,6 +577,26 @@
                value="变更项">
          </option>
       </option>
+      <option
+            id="worktime.measurement"
+            label="worktime.measurement"
+            value="worktime.measurement">
+         <option
+               id="commit"
+               label="%option.label.41"
+               value="commit">
+         </option>
+         <option
+               id="plan"
+               label="%option.label.42"
+               value="plan">
+         </option>
+         <option
+               id="no"
+               label="%option.label.43"
+               value="no">
+         </option>
+      </option>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
