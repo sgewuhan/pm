@@ -719,7 +719,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			setValue(status + "_date", newValue); //$NON-NLS-1$
 			BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE,
 					status).append(status + "_date", newValue); //$NON-NLS-1$
-			if (!STATUS_WORKING_ID.equals(lc)) {
+			if (!STATUS_WORKING_ID.equals(status)) {
 				setValue(F_LOCK, Boolean.FALSE);
 				setValue(F_LOCKED_BY, null);
 				setValue(F_LOCKED_ON, null);
