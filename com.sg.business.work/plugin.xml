@@ -5731,6 +5731,143 @@
             </pageAction>
          </basicpage>
       </editor>
+      <editor
+            addToRecent="false"
+            collectionName="work"
+            dbName="pm2"
+            id="navigator.view.project"
+            image="image/work_24.png"
+            isDefault="false"
+            memo="导航器项目的查看"
+            name="%editor.name.11"
+            titleToolTips="%editor.titleToolTips.10">
+         <basicpage
+               description="%basicpage.description.25"
+               id="basicpage"
+               image="image/work_24.png"
+               title="%basicpage.title.25">
+            <pagecolumn
+                  id="1"
+                  weight="4">
+               <section
+                     label="%section.label.39">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="project_id"
+                        label="%text.label.32"
+                        labelVisible="true"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
+                        name="project_id"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
+                        required="true"
+                        type="ObjectId"
+                        userlabelForReadonly="true"
+                        widthHint="240">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="chargerid"
+                        label="%text.label.33"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String"
+                        userlabelForReadonly="true">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        id="participate"
+                        isHTML="true"
+                        label="%text.label.35"
+                        labelVisible="true"
+                        name="participate"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.ParticipatePres"
+                        required="false"
+                        type="String"
+                        userlabelForReadonly="true">
+                  </text>
+                  <fieldgroup
+                        columnCount="1">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="planstart"
+                           label="%section.label.0"
+                           labelVisible="true"
+                           name="planstart"
+                           persistable="false"
+                           presentation="com.sg.business.commons.field.presentation.SummaryPlan"
+                           presentationFormat="yy/MM/dd"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="actualstart"
+                           label="%section.label.1"
+                           labelVisible="true"
+                           name="actualstart"
+                           persistable="false"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yy/MM/dd"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                  </fieldgroup>
+               </section>
+               <section
+                     label="%section.label.49">
+                  <table
+                        ctableId="work.project.productitem"
+                        editable="true"
+                        id="work.project.productitem"
+                        isComputeField="true"
+                        label="%project.productitem"
+                        labelVisible="false"
+                        name="work.project.productitem"
+                        persistable="false"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  weight="6">
+               <section
+                     label="%wbsndelivery">
+                  <tree
+                        ctreeId="work.wbsndelivery"
+                        editable="true"
+                        heightHint="500"
+                        id="work.wbsndelivery"
+                        isComputeField="true"
+                        label="%wbsndelivery"
+                        labelVisible="false"
+                        name="work.wbsndelivery"
+                        persistable="false"
+                        required="false">
+                  </tree>
+               </section>
+            </pagecolumn>
+            <pageAction
+                  class="com.sg.business.commons.operation.action.CreateChildWork"
+                  icon="image/add_g_24.png"
+                  id="creatework"
+                  label="%command.label.36"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -5810,6 +5947,20 @@
                name="desc"
                type="String"
                width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.ProductItemOfRootWork"
+            fix="1"
+            headerVisiable="false"
+            id="work.project.productitem"
+            lineVisiable="false">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
    </extension>

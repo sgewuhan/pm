@@ -19,7 +19,7 @@ public class ParticipatePres implements IValuePresentation {
 		if(value instanceof List<?>){
 			List<?> list = (List<?>) value;
 			String result = "<span style='color=#4a4a4a'>"; //$NON-NLS-1$
-			for (int i = 0; i < list.size(); i++) {
+			for (int i = 0; i < list.size() && i <4; i++) {
 				Object element = list.get(i);
 				User user = UserToolkit.getUserById((String) element);
 				if(i!=0){
@@ -39,6 +39,9 @@ public class ParticipatePres implements IValuePresentation {
 				for (int i = list.size(); i < 4; i++) {
 					result += "<br/>"; //$NON-NLS-1$
 				}
+			}
+			if(list.size()>3){
+				result+="<br/>...";
 			}
 			return result;
 		}

@@ -3944,6 +3944,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		} else if (adapter == CommonHTMLLabel.class) {
 			return (T) (new WorkCommonHTMLLable(this));
 		} else if (adapter == IEditorInputFactory.class) {
+			if(isProjectWBSRoot()){
+				Project project = getProject();
+				setValue(F_CHARGER, project.getChargerId());
+				setValue(F_PARTICIPATE, project.getParticipatesIdList());
+			}
 			return (T) (new WorkEditorInputFactory(this));
 		} else if (adapter == IRoleParameter.class) {
 			return (T) (new WorkRoleParameter(this));
