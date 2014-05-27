@@ -100,9 +100,9 @@ public class ProjectTemplate extends PrimaryObject{
 	public static final String F_WORKTIMEPROGRAMS="worktimeprograms";
 	
 	/**
-	 * 统计阶段，字符串数组
+	 * 统计阶段，从数据库取出的是BSONList，每个元素是字符串
 	 */
-	public static final String F_STATISTICSSTEP="stasticsstep";
+	public static final String F_STATISTICSSTEP="statisticsstep";
 
 	/**
 	 * 返回显示图标

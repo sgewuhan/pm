@@ -310,6 +310,25 @@
                value="生产类支持">
          </option>
       </option>
+      <option
+            id="计量方式"
+            label="%measurement">
+         <option
+               id="填报工时"
+               label="%option.label.41"
+               value="填报工时">
+         </option>
+         <option
+               id="计划工时"
+               label="%option.label.42"
+               value="计划工时">
+         </option>
+         <option
+               id="无工时"
+               label="%option.label.43"
+               value="无工时">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

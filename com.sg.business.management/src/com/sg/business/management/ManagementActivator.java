@@ -1,7 +1,13 @@
 package com.sg.business.management;
 
+import java.util.Iterator;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import com.sg.widgets.Widgets;
+import com.sg.widgets.registry.DataEditorRegistry;
+import com.sg.widgets.registry.config.Configurator;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -28,6 +34,11 @@ public class ManagementActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		/*DataEditorRegistry registry = Widgets.getEditorRegistry();
+		Iterator<Configurator> iterator = registry.getConfigurators().iterator();
+		while(iterator.hasNext()){
+			System.out.println(iterator.next().getId());
+		}*/
 	}
 
 	/*
