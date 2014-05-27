@@ -2618,6 +2618,12 @@
                columnDefinitionId="milestone">
          </column>
          <column
+               column="mandatory"
+               name="%column.name.72"
+               type="Boolean"
+               width="48">
+         </column>
+         <column
                columnDefinitionId="planstart_e">
          </column>
          <column
