@@ -24,6 +24,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import com.mobnut.commons.util.Utils;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.viewer.WorkTimeTypeOptionProvider;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -56,7 +57,7 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 		treeViewer = new TreeViewer(pane, SWT.FULL_SELECTION);
 		treeViewer.getTree().setHeaderVisible(true);
 		// 2.设置内容提供者
-		treeViewer.setContentProvider(new OptionProvider());
+		treeViewer.setContentProvider(new WorkTimeTypeOptionProvider());
 
 		// 3.创建一个树列查看器
 		TreeViewerColumn col = new TreeViewerColumn(treeViewer, SWT.LEFT);
@@ -199,7 +200,7 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 			return;
 		}
 		final DBObject type = (DBObject) selection.getFirstElement();
-		if (!type.containsField(WorkTimeProgram.F_TYPE_OPTIONS)) {
+		if (!type.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS)) {
 			return;
 		}
 		IInputValidator validator = new IInputValidator() {
@@ -211,7 +212,7 @@ public abstract class AbstractTypePageDelegator extends AbstractFormPageDelegato
 					return Messages.get().CanNotEmpty;
 				}
 				// 判断newText不能重复
-				Object options =type.get(WorkTimeProgram.F_TYPE_OPTIONS);
+				Object options =type.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
 				if (options instanceof BasicBSONList) {
 					for (int i = 0; i < ((BasicBSONList) options).size(); i++) {
 						DBObject option = (DBObject) ((BasicBSONList) options)

@@ -1,4 +1,4 @@
-package com.sg.business.management.editor;
+package com.sg.business.commons.ui.viewer;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -8,7 +8,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.business.model.WorkTimeProgram;
 
-class OptionProvider implements ITreeContentProvider {
+public class WorkTimeTypeOptionProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
@@ -28,7 +28,7 @@ class OptionProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		DBObject parent = ((DBObject) parentElement);
-		Object options = parent.get(WorkTimeProgram.F_TYPE_OPTIONS);
+		Object options = parent.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
 		if (options instanceof BasicBSONList) {
 			return ((BasicBSONList) options).toArray();
 		}

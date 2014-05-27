@@ -46,7 +46,7 @@ public class WorkTimeProgram extends PrimaryObject {
 	/**
 	 * 类型选项，用于ColumnType 子记录的字段，DBObject类型
 	 */
-	public static final String F_TYPE_OPTIONS = "options";
+	public static final String F_WORKTIME_TYPE_OPTIONS = "options";
 
 	/**
 	 * 工时数据的列类型选项id
@@ -121,7 +121,7 @@ public class WorkTimeProgram extends PrimaryObject {
 		DBObject type = new BasicDBObject();
 		type.put(F__ID, new ObjectId());
 		type.put(F_DESC, typeName);
-		type.put(F_TYPE_OPTIONS, new BasicDBList());
+		type.put(F_WORKTIME_TYPE_OPTIONS, new BasicDBList());
 		Object value = getValue(fieldName);
 		if (!(value instanceof BasicBSONList)) {
 			value = new BasicDBList();
@@ -136,10 +136,10 @@ public class WorkTimeProgram extends PrimaryObject {
 		DBObject option = new BasicDBObject();
 		option.put(F__ID, new ObjectId());
 		option.put(F_DESC, optionName);
-		Object options = type.get(F_TYPE_OPTIONS);
+		Object options = type.get(F_WORKTIME_TYPE_OPTIONS);
 		if (!(options instanceof BasicBSONList)) {
 			options = new BasicDBList();
-			type.put(F_TYPE_OPTIONS, options);
+			type.put(F_WORKTIME_TYPE_OPTIONS, options);
 		}
 		// 将列类型选项插入到列类型下
 		((BasicBSONList) options).add(option);
@@ -158,7 +158,7 @@ public class WorkTimeProgram extends PrimaryObject {
 			} else {
 				// 所选元素的id与列类型id不一致，就获取列类型的选项集合
 				BasicBSONList options = (BasicBSONList) type
-						.get(F_TYPE_OPTIONS);
+						.get(F_WORKTIME_TYPE_OPTIONS);
 				// 遍历列类型选项集合
 				for (int j = 0; j < options.size(); j++) {
 					DBObject option = (DBObject) options.get(j);
@@ -206,7 +206,8 @@ public class WorkTimeProgram extends PrimaryObject {
 		BasicBSONList types = (BasicBSONList) getValue(fieldName);
 		for (int i = 0; i < types.size(); i++) {
 			DBObject type = (DBObject) types.get(i);
-			BasicBSONList options = (BasicBSONList) type.get(F_TYPE_OPTIONS);
+			BasicBSONList options = (BasicBSONList) type
+					.get(F_WORKTIME_TYPE_OPTIONS);
 			for (int j = 0; j < options.size(); j++) {
 				DBObject option = (DBObject) options.get(j);
 				result.add((ObjectId) option.get(F__ID));
@@ -227,6 +228,28 @@ public class WorkTimeProgram extends PrimaryObject {
 						ProjectTemplate.F_WORKTIMEPROGRAMS, get_id())), false,
 				true);
 		super.doRemove(context);
+	}
+
+	/**
+	 * 给定类型字段名和选项id，获得该选项所属的类型
+	 * @param optionId
+	 * @param typeFieldName
+	 * @return
+	 */
+	public DBObject getWorkTimeType(ObjectId optionId, String typeFieldName) {
+		BasicBSONList types = (BasicBSONList) getValue(typeFieldName);
+		for (Object object : types) {
+			DBObject type = (DBObject) object;
+			BasicBSONList options = (BasicBSONList) type
+					.get(F_WORKTIME_TYPE_OPTIONS);
+			for (Object object2 : options) {
+				DBObject option = (DBObject) object2;
+				if (option.get(F__ID).equals(optionId)) {
+					return type;
+				}
+			}
+		}
+		return null;
 	}
 
 }
