@@ -1,4 +1,4 @@
-package com.tmt.commons.rc;
+package com.sg.business.project.handler;
 
 import java.util.Map;
 
@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.Work;
@@ -49,7 +50,11 @@ public class LinkProjectDeliverable extends AbstractNavigatorHandler {
 								work.doAddDeliverable(document,
 										Deliverable.TYPE_REFERENCE,
 										new CurrentAccountContext());
-								vc.getViewer().refresh(work, true);
+								try {
+									vc.getViewer().refresh(work, true);
+								} catch (Exception e) {
+									UIFrameworkUtils.refreshHomePart(true);
+								}
 							} else {
 								MessageUtil
 										.showToast("ÇëÑ¡Ôñ¹¤×÷", SWT.ICON_WARNING);
