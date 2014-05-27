@@ -630,6 +630,13 @@
                type="String"
                width="180">
          </column>
+         <column
+               column="documentd_id"
+               labelProvider="com.sg.business.management.column.labelprovider.DocumentDefinitionLabelProvider"
+               name="%column.name.13"
+               style="SWT.LEFT"
+               width="180">
+         </column>
          <structure
                modelRelation="workd_workd">
          </structure>

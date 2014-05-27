@@ -2552,6 +2552,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="allproject.deliverable.selector"
+            tree="allproject.deliverable.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -2616,6 +2630,12 @@
          </column>
          <column
                columnDefinitionId="milestone">
+         </column>
+         <column
+               column="mandatory"
+               name="%column.name.72"
+               type="Boolean"
+               width="48">
          </column>
          <column
                columnDefinitionId="planstart_e">
@@ -2952,6 +2972,30 @@
          <structure
                modelRelation="folder_document">
          </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfAllProject"
+            fix="1"
+            id="allproject.deliverable.selector">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension
@@ -3977,6 +4021,29 @@
             </visibleWhen>
          </command>
          <command
+               commandId="project.linkprojectdeliverable"
+               label="链接所负责项目的交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="project.createdeliverablewithvault"
                icon="image/24_blank.png"
                label="%command.label.62"
@@ -4567,6 +4634,11 @@
             id="work.sysadmin.setting"
             name="管理员更新">
       </command>
+      <command
+            categoryId="project"
+            id="project.linkprojectdeliverable"
+            name="链接项目交付物文档">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -4762,6 +4834,10 @@
       <handler
             class="com.sg.business.project.handler.SystemAdminUpdateWork"
             commandId="work.sysadmin.setting">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.LinkProjectDeliverable"
+            commandId="project.linkprojectdeliverable">
       </handler>
    </extension>
    <extension
