@@ -152,11 +152,9 @@ public class DCPDMUtil {
 		}
 		Deliverable deli;
 
+		deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
 		// 没有对应的PDM对象
-		if (document == null) {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
-		} else {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
+		if (document != null) {
 			deli.setValue(Deliverable.F_DOCUMENT_ID, document.get_id());
 		}
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description")); //$NON-NLS-1$
@@ -185,11 +183,9 @@ public class DCPDMUtil {
 		}
 		Deliverable deli;
 
+		deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
 		// 没有对应的PDM对象
-		if (document == null) {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
-		} else {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
+		if (document != null) {
 			deli.setValue(Deliverable.F_DOCUMENT_ID, document.get_id());
 		}
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description")); //$NON-NLS-1$
@@ -229,11 +225,9 @@ public class DCPDMUtil {
 		}
 		Deliverable deli;
 
+		deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
 		// 没有对应的PDM对象
-		if (doc == null) {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
-		} else {
-			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
+		if (doc != null) {
 			deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		}
 		deli.setValue(Deliverable.F_DESC, desc);
@@ -541,7 +535,6 @@ public class DCPDMUtil {
 				filter.put("ouid@association.class", assClass);
 				ArrayList<?> result = Starter.dos.listLinkFrom(ouid, filter);
 				if (result != null) {
-
 					for (int i = 0; i < result.size(); i++) {
 						ArrayList<?> item = (ArrayList<?>) result.get(i);
 						if (item != null && item.size() > 0) {
