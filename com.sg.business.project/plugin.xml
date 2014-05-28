@@ -5382,6 +5382,12 @@
                pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
                title="%basicpage.title.10">
          </basicpage>
+         <basicpage
+               description="%worktimeprogramandoptions.description"
+               id="project.basicpage.4"
+               pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
+               title="%worktimeprogram">
+         </basicpage>
       </editor>
       <editor
             collectionName="project"

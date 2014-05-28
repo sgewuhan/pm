@@ -22,6 +22,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.viewer.WorkTimeTypeOptionProvider;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.commons.editingsupport.TextPopupCellEditor;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -77,7 +78,7 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 			DBObject workTimeTypeOrOption = (DBObject) element;
 			//返回workTimeTypeOrOption不包含工时类型选项
 			return !workTimeTypeOrOption
-					.containsField(WorkTimeProgram.F_TYPE_OPTIONS);
+					.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
 		}
 
 		/**
@@ -255,7 +256,7 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 		group.setText(groupText);
 		// 4.取出列类型选项
 		BasicBSONList options = (BasicBSONList) columnType
-				.get(WorkTimeProgram.F_TYPE_OPTIONS);
+				.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
 		// 5.根据列类型选项创建列
 		for (int i = 0; i < options.size(); i++) {
 			final DBObject columnTypeOption = (DBObject) options.get(i);
@@ -281,7 +282,7 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 				// 判断元素是工时类型还是工时类型选项
 				DBObject workTimeTypeOrOption = (DBObject) element;
 				if (workTimeTypeOrOption
-						.containsField(WorkTimeProgram.F_TYPE_OPTIONS)) {
+						.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS)) {
 					return "";
 				}
 				Double amount = workTimeProgram.getWorkTimeData((ObjectId) workTimeTypeOrOption
@@ -303,6 +304,6 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 
 	
 	private IContentProvider getContentProvider() {
-		return new OptionProvider();
+		return new WorkTimeTypeOptionProvider();
 	}
 }
