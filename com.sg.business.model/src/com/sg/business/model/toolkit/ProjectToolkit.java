@@ -348,12 +348,22 @@ public class ProjectToolkit {
 		// 设置序号
 		work.put(IWorkCloneFields.F_SEQ, new Integer(seq));
 
-		// 设置标准工时
+		/*
+		 *  设置与工时管理有关的值，包括计量方式、标准工时、工时类型、统计阶段和统计点
+		 *  
+		 */
+		//标准工时
 		value = workdef.get(IWorkCloneFields.F_STANDARD_WORKS);
 		if (value != null) {
 			work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 		}
-
+		//工时计量方式
+//		workdef.get(WorkDefinition.f_)
+		/*
+		 * 
+		 */
+		
+		
 		// 设置提醒时间
 		value = workdef.get(IWorkCloneFields.F_REMIND_BEFORE);
 		if (value != null) {

@@ -42,11 +42,12 @@ import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
-		IPrimaryObjectValueChangeListener {
+		IPrimaryObjectValueChangeListener,IValidable {
 
 	private ComboViewer programSelector;
 	private TableViewer workTimeTypeSelector;
@@ -195,6 +196,8 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 				// 调用project的方法设置工时类型选项，传三个参数
 				project.makeWorkTimeTypeOption(workTimeTypeId,
 						workTimeTypeDesc, option);
+				project.noticeValueChanged(Project.F_WORKTIMETYPES);
+
 				// 设置数据脏了
 				setDirty(true);
 				// 更新表查看器对应的工时类型元素
@@ -344,7 +347,8 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 				// 调用project的方法设置工时类型选项，传三个参数
 				project.selectWorkTimeColumnTypeOption((ObjectId)type.get(WorkTimeProgram.F__ID),
 						(String)type.get(WorkTimeProgram.F_DESC), (DBObject)element,Boolean.TRUE.equals(value));
-				
+				project.noticeValueChanged(Project.F_WORKTIME_COLUMNTYPES);
+
 				// 设置数据脏了
 				setDirty(true);
 				// 更新表查看器对应的工时类型元素
@@ -406,6 +410,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 						.getFirstElement();
 				// 将选择的工时方案id保存到项目中
 				project.makeSelectedWorkTimeProgram(workTimeProgram);
+				project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
 				// 设置数据脏了
 				setDirty(true);
 				// 设置工时类型选择器的Input,传一个参数是工时方案
@@ -493,6 +498,17 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 					project.clearWorkTimeProgram();
 				}
 			}
+		}
+	}
+
+	@Override
+	public boolean checkValidOnSave() {
+		//验证工时方案是否已选，如果选择了，就验证工时类型选项是否全选和列类型选项是否选择了，如果没选，就
+		try {
+			project.checkWorkTimeProgram();
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 

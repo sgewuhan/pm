@@ -6493,46 +6493,5 @@
             serviceProvider="com.tmt.gs.bpmservice.ApplicationMessageOfGS">
       </service>
    </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="审核"
-            processDefinitionId="gs.gsWorkChange">
-      </taskForm>
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="技术审核"
-            processDefinitionId="gs.gsWorkChange">
-      </taskForm>
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="批准"
-            processDefinitionId="gs.gsWorkChange">
-      </taskForm>
-   </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="市场审核"
-            processDefinitionId="gs.gsChangeInProject">
-      </taskForm>
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="相关部门审核"
-            processDefinitionId="gs.gsChangeInProject">
-      </taskForm>
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="技术审核"
-            processDefinitionId="gs.gsChangeInProject">
-      </taskForm>
-      <taskForm
-            editorId="gsprintdoc.printer"
-            name="批准"
-            processDefinitionId="gs.gsChangeInProject">
-      </taskForm>
-   </extension>
 
 </plugin>

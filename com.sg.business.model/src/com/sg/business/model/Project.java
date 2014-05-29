@@ -668,7 +668,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 生成编码
 		generateCode();
 
-		// 创建根工作定义
+		// 创建根工作
 		Work root = makeWBSRoot();
 		root.doInsert(context);
 		setValue(Project.F_WORK_ID, root.get_id());
@@ -804,10 +804,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制角色定义
 		Map<ObjectId, DBObject> roleMap = doMakeRolesWithTemplate(id, context);
 
+		//使用项目模板创建wbs
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
 				folderRootId, roleMap, context);
 		// 复制工作定义
-
+		
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
 
@@ -2625,16 +2626,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	}
 
+	/**
+	 * 将工时类型选项和列类型选项置空
+	 */
 	public void clearWorkTimeProgramSetting() {
 		setValue(F_WORKTIMETYPES, null);
-		setValue(F_WORKTIME_COLUMNTYPES,null);
+		setValue(F_WORKTIME_COLUMNTYPES, null);
 	}
-	
+
+	/**
+	 * 将工时方案以及工时类型选项和列类型选项置空
+	 */
 	public void clearWorkTimeProgram() {
 		setValue(F_WORKTIMEPROGRAM_ID, null);
 		clearWorkTimeProgramSetting();
 	}
-	
 
 	public BasicBSONList getWorkTimeColumnTypeOption(ObjectId columnTypeId) {
 		DBObject workTimeType = getWorkTimeTypeOrColumnType(columnTypeId,
@@ -2699,6 +2705,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			String typeDesc, DBObject option, boolean select) {
 		if (select) {
 			makeWorkTimeColumnTypeOption(typeId, typeDesc, option);
+		}else{
+			removeWorkTimeColumnTypeOption(typeId,option);
+		}
+	}
+
+	private void removeWorkTimeColumnTypeOption(ObjectId typeId, DBObject option) {
+		BasicBSONList typeOptions = getWorkTimeColumnTypeOption(typeId);
+		for (Object object : typeOptions) {
+			DBObject typeOption=(DBObject) object;
+			if(typeOption.get(F__ID).equals(option.get(F__ID))){
+				typeOptions.remove(typeOption);
+				return;
+			}
 		}
 	}
 
@@ -2715,18 +2734,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					BasicBSONList options = (BasicBSONList) workTimeColumnType
 							.get(F_WORKTIME_TYPE_OPTIONS);
 					for (Object object2 : options) {
-						//项目中已包含此列选项
-						if(option.get(F__ID).equals(((DBObject)object2).get(F__ID))){
+						// 项目中已包含此列选项
+						if (option.get(F__ID).equals(
+								((DBObject) object2).get(F__ID))) {
 							return;
 						}
 					}
 					options.add(option);
+					setValue(F_WORKTIME_COLUMNTYPES, workTimeColumnTypes);
 					return;
 				}
 			}
 		} else {
 			workTimeColumnTypes = new BasicDBList();
-			setValue(F_WORKTIME_COLUMNTYPES, workTimeColumnTypes);
 		}
 		BasicDBObject workTimeType = new BasicDBObject();
 		workTimeType.put(F__ID, workTimeColumnTypeId);
@@ -2735,7 +2755,137 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		options.add(option);
 		workTimeType.put(F_WORKTIME_TYPE_OPTIONS, options);
 		workTimeColumnTypes.add(workTimeType);
+		setValue(F_WORKTIME_COLUMNTYPES, workTimeColumnTypes);
+	}
 
+	public void checkWorkTimeProgram() throws Exception {
+
+		ProjectTemplate projectTemplate = getProjectTemplate();
+		BasicBSONList workTimePrograms = (BasicBSONList) projectTemplate
+				.getValue(ProjectTemplate.F_WORKTIMEPROGRAMS);
+		// 项目所选的项目模板未定义工时方案，验证通过
+		if (workTimePrograms == null) {
+			return;
+		}
+		// 项目所选的项目模板定义了工时方案
+		WorkTimeProgram workTimeProgram = getWorkTimeProgram();
+		if (workTimeProgram == null) {
+			// 没有选择工时方案,出错，提示没有选择工时方案
+			throw new Exception(Messages.get().WorkTimeProgramNotSelected);
+		} else {
+			// 选择了工时方案
+			// 1.检查工时类型选项是否完整
+			// 判断没有选的工时类型选项
+			boolean valid = checkWorkTimeTypeOption(workTimeProgram);
+			if (!valid) {
+				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+			}
+			// 2.检查所有的列类型选项
+			// 所有的列类型选项都没选择，提示出错
+			valid = checkWorkTimeColumnTypeOption(workTimeProgram);
+			if (!valid) {
+				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+			}
+			return;
+		}
+
+	}
+
+	private boolean checkWorkTimeTypeOption(WorkTimeProgram program) {
+		BasicBSONList types_inProg = (BasicBSONList) program
+				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
+		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIMETYPES);
+		if (types_inProj == null || types_inProj.isEmpty()) {
+			return false;
+		}
+
+		for (Object object : types_inProg) {
+			DBObject type_inProg = (DBObject) object;
+			// 在项目中获取该工时类型
+			for (Object object2 : types_inProj) {
+				DBObject type_inProj = (DBObject) object2;
+				// 判断项目中的工时类型id和工时方案中的工时类型id是否一致
+				if (type_inProj.get(F__ID).equals(type_inProg.get(F__ID))) {
+					BasicBSONList options_inProj = (BasicBSONList) type_inProj
+							.get(F_WORKTIME_TYPE_OPTIONS);
+					if (options_inProj == null || options_inProj.isEmpty()) {
+						return false;
+					}
+					// 判断项目中的选项是否在工时方案对应类型的选项中
+					// 取出工时方案中对应类型的所有选项
+					BasicBSONList options_inProg = (BasicBSONList) type_inProg
+							.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+					Set<ObjectId> optionIdSet_inProg = new HashSet<ObjectId>();
+					for (Object object3 : options_inProg) {
+						DBObject option_inProg = (DBObject) object3;
+						optionIdSet_inProg.add((ObjectId) option_inProg
+								.get(F__ID));
+					}
+					
+					for (Object object4 : options_inProj) {
+						DBObject option_inProj = (DBObject) object4;
+						// 方案中的对应的工时类型选项不包含项目中的工时类型选项，就抛出异常
+						if (optionIdSet_inProg.contains(option_inProj
+								.get(F__ID))) {
+							return true;
+						}
+					}
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 检查项目中的工时列类型选项
+	 * 
+	 * @param program
+	 * @return
+	 */
+	private boolean checkWorkTimeColumnTypeOption(WorkTimeProgram program) {
+		// 1. 获取方案中的列类型
+		BasicBSONList types_inProg = (BasicBSONList) program
+				.getValue(WorkTimeProgram.F_COLUMNTYPES);
+
+		// 2. 获取项目的列类型
+		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIME_COLUMNTYPES);
+		if (types_inProj == null || types_inProj.isEmpty()) {
+			return false;
+		}
+
+		// 3.对方案的列类型经行遍历，判断项目的列类型是否有选择
+		for (Object type_inProg : types_inProg) {
+			// 在项目的列类型中查找该类型
+			for (Object type_inProj : types_inProj) {
+				if (((DBObject) type_inProg).get(F__ID).equals(
+						((DBObject) type_inProj).get(F__ID))) {
+					// 找到对应方案的类型后，检查选项
+
+					// 获得方案中对应列类型的选项
+					BasicBSONList options_inProg = (BasicBSONList) ((DBObject) type_inProg)
+							.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+					// 检查方案中对应的列类型选项在项目中是否有选择
+					Set<ObjectId> optionSet_inProg = new HashSet<ObjectId>();
+					for (Object option_inProg : options_inProg) {
+						optionSet_inProg
+								.add((ObjectId) ((DBObject) option_inProg)
+										.get(F__ID));
+					}
+
+					// 获得项目对应的列类型选项
+					BasicBSONList options_inProj = (BasicBSONList) ((DBObject) type_inProj)
+							.get(F_WORKTIME_TYPE_OPTIONS);
+					for (Object option_inProj : options_inProj) {
+						if (optionSet_inProg
+								.contains(((DBObject) option_inProj).get(F__ID))) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 }
