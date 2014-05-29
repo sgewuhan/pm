@@ -87,24 +87,7 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	public static final String F_LAUNCHABLE = "launchforbidden";//$NON-NLS-1$
 
-	/**
-	 * 计量方式
-	 */
-	public static final String F_MEASUREMENT = "measurement";//$NON-NLS-1$
-
-	public static final String MEASUREMENT_TYPE_NO_ID = "no";//$NON-NLS-1$
-
-	public static final String MEASUREMENT_TYPE_NO_VALUE = Messages.get().WorkDefinitionNoMeasurement;
-
-	public static final String MEASUREMENT_TYPE_COMMIT_ID = "commit";//$NON-NLS-1$
-
-	public static final String MEASUREMENT_TYPE_COMMIT_VALUE = Messages.get().WorkDefinitionCommitMeasurement;
-
-	public static final String MEASUREMENT_TYPE_PLAN_ID = "plan";//$NON-NLS-1$
-
-	public static final String MEASUREMENT_TYPE_PLAN_VALUE = Messages.get().WorkDefinitionPlanMeasurement;
-
-	public static final String F_WORKTIMETYPE = "worktimetype";
+	
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}

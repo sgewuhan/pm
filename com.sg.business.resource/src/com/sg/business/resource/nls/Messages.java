@@ -1152,6 +1152,9 @@ public class Messages {
 	public String WorkDefinitionNoMeasurement;
 	public String WorkDefinitionCommitMeasurement;
 	public String WorkDefinitionPlanMeasurement;
+	
+	public String WorkTimeProgramNotSelected;
+	public String WorkTimeTypeOptionNotSelected;
 
 	
 }

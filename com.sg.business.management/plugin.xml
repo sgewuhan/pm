@@ -1199,7 +1199,7 @@
                            name="statisticsstep"
                            optionProvider="com.sg.business.management.editor.option.StatisticsStepOption"
                            persistable="true"
-                           required="true"
+                           required="false"
                            type="String">
                      </combo>
                      <checkbox
