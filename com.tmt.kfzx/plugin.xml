@@ -2054,5 +2054,22 @@
          </processParameter>
       </taskForm>
    </extension>
-
+<extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="kfzxApprove.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="kfzx.SimpleApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.SimpleApprove"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
 </plugin>
