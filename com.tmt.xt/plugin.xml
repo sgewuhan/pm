@@ -2433,12 +2433,8 @@
       <taskForm
             editorId="xtBusinessSupport1.edit"
             name="技术支持"
-            persistentFields="amount,auditor"
+            persistentFields="auditor"
             processDefinitionId="xt.xtBusinessSupport2">
-         <processParameter
-               processParameterName="amount"
-               taskFormFieldName="amount">
-         </processParameter>
          <processParameter
                processParameterName="auditor"
                taskFormFieldName="auditor">
@@ -2506,7 +2502,6 @@
                         widthHint="320">
                   </text>
                   <radio
-                        defaultValue="通过"
                         editable="true"
                         id="choice"
                         label="%radio.label.10"
@@ -2521,22 +2516,19 @@
                <section
                      label="请确认支持类型">
                   <radio
-                        defaultValue="技术类支持"
-                        editable="true"
                         id="choice_type"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="支持类型"
                         labelVisible="false"
                         name="choice_type"
                         option="支持类型"
                         persistable="true"
-                        required="true"
                         type="String">
                   </radio>
                </section>
                <section
                      label="%section.label.24">
                   <navigatorSelector
-                        editable="true"
                         id="support"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.2"
@@ -2590,7 +2582,6 @@
                   <navigatorSelector
                         editable="true"
                         id="auditor"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.4"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
@@ -2598,8 +2589,7 @@
                         name="auditor"
                         navigatorId="xtbusinesssupport.user.auditor"
                         navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
+                        persistable="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
