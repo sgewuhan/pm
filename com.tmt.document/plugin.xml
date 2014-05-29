@@ -13,7 +13,7 @@
          <basicpage
                description="基本信息"
                id="page1"
-               pageDelegator="com.sg.widgets.commons.exporttool.ExportablePageDelegator"
+               pageDelegator="com.tmt.document.exporttool.ExportableUserTaskPageDelegator"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -440,6 +440,30 @@
                name="发货数量"
                type="String">
          </column>
+      </table>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="document.editor.wfhistory"
+            table="document.editor.wfhistory">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            customItemHeight="40"
+            dataSet="com.tmt.document.exporttool.DataSet.WFHistoryOfDocument"
+            headerVisiable="false"
+            id="document.editor.wfhistory"
+            lineVisiable="false"
+            markupEnabled="true">
+         <column
+               column="desc"
+               labelProvider="com.tmt.document.exporttool.labelprovider.WFHistoryLabelProvider"
+               name="流程名称"
+               width="200"></column>
       </table>
    </extension>
 

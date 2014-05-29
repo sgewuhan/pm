@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Work;
@@ -47,7 +48,11 @@ public class CreateDeliverableWithVault extends AbstractNavigatorHandler {
 							work.doAddDeliverable(document,
 									IDeliverable.TYPE_LINK,
 									new CurrentAccountContext());
-							vc.getViewer().refresh(work, true);
+							try {
+								vc.getViewer().refresh(work, true);
+							} catch (Exception e) {
+								UIFrameworkUtils.refreshHomePart(true);
+							}
 						} else {
 							MessageUtil.showToast(Messages.get().CreateDeliverableWithVault_1,
 									SWT.ICON_WARNING);

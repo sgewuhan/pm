@@ -630,6 +630,13 @@
                type="String"
                width="180">
          </column>
+         <column
+               column="documentd_id"
+               labelProvider="com.sg.business.management.column.labelprovider.DocumentDefinitionLabelProvider"
+               name="%column.name.13"
+               style="SWT.LEFT"
+               width="180">
+         </column>
          <structure
                modelRelation="workd_workd">
          </structure>
@@ -1192,7 +1199,7 @@
                            name="statisticsstep"
                            optionProvider="com.sg.business.management.editor.option.StatisticsStepOption"
                            persistable="true"
-                           required="true"
+                           required="false"
                            type="String">
                      </combo>
                      <checkbox

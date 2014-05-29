@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.Project;
@@ -50,7 +51,11 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 							if (document != null) {
 								work.doAddDeliverable(document,Deliverable.TYPE_REFERENCE,
 										new CurrentAccountContext());
-								vc.getViewer().refresh(work, true);
+								try {
+									vc.getViewer().refresh(work, true);
+								} catch (Exception e) {
+									UIFrameworkUtils.refreshHomePart(true);
+								}
 							} else {
 								MessageUtil.showToast(Messages.get().LinkDeliverable_1,
 										SWT.ICON_WARNING);

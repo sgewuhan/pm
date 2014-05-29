@@ -9,10 +9,13 @@ public class WorkEditorInputFactory extends EditorInputFactory {
 	public WorkEditorInputFactory(PrimaryObject primaryObject) {
 		super(primaryObject);
 	}
-
+	
 	@Override
 	protected String getEditorId(PrimaryObject primaryObject, Object data) {
 		Work work = (Work) primaryObject;
+		if(work.isProjectWBSRoot()){
+			return "navigator.view.project";
+		}
 		if (work.isSummaryWork()) {
 			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
 				return  "navigator.view.work.4";

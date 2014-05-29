@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import com.sg.business.resource.nls.Messages;
+
 public interface IWorkCloneFields {
 
 	/**
@@ -118,6 +120,38 @@ public interface IWorkCloneFields {
 	 */
 	public static final String F_WORK_CATAGORY = "catagory"; //$NON-NLS-1$
 
+	/**
+	 * 计量方式
+	 */
+	public static final String F_MEASUREMENT = "measurement";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_NO_ID = "no";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_NO_VALUE = Messages.get().WorkDefinitionNoMeasurement;
+
+	public static final String MEASUREMENT_TYPE_COMMIT_ID = "commit";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_COMMIT_VALUE = Messages.get().WorkDefinitionCommitMeasurement;
+
+	public static final String MEASUREMENT_TYPE_PLAN_ID = "plan";//$NON-NLS-1$
+
+	public static final String MEASUREMENT_TYPE_PLAN_VALUE = Messages.get().WorkDefinitionPlanMeasurement;
+	
+	/**
+	 * 工时类型
+	 */
+	public static final String F_WORKTIMETYPE = "worktimetype";
+	
+	/**
+	 * 工时统计点
+	 */
+	public static final String F_STATISTICS_POINT="statisticspoint";
+	
+	/**
+	 * 统计阶段
+	 */
+	public static final String F_STATISTICS_STEP="statisticsstep";
+	
 	/**
 	 * 需要复制的设置项
 	 */
