@@ -586,7 +586,7 @@
             </column>
             <column
                   column="worktimetype"
-                  labelProvider="com.sg.business.management.column.labelprovider.WorkTimeTypeLabelProvider"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabelProvider"
                   name="%worktimetypebasicpage.title.24">
             </column>
             <column
@@ -1182,7 +1182,7 @@
                         id="worktimetype"
                         label="%worktimetypebasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabelProvider"
                         name="worktimetype"
                         persistable="true"
                         required="false"
@@ -1197,7 +1197,7 @@
                            label="%statisticsstep"
                            labelVisible="true"
                            name="statisticsstep"
-                           optionProvider="com.sg.business.management.editor.option.StatisticsStepOption"
+                           optionProvider="com.sg.business.management.editor.option.StatisticsStepOptionOfProjectTemplate"
                            persistable="true"
                            required="false"
                            type="String">

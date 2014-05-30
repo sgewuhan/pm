@@ -7,9 +7,9 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.options.IFieldOptionProvider;
 import com.sg.widgets.registry.config.Option;
 
-public class StatisticsStepOption implements IFieldOptionProvider {
+public class StatisticsStepOptionOfProjectTemplate implements IFieldOptionProvider {
 
-	public StatisticsStepOption() {
+	public StatisticsStepOptionOfProjectTemplate() {
 	}
 
 	@Override

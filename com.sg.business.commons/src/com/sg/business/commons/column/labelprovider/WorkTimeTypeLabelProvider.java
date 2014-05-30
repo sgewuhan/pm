@@ -1,4 +1,4 @@
-package com.sg.business.management.column.labelprovider;
+package com.sg.business.commons.column.labelprovider;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
