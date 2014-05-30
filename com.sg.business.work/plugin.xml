@@ -3764,6 +3764,75 @@
             </pagecolumn>
          </basicpage>
          <basicpage
+               description="%worktime"
+               id="worktimepage"
+               title="%worktime">
+            <pagecolumn>
+               <section
+                     label="%worktime">
+                  <radio
+                        defaultValue="no"
+                        editable="true"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="true"
+                        type="DBObject">
+                  </radio>
+                  <spinner
+                        editable="true"
+                        id="standardworks"
+                        label="%spinner.label"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,9999,1,10">
+                  </spinner>
+                  <list
+                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetype"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="statisticsstep"
+                           label="%statisticsstep"
+                           labelVisible="true"
+                           name="statisticsstep"
+                           optionProvider="com.sg.business.management.editor.option.StatisticsStepOption"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <checkbox
+                           editable="true"
+                           id="statisticspoint"
+                           label="%statisticspoint"
+                           labelVisible="true"
+                           name="statisticspoint"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                  </fieldgroup>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
                description="%basicpage.description.23"
                id="processpage1"
                image="image/flow_24.png"

@@ -74,9 +74,11 @@ public class ProjectToolkit {
 					AbstractRoleDefinition role = pc
 							.getProcessActionAssignment(process, nap);
 					if (role == null) {
-						CheckListItem checkItem = new CheckListItem(title,
-								Messages.get().ProjectToolkit_0 + Messages.get().ProjectToolkit_1 + na.getNodeName()
-										+ "]", Messages.get().ProjectToolkit_3, ICheckListItem.ERROR); //$NON-NLS-1$
+						CheckListItem checkItem = new CheckListItem(
+								title,
+								Messages.get().ProjectToolkit_0
+										+ Messages.get().ProjectToolkit_1
+										+ na.getNodeName() + "]", Messages.get().ProjectToolkit_3, ICheckListItem.ERROR); //$NON-NLS-1$
 						checkItem.setData(data);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
@@ -86,10 +88,13 @@ public class ProjectToolkit {
 					} else {
 						ra = raMap.get(role.get_id());
 						if (ra == null || ra.isEmpty()) {
-							CheckListItem checkItem = new CheckListItem(title,
-									Messages.get().ProjectToolkit_4 + Messages.get().ProjectToolkit_5
+							CheckListItem checkItem = new CheckListItem(
+									title,
+									Messages.get().ProjectToolkit_4
+											+ Messages.get().ProjectToolkit_5
 											+ na.getNodeName() + "]", //$NON-NLS-1$
-									Messages.get().ProjectToolkit_7, ICheckListItem.ERROR);
+									Messages.get().ProjectToolkit_7,
+									ICheckListItem.ERROR);
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
@@ -97,8 +102,10 @@ public class ProjectToolkit {
 							result.add(checkItem);
 							passed = false;
 						} else if (ra.size() > 1) {
-							CheckListItem checkItem = new CheckListItem(title,
-									Messages.get().ProjectToolkit_8 + Messages.get().ProjectToolkit_9
+							CheckListItem checkItem = new CheckListItem(
+									title,
+									Messages.get().ProjectToolkit_8
+											+ Messages.get().ProjectToolkit_9
 											+ na.getNodeName() + "]", //$NON-NLS-1$
 									Messages.get().ProjectToolkit_11
 
@@ -358,7 +365,25 @@ public class ProjectToolkit {
 			work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 		}
 		//工时计量方式
-//		workdef.get(WorkDefinition.f_)
+			value=workdef.get(IWorkCloneFields.F_MEASUREMENT);
+			if(value !=null){
+				work.put(IWorkCloneFields.F_MEASUREMENT, value);
+			}
+		//工时类型
+		value=workdef.get(IWorkCloneFields.F_WORKTIMETYPE);
+		if(value !=null){
+			work.put(IWorkCloneFields.F_WORKTIMETYPE, value);
+		}
+		//统计阶段
+		value=workdef.get(IWorkCloneFields.F_STATISTICS_STEP);
+		if(value!=null){
+			work.put(IWorkCloneFields.F_STATISTICS_STEP, value);
+		}
+		//统计点
+		value=workdef.get(IWorkCloneFields.F_STATISTICS_POINT);
+		if(value!=null){
+			work.put(IWorkCloneFields.F_STATISTICS_POINT, value);
+		}
 		/*
 		 * 
 		 */
@@ -540,8 +565,8 @@ public class ProjectToolkit {
 				String key = iter.next();
 				ObjectId roleId = (ObjectId) dbo.get(key);
 				DBObject tgtRole = roleMap.get(roleId);
-				Assert.isNotNull(tgtRole,
-						Messages.get().ProjectToolkit_15 + work.get(Work.F_DESC));
+				Assert.isNotNull(tgtRole, Messages.get().ProjectToolkit_15
+						+ work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
 				// 标记该角色已使用
@@ -561,8 +586,8 @@ public class ProjectToolkit {
 				DBObject srcRole = (DBObject) valueList.get(i);
 				ObjectId srcRoleId = (ObjectId) srcRole.get(ProjectRole.F__ID);
 				DBObject tgtRole = roleMap.get(srcRoleId);
-				Assert.isNotNull(tgtRole,
-						Messages.get().ProjectToolkit_17 + work.get(Work.F_DESC));
+				Assert.isNotNull(tgtRole, Messages.get().ProjectToolkit_17
+						+ work.get(Work.F_DESC));
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
@@ -827,9 +852,10 @@ public class ProjectToolkit {
 				PrimaryObject po = deliverableList.get(i);
 				deliverableIdList[i] = po.get_id();
 			}
-			WriteResult ws = col.update(new BasicDBObject().append(
-					Deliverable.F__ID,
-					new BasicDBObject().append("$in", deliverableIdList)), //$NON-NLS-1$
+			WriteResult ws = col.update(
+					new BasicDBObject().append(Deliverable.F__ID,
+							new BasicDBObject()
+									.append("$in", deliverableIdList)), //$NON-NLS-1$
 					new BasicDBObject().append(
 							"$set", //$NON-NLS-1$
 							new BasicDBObject().append(
@@ -874,29 +900,23 @@ public class ProjectToolkit {
 				+ "{"
 				+ "emit(this.MATNR,{VV030: this.VV030, sales_income: this.VV010, VV040:this.VV040});"
 				+ "}";
-		String reduce = "function Reduce(key, values)"
-				+ "{"
+		String reduce = "function Reduce(key, values)" + "{"
 				+ "var reduced = {VV030:0, sales_income:0,VV040:0};"
-				+ "values.forEach(function(val) "
-				+ "{"
+				+ "values.forEach(function(val) " + "{"
 				+ "reduced.VV030 += val.VV030;"
 				+ "reduced.sales_income += val.sales_income;"
-				+ "reduced.VV040 += val.VV040;"
-				+ "});"
-				+ "return reduced;"
+				+ "reduced.VV040 += val.VV040;" + "});" + "return reduced;"
 				+ "}";
-		String finalize ="function Finalize(key, reduced)"
-				+ "{"
+		String finalize = "function Finalize(key, reduced)" + "{"
 				+ "reduced.sales_cost = reduced.VV030 + reduced.VV040;"
-				+ "return reduced;"
-				+ "}";
+				+ "return reduced;" + "}";
 		BasicDBObject command = new BasicDBObject();
 		command.put("mapreduce", IModelConstants.C_SALESDATA);
 		command.put("map", map);
 		command.put("reduce", reduce);
 		command.put("finalize", finalize);
 		command.put("out", IModelConstants.C_PRODUCT_SALESDATA);
-		
+
 		colPd.mapReduce(command);
 	}
 

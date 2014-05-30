@@ -136,22 +136,23 @@ public interface IWorkCloneFields {
 	public static final String MEASUREMENT_TYPE_PLAN_ID = "plan";//$NON-NLS-1$
 
 	public static final String MEASUREMENT_TYPE_PLAN_VALUE = Messages.get().WorkDefinitionPlanMeasurement;
-	
+
 	/**
 	 * 工时类型
 	 */
 	public static final String F_WORKTIMETYPE = "worktimetype";
-	
+
 	/**
 	 * 工时统计点
 	 */
-	public static final String F_STATISTICS_POINT="statisticspoint";
-	
+	public static final String F_STATISTICS_POINT = "statisticspoint";
+
 	/**
 	 * 统计阶段
 	 */
-	public static final String F_STATISTICS_STEP="statisticsstep";
-	
+	public static final String F_STATISTICS_STEP = "statisticsstep";
+
+
 	/**
 	 * 需要复制的设置项
 	 */
@@ -162,6 +163,6 @@ public interface IWorkCloneFields {
 			F_SETTING_CAN_MODIFY_PLANWORKS,
 			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
-			F_REMIND_BEFORE,F_WORK_CATAGORY};
-	
+			F_REMIND_BEFORE, F_WORK_CATAGORY };
+
 }
