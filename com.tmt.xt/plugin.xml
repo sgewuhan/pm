@@ -2433,25 +2433,25 @@
       <taskForm
             editorId="xtBusinessSupport1.edit"
             name="技术支持"
-            persistentFields="auditor"
+            persistentFields="auditor,approve"
             processDefinitionId="xt.xtBusinessSupport2">
          <processParameter
                processParameterName="auditor"
                taskFormFieldName="auditor">
          </processParameter>
+         <processParameter
+               processParameterName="approve"
+               taskFormFieldName="approve">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="xtBusinessSupport2.verify"
             name="审核"
-            persistentFields="choice,comment,accessory,approve"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtBusinessSupport2">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterName="approve"
-               taskFormFieldName="approve">
          </processParameter>
       </taskForm>
       <taskForm
@@ -2592,6 +2592,23 @@
                         persistable="true">
                   </navigatorSelector>
                </section>
+               <section
+                     label="%section.label.35">
+                  <navigatorSelector
+                        editable="true"
+                        id="approve"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="%navigatorSelector.label.5"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="approve"
+                        navigatorId="xtbusinesssupport.user.approve"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -2653,23 +2670,6 @@
                         required="true"
                         type="String">
                   </radio>
-               </section>
-               <section
-                     label="%section.label.35">
-                  <navigatorSelector
-                        editable="true"
-                        id="approve"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="%navigatorSelector.label.5"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="approve"
-                        navigatorId="xtbusinesssupport.user.approve"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
