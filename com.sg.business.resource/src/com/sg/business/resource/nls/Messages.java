@@ -8,13 +8,6 @@ import com.mobnut.commons.util.NLS2;
 
 public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.resource.nls.messages"; //$NON-NLS-1$
-	
-	
-	
-	
-	
-	
-	
 	public static Messages get() {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
@@ -409,6 +402,8 @@ public class Messages {
 	public String IRoleConstance_35;
 	public String IRoleConstance_36;
 	public String IRoleConstance_37;
+	public String IRoleConstance_38;
+	public String IRoleConstance_39;
 	public String LaunchWorkWizard_1;
 	public String LifeCycleActionCancel_0;
 	public String LifeCycleActionCancel_2;

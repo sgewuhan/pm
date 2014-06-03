@@ -158,4 +158,16 @@ public interface IRoleConstance {
 	 */
 	public static final String ROLE_TECHNICAL_LEADER_CHECKER_STANDLONE_ID = "Technical Leader Checker Standlone";
 	public static final String ROLE_TECHNICAL_LEADER_CHECKER_STANDLONE_TEXT=Messages.get().IRoleConstance_37;
+	
+	/**
+	 * 项目支持2审核人
+	 */
+	public static final String ROLE_SUPPORT_AUDITOR_2_ID = "Project Support Auditor";
+	public static final String ROLE_SUPPORT_AUDITOR_2_TEXT = Messages.get().IRoleConstance_38;
+	
+	/**
+	 * 项目支持2批准人
+	 */
+	public static final String ROLE_SUPPORT_APPROVE_2_ID = "Project Support Approve";
+	public static final String ROLE_SUPPORT_APPROVE_2_TEXT =  Messages.get().IRoleConstance_39;
 }
