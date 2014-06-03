@@ -3189,19 +3189,6 @@
                         required="true"
                         type="Date">
                   </dateTime>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="planduration"
-                        isComputeField="true"
-                        label="%text.label.18"
-                        labelVisible="true"
-                        name="planduration"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.SummaryPlanDuration"
-                        required="false"
-                        type="Integer">
-                  </text>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -3272,6 +3259,59 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="worktimepage"
+               title="%worktime">
+            <pagecolumn>
+               <section
+                     label="%worktime">
+                  <radio
+                        editable="false"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="worktimedata"
+                        label="%spinner.label"
+                        labelVisible="true"
+                        name="worktimedata"
+                        persistable="true"
+                        required="false"
+                        type="Double"
+                        widthHint="80">
+                  </text>
+                  <list
+                        editable="false"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetype"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
+                  <checkbox
+                        editable="true"
+                        id="statisticspoint"
+                        label="%statisticspoint"
+                        labelVisible="true"
+                        name="statisticspoint"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="work"
@@ -3337,19 +3377,6 @@
                         required="true"
                         type="Date">
                   </dateTime>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="planduration"
-                        isComputeField="true"
-                        label="%text.label.21"
-                        labelVisible="true"
-                        name="planduration"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.SummaryPlanDuration"
-                        required="false"
-                        type="Integer">
-                  </text>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -3404,6 +3431,59 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="worktimepage"
+               title="%worktime">
+            <pagecolumn>
+               <section
+                     label="%worktime">
+                  <radio
+                        editable="false"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="false"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="worktimedata"
+                        label="%spinner.label"
+                        labelVisible="true"
+                        name="worktimedata"
+                        persistable="true"
+                        required="false"
+                        type="Double"
+                        widthHint="80">
+                  </text>
+                  <list
+                        editable="false"
+                        heightHint="100"
+                        id="worktimetype"
+                        label="%worktimetype"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
+                        name="worktimetype"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
+                  <checkbox
+                        editable="true"
+                        id="statisticspoint"
+                        label="%statisticspoint"
+                        labelVisible="true"
+                        name="statisticspoint"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>
@@ -3606,17 +3686,6 @@
                         persistable="true"
                         required="false">
                   </checkbox>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="standardworks"
-                        label="%text.label.30"
-                        labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
                   <fieldgroup
                         columnCount="1">
                      <spinner
@@ -3771,7 +3840,8 @@
                title="%worktime">
             <pagecolumn>
                <section
-                     label="%worktime">
+                     label="%worktime"
+                     sibling_order="&lt;text&#x0D;&#x0A;                        editPart=&quot;Text(Single Line)&quot;&#x0D;&#x0A;                        editable=&quot;true&quot;&#x0D;&#x0A;                        id=&quot;worktimedata&quot;&#x0D;&#x0A;                        label=&quot;%spinner.label&quot;&#x0D;&#x0A;                        labelVisible=&quot;true&quot;&#x0D;&#x0A;                        name=&quot;worktimedata&quot;&#x0D;&#x0A;                        persistable=&quot;true&quot;&#x0D;&#x0A;                        required=&quot;false&quot;&#x0D;&#x0A;                        type=&quot;Double&quot;&#x0D;&#x0A;                        widthHint=&quot;80&quot;&gt;&#x0D;&#x0A;                  &lt;/text&gt;">
                   <radio
                         defaultValue="no"
                         editable="false"
@@ -3800,7 +3870,7 @@
                         id="worktimetype"
                         label="%worktimetype"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
                         name="worktimetype"
                         persistable="true"
                         required="false"

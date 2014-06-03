@@ -1182,7 +1182,7 @@
                         id="worktimetype"
                         label="%worktimetypebasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
                         name="worktimetype"
                         persistable="true"
                         required="false"
@@ -1725,7 +1725,7 @@
                         id="worktimetype"
                         label="%worktimetypebasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
                         name="worktimetype"
                         persistable="true"
                         required="false"
@@ -2185,11 +2185,11 @@
                         id="worktimetype"
                         label="%worktimetypebasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.management.labelprovider.WorkTimeTypeLabel"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
                         name="worktimetype"
                         persistable="true"
                         required="false"
-                        widthHint="80">
+                        widthHint="200">
                   </list>
                   <checkbox
                         editable="true"

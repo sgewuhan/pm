@@ -141,6 +141,11 @@ public interface IWorkCloneFields {
 	 * 工时类型
 	 */
 	public static final String F_WORKTIMETYPE = "worktimetype";
+	
+	/**
+	 * 工时
+	 */
+	public static final String F_WORK_TIME_DATA="worktimedata";
 
 	/**
 	 * 工时统计点
