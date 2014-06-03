@@ -4269,7 +4269,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		}
-
+		
+		/*
+		 *  设置与工时管理有关的值，包括计量方式、标准工时、工时类型和统计点
+		 *  
+		 */
+		//工时类型
+		this.setValue(IWorkCloneFields.F_WORKTIMETYPE, wd.getValue(IWorkCloneFields.F_WORKTIMETYPE));
+		
+		//计量方式
+		this.setValue(IWorkCloneFields.F_MEASUREMENT, wd.getValue(IWorkCloneFields.F_MEASUREMENT));
+		
+		//计划工期
+		this.setValue(IWorkCloneFields.F_WORK_TIME_DATA, wd.getValue(IWorkCloneFields.F_WORK_TIME_DATA));
+		
+		//统计点
+		this.setValue(IWorkCloneFields.F_STATISTICS_POINT, wd.getValue(IWorkCloneFields.F_STATISTICS_POINT));
+		
 		// 处理用户设置
 		DBObject acdata = ipc.getProcessActorsData(key);
 		if (acdata == null) {
