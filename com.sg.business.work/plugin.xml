@@ -3840,8 +3840,7 @@
                title="%worktime">
             <pagecolumn>
                <section
-                     label="%worktime"
-                     sibling_order="&lt;text&#x0D;&#x0A;                        editPart=&quot;Text(Single Line)&quot;&#x0D;&#x0A;                        editable=&quot;true&quot;&#x0D;&#x0A;                        id=&quot;worktimedata&quot;&#x0D;&#x0A;                        label=&quot;%spinner.label&quot;&#x0D;&#x0A;                        labelVisible=&quot;true&quot;&#x0D;&#x0A;                        name=&quot;worktimedata&quot;&#x0D;&#x0A;                        persistable=&quot;true&quot;&#x0D;&#x0A;                        required=&quot;false&quot;&#x0D;&#x0A;                        type=&quot;Double&quot;&#x0D;&#x0A;                        widthHint=&quot;80&quot;&gt;&#x0D;&#x0A;                  &lt;/text&gt;">
+                     label="%worktime">
                   <radio
                         defaultValue="no"
                         editable="false"
@@ -3851,7 +3850,6 @@
                         name="measurement"
                         option="worktime.measurement"
                         persistable="true"
-                        required="true"
                         type="DBObject">
                   </radio>
                   <spinner
