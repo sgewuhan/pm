@@ -2935,6 +2935,19 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="%navigatorSelector.label.2"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -3098,6 +3111,19 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="%navigatorSelector.label.2"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>

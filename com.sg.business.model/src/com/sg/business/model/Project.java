@@ -804,11 +804,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制角色定义
 		Map<ObjectId, DBObject> roleMap = doMakeRolesWithTemplate(id, context);
 
-		//使用项目模板创建wbs
+		// 使用项目模板创建wbs
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
 				folderRootId, roleMap, context);
 		// 复制工作定义
-		
+
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
 
@@ -1785,19 +1785,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkWriteResult(ws);
 
 		BasicDBObject condition = new BasicDBObject();
-		condition.put(Deliverable.F_PROJECT_ID, get_id());
-		condition.put(Deliverable.F_TYPE, IDeliverable.TYPE_OUTPUT);
-		List<PrimaryObject> deliverableList = getRelationByCondition(
-				Deliverable.class, condition);
-		if (deliverableList != null) {
-			for (PrimaryObject po : deliverableList) {
-				Deliverable deliverable = (Deliverable) po;
-				Document document = deliverable.getDocument();
-				if (document != null) {
-					String lc = document.getLifecycle();
-					if (Document.STATUS_WORKING_ID.equals(lc)) {
-						document.doSetLifeCycleStatus(context,
-								Document.STATUS_RELEASED_ID);
+		condition.put(Work.F_PROJECT_ID, get_id());
+		List<PrimaryObject> workList = getRelationByCondition(Work.class,
+				condition);
+		if (workList != null && workList.size() > 0) {
+			for (PrimaryObject po : workList) {
+				Work work = (Work) po;
+				List<PrimaryObject> documentList = work
+						.getOutputDeliverableDocuments();
+				if (documentList != null && documentList.size() > 0) {
+					for (PrimaryObject primaryObject : documentList) {
+						Document document = (Document) primaryObject;
+						if (document != null) {
+							String lc = document.getLifecycle();
+							if (Document.STATUS_WORKING_ID.equals(lc)) {
+								document.doSetLifeCycleStatus(context,
+										Document.STATUS_RELEASED_ID);
+							}
+						}
 					}
 				}
 			}
@@ -2705,16 +2710,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			String typeDesc, DBObject option, boolean select) {
 		if (select) {
 			makeWorkTimeColumnTypeOption(typeId, typeDesc, option);
-		}else{
-			removeWorkTimeColumnTypeOption(typeId,option);
+		} else {
+			removeWorkTimeColumnTypeOption(typeId, option);
 		}
 	}
 
 	private void removeWorkTimeColumnTypeOption(ObjectId typeId, DBObject option) {
 		BasicBSONList typeOptions = getWorkTimeColumnTypeOption(typeId);
 		for (Object object : typeOptions) {
-			DBObject typeOption=(DBObject) object;
-			if(typeOption.get(F__ID).equals(option.get(F__ID))){
+			DBObject typeOption = (DBObject) object;
+			if (typeOption.get(F__ID).equals(option.get(F__ID))) {
 				typeOptions.remove(typeOption);
 				return;
 			}
@@ -2778,13 +2783,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 判断没有选的工时类型选项
 			boolean valid = checkWorkTimeTypeOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+				throw new Exception(
+						Messages.get().WorkTimeTypeOptionNotSelected);
 			}
 			// 2.检查所有的列类型选项
 			// 所有的列类型选项都没选择，提示出错
 			valid = checkWorkTimeColumnTypeOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+				throw new Exception(
+						Messages.get().WorkTimeTypeOptionNotSelected);
 			}
 			return;
 		}
@@ -2821,7 +2828,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						optionIdSet_inProg.add((ObjectId) option_inProg
 								.get(F__ID));
 					}
-					
+
 					for (Object object4 : options_inProj) {
 						DBObject option_inProj = (DBObject) object4;
 						// 方案中的对应的工时类型选项不包含项目中的工时类型选项，就抛出异常
