@@ -1,4 +1,4 @@
-package com.tmt.document.tb;
+package com.tmt.document.handler;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -8,9 +8,7 @@ import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
 
-public class AddProductProposal implements IAddTableItemHandler {
-
-	private static final String DOCUMENT_PRODUCTPROPOSAL_PRODUCT = "document.productproposal.product";
+public abstract class AbstractTableItemHandler implements IAddTableItemHandler {
 
 	@Override
 	public boolean addItem(BasicDBList inputData, AbstractFieldPart part) {
@@ -18,7 +16,7 @@ public class AddProductProposal implements IAddTableItemHandler {
 		PrimaryObject po = ModelService.createModelObject(DummyModel.class);
 		try {
 			DataObjectDialog dialog = DataObjectDialog.openDialog(po,
-					DOCUMENT_PRODUCTPROPOSAL_PRODUCT, true, null);
+					getDataEditorId(), true, null);
 			if (dialog.getReturnCode() == DataObjectDialog.OK) {
 				inputData.add(po.get_data());
 			}
@@ -28,5 +26,7 @@ public class AddProductProposal implements IAddTableItemHandler {
 
 		return true;
 	}
+
+	protected abstract String getDataEditorId() ;
 
 }
