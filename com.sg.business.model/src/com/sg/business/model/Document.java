@@ -2,7 +2,6 @@ package com.sg.business.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Image;
 
-import com.artofsolving.jodconverter.DocumentConverter;
-import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
 import com.mobnut.admin.dataset.Setting;
-import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
@@ -42,6 +36,7 @@ import com.sg.business.model.commonlabel.DocumentCommonHTMLLable;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
+import com.sg.documentconverter.DocumentConverterActivator;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
@@ -269,18 +264,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		Job job = new Job("generate preview internal") { //$NON-NLS-1$
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				OpenOfficeConnection connection = new SocketOpenOfficeConnection(
-						Commons.getOfficeServerIP(), Commons.getOfficeSocket());
-				try {
-					connection.connect();
-				} catch (ConnectException e) {
-					return Status.CANCEL_STATUS;
-				}
-
-				// convert
-				DocumentConverter converter = new OpenOfficeDocumentConverter(
-						connection);
-
 				File serverFile;
 				File previewFile;
 				ObjectId previewOid;
@@ -320,7 +303,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						}
 
 						try {
-							converter.convert(serverFile, previewFile);
+							DocumentConverterActivator.convert(serverFile, previewFile);
 							remoteFile.setPreviewUploaded(previewFile,
 									previewOid);
 							remoteFile.addPreview();
@@ -331,7 +314,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 					}
 				}
-				connection.disconnect();
 				return Status.OK_STATUS;
 			}
 		};
