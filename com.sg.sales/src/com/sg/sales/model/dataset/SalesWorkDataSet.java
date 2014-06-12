@@ -14,6 +14,7 @@ import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.sales.model.ISalesWork;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class SalesWorkDataSet extends SingleDBCollectionDataSetFactory {
@@ -24,28 +25,30 @@ public class SalesWorkDataSet extends SingleDBCollectionDataSetFactory {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 		context = new CurrentAccountContext();
 		List<String> userlists = new ArrayList<String>();
-		AccountInfo accountinfo=context.getAccountInfo();
-		if(accountinfo!=null){
+		AccountInfo accountinfo = context.getAccountInfo();
+		if (accountinfo != null) {
 			String userId = accountinfo.getConsignerId();
 			User user = UserToolkit.getUserById(userId);
 			// 获取当前用户所具有的管理者角色
 			userlists.add(userId);
-			List<PrimaryObject> roles = user.getRoles(Role.ROLE_DEPT_MANAGER_ID);
+			List<PrimaryObject> roles = user
+					.getRoles(Role.ROLE_DEPT_MANAGER_ID);
 			for (PrimaryObject po : roles) {
 				Role role = (Role) po;
 				// 获取管理者角色所在的组织
 				Organization organization = role.getOrganization();
 				// 获取组织下的所有用户
 				List<String> userlist = organization.getMemberIds(true);
-				if(userlist != null){
+				if (userlist != null) {
 					userlists.addAll(userlist);
 				}
 				// 判断工作负责人是管理者角色所在组织下的用户以及是独立工作
 
 			}
 		}
-		setQueryCondition(new BasicDBObject().append(Work.F_CHARGER,
-				new BasicDBObject().append("$in", userlists))
-				.append(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE));
+		setQueryCondition(new BasicDBObject()
+				.append(Work.F_CHARGER,
+						new BasicDBObject().append("$in", userlists))
+				.append(Work.F_WORK_CATAGORY, ISalesWork.WORK_CATAGORY_SALES));
 	}
 }

@@ -8033,6 +8033,26 @@
       <navigator
             id="sales.works.navigator"
             table="sales.works.navigator">
+         <queryAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="planstart_c">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_c">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_c">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_c">
+            </column>
+         </queryAction>
       </navigator>
       <navigator
             id="sales.organization.user.assignment"
@@ -9643,7 +9663,9 @@
       </table>
       <table
             dataSet="com.sg.sales.model.dataset.SalesWorkDataSet"
-            id="sales.works.navigator">
+            id="sales.works.navigator"
+            limit="100"
+            queryMode="true">
          <column
                labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
                name="状态"
