@@ -2587,7 +2587,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作启动
-		doNoticeWorkAction(context, Messages.get().Work_122);
+		// doNoticeWorkAction(context, Messages.get().Work_122);
 
 		// 调用后处理
 		doStartAfter(context, params);
@@ -2645,7 +2645,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已暂停
-		doNoticeWorkAction(context, Messages.get().Work_127);
+//		doNoticeWorkAction(context, Messages.get().Work_127);
 
 		// 后处理
 		doPauseAfter(context, params);
@@ -2690,7 +2690,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSaveProcessHistoryToDocument(context);
 
 		// 提示工作已取消
-		doNoticeWorkAction(context, Messages.get().Work_130);
+//		doNoticeWorkAction(context, Messages.get().Work_130);
 		doCancelAfter(context, params);
 
 		return null;
@@ -2850,7 +2850,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已完成
-		doNoticeWorkAction(context, Messages.get().Work_135);
+//		doNoticeWorkAction(context, Messages.get().Work_135);
 		doFinishAfter(context, params);
 
 		doCalculatePerformence(context);
@@ -3245,6 +3245,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
+	@SuppressWarnings("unused")
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) throws Exception {
 		// doNoticeWorkActionInternal(context, actionName);
