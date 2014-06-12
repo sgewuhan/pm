@@ -3264,7 +3264,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						"$" + WorksPerformence.F_WORKID).append(
 						"total",
 						new BasicDBObject().append("$sum",
-								WorksPerformence.F_WORKS)));
+								"$"+ WorksPerformence.F_WORKS)));
 		AggregationOutput aggResult = col.aggregate(match, group);
 		Iterator<DBObject> results = aggResult.results().iterator();
 		if (results.hasNext()) {
