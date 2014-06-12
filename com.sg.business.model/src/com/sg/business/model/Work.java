@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -2180,10 +2182,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 		if (isStandloneWork()) {
-			copyWorkDefinition(Work.F_WF_EXECUTE, context);
+			copyWorkDefinitionForStandloneWork(context);
 
 			// 处理文档的复制
-			copyDeliveryFromWorkDefinition(context);
+			copyDeliveryFromWorkDefinitionForStandloneWork(context);
 		}
 
 		// 同步负责人、流程活动执行人到工作的参与者。
@@ -2198,7 +2200,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		super.doInsert(context);
 	}
 
-	private void copyDeliveryFromWorkDefinition(IContext context)
+	private void copyDeliveryFromWorkDefinitionForStandloneWork(IContext context)
 			throws Exception {
 		WorkDefinition workdef = getWorkDefinition();
 		if (workdef == null) {
@@ -2813,7 +2815,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		update.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		// 设置工作的实际完成时间
 		update.put(F_ACTUAL_FINISH, new Date());
-
+		//设置实际工时
+		try {
+			double actualWorks = calculateActualWorks();
+			update.put(F_ACTUAL_WORKS, actualWorks);
+		} catch (Exception e) {
+		}
+		
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
@@ -2824,7 +2832,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doNoticeWorkAction(context, Messages.get().Work_135);
 		doFinishAfter(context, params);
 
-		doCalculatePerformence(context);
+		doCalculateWorkPerformence(context);
 		return null;
 
 	}
@@ -3037,14 +3045,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 计算处理实际工时的分担
+	 * 计算实际工时分摊
 	 * 
 	 * @param context
 	 */
-	public void doCalculatePerformence(final IContext context) {
+	public void doCalculateWorkPerformence(final IContext context) {
 		final String userid = context.getAccountInfo().getUserId();
 
-		Job job = new Job("计算实际工时") { //$NON-NLS-1$
+		Job job = new Job("计算实际工时分摊") { //$NON-NLS-1$
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 
@@ -3088,8 +3096,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				// 得到工作的参与者(不计算参与者)
 				// BasicBSONList participatesIds = getParticipatesIdList();
 				// if (participatesIds == null || participatesIds.size() < 1) {
-				// return;
-				// }
+				// return; // }
 
 				// 得到日历计算器
 				Project project = getProject();
@@ -3100,8 +3107,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				Calendar finishCal = Calendar.getInstance();
 				finishCal.setTime(finish);
 
-				// 遍历计算每天的工时
-				// 按人天进行平均
+				// 遍历计算每天的工时 // 按人天进行平均
 				int workDays = calCaculater.getWorkingDays(start, finish);
 				double personDayWorks = works / workDays;
 
@@ -3141,13 +3147,173 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 							Messages.get().Work_145, IModelConstants.DB);
 				} catch (Exception e) {
 				}
+
 				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
-
 		};
-
 		job.setUser(false);
 		job.schedule();
+	}
+
+	private double calculateActualWorks() throws Exception {
+		Double actualWorks = null;
+		// 获取计量方式F_MEASUREMENT
+		Object measurement = getValue(F_MEASUREMENT);
+		if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
+			// 判断工作的工时计量方式F_MEASUREMENT的值是无工时
+			actualWorks = 0d;
+		} else if (MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)
+				|| measurement == null) {
+			// 如果工作的计量方式是填报工时,计算实际工时
+			actualWorks = caculateActualWorksForCommitableWork();
+		} else if (MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)) {
+			// 判断工作的工时计量方式F_MEASUREMENT的值是计划工时
+			// 在work类中使用getProject()获取工作所在的项目
+			Project project = getProject();
+			if (project != null) {
+				// 当项目的工作是标准工时制时,将计划工时设置到实际工时,
+				// 如果独立工作被附加到项目中，会使用项目的工时方案，工时参数选项，重新计算工时
+				actualWorks = calculatePlanWorksFromStandardForProjectWork(project);
+			} else {
+				// 对于独立工作而言，直接取出标准工时
+				actualWorks = (Double) getValue(F_STANDARD_WORKS);
+			}
+		}
+		return actualWorks == null ? 0d : actualWorks.doubleValue();
+	}
+
+	/**
+	 * 计算并返回工作的计划工时,
+	 * 
+	 * 工作的计量方式是无工时制时返回0，
+	 * 
+	 * 是填报工时时，返回计划工时字段本身的值，
+	 * 
+	 * 标准制时，如果是项目工作，按项目的工时方案及工时参数选项计算计划工时，出错时抛出异常
+	 * 
+	 * 如果是独立工作，返回标准工时
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public Double calculatePlanWorks() throws Exception {
+		Double planWorks = null;
+		// 获取计量方式F_MEASUREMENT
+		Object measurement = getValue(F_MEASUREMENT);
+		if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
+			// 判断工作的工时计量方式F_MEASUREMENT的值是无工时
+			planWorks = 0d;
+		} else if (MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)
+				|| measurement == null) {
+			// 如果工作的计量方式是填报工时，就不做任何处理，直接返回工作的planWorks
+			planWorks = getPlanWorks();
+		} else if (MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)) {
+			// 判断工作的工时计量方式F_MEASUREMENT的值是计划工时
+			// 在work类中使用getProject()获取工作所在的项目
+			Project project = getProject();
+			if (project != null) {
+				planWorks = calculatePlanWorksFromStandardForProjectWork(project);
+			} else {
+				// 对于独立工作而言，直接取出标准工时
+				planWorks = (Double) getValue(F_STANDARD_WORKS);
+			}
+		}
+		return planWorks;
+	}
+
+	private double caculateActualWorksForCommitableWork() {
+		double actualWorks = 0d;
+		// 判断工作的工时计量方式F_MEASUREMENT的值是填报工时或者为空
+		// 读取works performance表，根据work_id分组求和（F_WORKS）
+		DBCollection col = getCollection(IModelConstants.C_WORKS_PERFORMENCE);
+		DBObject match = new BasicDBObject()
+				.append("$match", new BasicDBObject().append(
+						WorksPerformence.F_WORKID, get_id()));
+		DBObject group = new BasicDBObject().append(
+				"$group",
+				new BasicDBObject().append(F__ID,
+						"$" + WorksPerformence.F_WORKID).append(
+						"total",
+						new BasicDBObject().append("$sum",
+								WorksPerformence.F_WORKS)));
+		AggregationOutput aggResult = col.aggregate(match, group);
+		Iterator<DBObject> results = aggResult.results().iterator();
+		if (results.hasNext()) {
+			DBObject result = results.next();
+			Object total = result.get("total");
+			if (total instanceof Number) {
+				actualWorks = ((Number) total).doubleValue();
+			}
+		}
+		return actualWorks;
+	}
+
+	/**
+	 * 根据工作上标准工时制计算项目工作的实际工时
+	 * 
+	 * @param project
+	 * @return
+	 * @throws Exception
+	 */
+	private double calculatePlanWorksFromStandardForProjectWork(Project project)
+			throws Exception {
+		Assert.isNotNull(project);
+		// 获取项目的工时方案
+		WorkTimeProgram workTimeProgram = project.getWorkTimeProgram();
+		if (workTimeProgram == null) {
+			throw new Exception(Messages.get().NotFoundOfWorkTimeProgram);
+		}
+		Set<ObjectId> paraXOptionIdSet = new HashSet<ObjectId>();
+		// 获取项目中的列类型选项id的set集合
+		Set<ObjectId> paraYOptionIdSet = project.getWorkTimeParaYOptionIds();
+		if (paraYOptionIdSet.isEmpty()) {
+			throw new Exception(Messages.get().ParaYOptionIdIsNull);
+		}
+		// 获取工作上的工时类型
+		BasicBSONList paraXs = (BasicBSONList) getValue(F_WORKTIME_PARAX);
+		if (paraXs == null) {
+			throw new Exception(Messages.get().NoParaX);
+		}
+		for (int i = 0; i < paraXs.size(); i++) {
+			DBObject paraX = (DBObject) paraXs.get(i);
+			ObjectId paraXId = (ObjectId) paraX.get(F_WORKTIME_PARAX_ID);
+//			ObjectId paraXId = (ObjectId) paraX.get(F__ID);
+			if (paraXId != null) {
+				// 根据工时类型id获取项目上的工时类型选项
+				DBObject paraXOption = project.getParaXOption(paraXId);
+				ObjectId paraXOptionId = (ObjectId) paraXOption.get(F__ID);
+				paraXOptionIdSet.add(paraXOptionId);
+//				BasicBSONList paraXOptions = (BasicBSONList) project
+//						.getParaXOption(paraXId);
+//				if (paraXOptions != null) {
+//					for (int j = 0; j < paraXOptions.size(); j++) {
+//						DBObject paraXOption = (DBObject) paraXOptions.get(j);
+//						ObjectId paraXOptionId = (ObjectId) paraXOption
+//								.get(F__ID);
+//						// 将工时类型选项id加入到set集合
+//						paraXOptionIdSet.add(paraXOptionId);
+//					}
+//				}
+			}
+		}
+
+		// 两层循环遍历，获得列类型选项id和工时类型选项id
+		double summary = 0d;
+		Iterator<ObjectId> wIter = paraXOptionIdSet.iterator();
+		while (wIter.hasNext()) {
+			Iterator<ObjectId> cIter = paraYOptionIdSet.iterator();
+			ObjectId wId = wIter.next();
+			while (cIter.hasNext()) {
+				ObjectId cId = cIter.next();
+				// 根据项目上获取的列类型选项id和工作上工时类型与项目上工时类型匹配，从项目中取出的工时类型选项id获取工时数据
+				Double value = workTimeProgram.getWorkTimeData(wId, cId);
+				if (value != null) {
+					summary += value;
+				}
+			}
+		}
+		return summary;
+
 	}
 
 	/**
@@ -3306,13 +3472,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	private void doFinishAfter(IContext context, Map<String, Object> params)
 			throws Exception {
 		ModelActivator.executeEvent(this, "finish.after", params); //$NON-NLS-1$
-
 	}
 
 	private void doFinishBefore(IContext context, Map<String, Object> params)
 			throws Exception {
 		ModelActivator.executeEvent(this, "finish.before", params); //$NON-NLS-1$
-
 	}
 
 	private void doCancelAfter(IContext context, Map<String, Object> params)
@@ -3944,7 +4108,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		} else if (adapter == CommonHTMLLabel.class) {
 			return (T) (new WorkCommonHTMLLable(this));
 		} else if (adapter == IEditorInputFactory.class) {
-			if(isProjectWBSRoot()){
+			if (isProjectWBSRoot()) {
 				Project project = getProject();
 				setValue(F_CHARGER, project.getChargerId());
 				setValue(F_PARTICIPATE, project.getParticipatesIdList());
@@ -4240,7 +4404,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return !isStandloneWork();
 	}
 
-	public void copyWorkDefinition(String key, IContext context)
+	private void copyWorkDefinitionForStandloneWork(IContext context)
 			throws Exception {
 		WorkDefinition wd = getWorkDefinition();
 		if (wd == null) {
@@ -4254,7 +4418,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		IProcessControl ipc = getAdapter(IProcessControl.class);
 
 		// 处理角色定义
-		DBObject radata = ipc.getProcessRoleAssignmentData(key);
+		DBObject radata = ipc.getProcessRoleAssignmentData(F_WF_EXECUTE);
 		Iterator<String> iterator;
 		if (radata != null) {
 			iterator = radata.keySet().iterator();
@@ -4265,31 +4429,33 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				if (newRoleDef != null) {
 					RoleDefinition rd = ModelService.createModelObject(
 							newRoleDef, RoleDefinition.class);
-					ipc.setProcessActionAssignment(key, parameter, rd);
+					ipc.setProcessActionAssignment(F_WF_EXECUTE, parameter, rd);
 				}
 			}
 		}
-		
+
 		/*
-		 *  设置与工时管理有关的值，包括计量方式、标准工时、工时类型和统计点
-		 *  
+		 * 设置与工时管理有关的值，包括计量方式、标准工时、工时类型和统计点
 		 */
-		//工时类型
-		this.setValue(IWorkCloneFields.F_WORKTIMETYPE, wd.getValue(IWorkCloneFields.F_WORKTIMETYPE));
-		
-		//计量方式
-		this.setValue(IWorkCloneFields.F_MEASUREMENT, wd.getValue(IWorkCloneFields.F_MEASUREMENT));
-		
-		//计划工期
-		this.setValue(IWorkCloneFields.F_WORK_TIME_DATA, wd.getValue(IWorkCloneFields.F_WORK_TIME_DATA));
-		
-		//统计点
-		this.setValue(IWorkCloneFields.F_STATISTICS_POINT, wd.getValue(IWorkCloneFields.F_STATISTICS_POINT));
-		
+		// 工时类型
+		setValue(F_WORKTIME_PARAX, wd.getValue(F_WORKTIME_PARAX));
+
+		// 计量方式
+		setValue(F_MEASUREMENT, wd.getValue(F_MEASUREMENT));
+
+		// 标准工时
+		setValue(F_STANDARD_WORKS, wd.getValue(F_STANDARD_WORKS));
+
+		// 设置计划工时
+		setValue(F_PLAN_WORKS, wd.getValue(F_STANDARD_WORKS));
+
+		// 统计点
+		setValue(F_STATISTICS_POINT, wd.getValue(F_STATISTICS_POINT));
+
 		// 处理用户设置
-		DBObject acdata = ipc.getProcessActorsData(key);
+		DBObject acdata = ipc.getProcessActorsData(F_WF_EXECUTE);
 		if (acdata == null) {
-			radata = ipc.getProcessRoleAssignmentData(key);
+			radata = ipc.getProcessRoleAssignmentData(F_WF_EXECUTE);
 			if (radata != null) {
 
 				iterator = radata.keySet().iterator();
@@ -4306,7 +4472,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						if (roleAss.size() > 1) {
 							break;
 						} else {
-							ipc.setProcessActionActor(key, parameter,
+							ipc.setProcessActionActor(F_WF_EXECUTE, parameter,
 									((AbstractRoleAssignment) roleAss.get(0))
 											.getUserid());
 						}
@@ -4829,6 +4995,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 		return null;
+	}
+	
+	
+	public String getMeasurementLabel() {
+		String measurement =getMeasurement();
+		if (measurement != null) {
+			if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
+				return MEASUREMENT_TYPE_NO_VALUE;
+			}else if(MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)){
+				return MEASUREMENT_TYPE_COMMIT_VALUE;
+			}else if(MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)){
+				return MEASUREMENT_TYPE_STANDARD_VALUE;
+			}
+		}
+		return "";
+	}
+	
+	public String getMeasurement(){
+		return getStringValue(F_MEASUREMENT); 
 	}
 
 }

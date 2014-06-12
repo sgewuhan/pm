@@ -352,6 +352,47 @@
                   id="management.selectworktimetype"
                   tree="management.selectworktimetype">
             </navigator>
+            <navigator
+                  id="management.worksparaofwbs"
+                  tree="management.worksparaofwbs">
+               <filterAction>
+                  <column
+                        columnDefinitionId="work.desc">
+                  </column>
+               </filterAction>
+               <searchAction>
+                  <column
+                        columnDefinitionId="work.desc">
+                  </column>
+               </searchAction>
+               <exportAction>
+                  <column
+                        column="_id"
+                        exportValueDelegator="com.sg.business.management.exportvaluedelegator.WBSCodeExecuteValueDelegator"
+                        name="WBS序号">
+                  </column>
+                  <column
+                        columnDefinitionId="work.desc">
+                  </column>
+                  <column
+                        columnDefinitionId="milestone">
+                  </column>
+                  <column
+                        column="wf_execute_activated"
+                        name="%column.name.6"
+                        type="Boolean">
+                  </column>
+                  <column
+                        column="wf_execute"
+                        exportValueDelegator="com.sg.business.management.exportvaluedelegator.WFExecuteValueDelegator"
+                        name="%column.name.7">
+                  </column>
+                  <column
+                        columnDefinitionId="workdefinition.chargerrole"
+                        exportValueDelegator="com.sg.business.management.exportvaluedelegator.ChargerRoleExecuteValueDelegator">
+                  </column>
+               </exportAction>
+            </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -571,34 +612,6 @@
          <structure
                modelRelation="workd_workd">
          </structure>
-         <columnGroup
-               defaultGroup="false"
-               name="%worktimepage">
-            <column
-                  column="measurement"
-                  labelProvider="com.sg.business.management.column.labelprovider.MeasurementLabelProvider"
-                  name="%measurement">
-            </column>
-            <column
-                  column="worktimedata"
-                  name="%spinner.label"
-                  type="Double">
-            </column>
-            <column
-                  column="worktimetype"
-                  labelProvider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabelProvider"
-                  name="%worktimetypebasicpage.title.24">
-            </column>
-            <column
-                  column="statisticsstep"
-                  name="%statisticsstep">
-            </column>
-            <column
-                  column="statisticspoint"
-                  name="%statisticspoint"
-                  type="Boolean">
-            </column>
-         </columnGroup>
       </tree>
       <tree
             autoExpandLevel="2"
@@ -733,7 +746,7 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            contentProvider="com.sg.business.management.contentprovider.WorkTimeTypeOfProgram"
+            contentProvider="com.sg.business.management.contentprovider.ParaXOfProgram"
             dataSet="com.sg.business.model.dataset.WorkTimeProgramOfProjectTemplate"
             id="management.selectworktimetype">
          <column
@@ -742,6 +755,46 @@
                name="%column.name.12"
                type="String"
                width="-1">
+         </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
+            dropTargetListener="com.sg.business.management.dnd.DropWBSTemplate"
+            id="management.worksparaofwbs"
+            popupMenu="popup:management.wbstemplate"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <structure
+               modelRelation="workd_workd">
+         </structure>
+         <column
+               column="measurement"
+               labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
+               name="%measurement">
+         </column>
+         <column
+               column="standardworks"
+               name="%spinner.label"
+               style="SWT.CENTER"
+               type="Double">
+         </column>
+         <column
+               column="parax"
+               labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+               name="%paraxbasicpage.title.24"
+               width="160">
+         </column>
+         <column
+               column="statisticsstep"
+               name="%statisticsstep">
+         </column>
+         <column
+               column="statisticspoint"
+               name="%statisticspoint"
+               type="Boolean">
          </column>
       </tree>
    </extension>
@@ -908,6 +961,11 @@
             <navigatoraction
                   action="com.sg.business.mangement.action.ExportProjectTemplateWBS">
             </navigatoraction>
+         </navigatorpage>
+         <navigatorpage
+               id="worksparaofwbs"
+               navigatorId="management.worksparaofwbs"
+               title="%worktimepage">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -1165,7 +1223,8 @@
                         required="true"
                         type="DBObject">
                   </radio>
-                  <spinner
+                  <text
+                        editPart="Text(Single Line)"
                         editable="true"
                         id="standardworks"
                         label="%spinner.label"
@@ -1173,17 +1232,17 @@
                         name="standardworks"
                         persistable="true"
                         required="false"
-                        spinnerSetting="0,9999,1,10">
-                  </spinner>
+                        type="Double">
+                  </text>
                   <list
-                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        addTableItemHandler="com.sg.business.management.field.action.AddParaXAction"
                         editable="true"
                         heightHint="100"
-                        id="worktimetype"
-                        label="%worktimetypebasicpage.title.24"
+                        id="worktimepara_x"
+                        label="%paraxbasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
-                        name="worktimetype"
+                        labelprovider="com.sg.business.commons.column.labelprovider.ParaXLabel"
+                        name="worktimepara_x"
                         persistable="true"
                         required="false"
                         widthHint="200">
@@ -1572,16 +1631,16 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="%columntypebasicpage.description.23"
-               id="columntypebasicpage"
-               pageDelegator="com.sg.business.management.editor.ColumnTypePageDelegator"
-               title="%columntypebasicpage.title.22">
+               description="%paraybasicpage.description.23"
+               id="paraybasicpage"
+               pageDelegator="com.sg.business.management.editor.ParaYPageDelegator"
+               title="%paraybasicpage.title.22">
          </basicpage>
          <basicpage
-               description="%worktimetypebasicpage.description.25"
-               id="worktimetypebasicpage"
-               pageDelegator="com.sg.business.management.editor.WorkTimeTypePageDelegator"
-               title="%worktimetypebasicpage.title.24">
+               description="%paraxbasicpage.description.25"
+               id="paraxbasicpage"
+               pageDelegator="com.sg.business.management.editor.ParaXPageDelegator"
+               title="%paraxbasicpage.title.24">
          </basicpage>
       </editor>
       <editor
@@ -1719,14 +1778,14 @@
                         type="DBObject">
                   </radio>
                   <list
-                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        addTableItemHandler="com.sg.business.management.field.action.AddParaXAction"
                         editable="true"
                         heightHint="100"
-                        id="worktimetype"
-                        label="%worktimetypebasicpage.title.24"
+                        id="worktimepara_x"
+                        label="%paraxbasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
-                        name="worktimetype"
+                        labelprovider="com.sg.business.commons.column.labelprovider.ParaXLabel"
+                        name="worktimepara_x"
                         persistable="true"
                         required="false"
                         widthHint="80">
@@ -2169,24 +2228,23 @@
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
-                        id="worktimedata"
+                        id="standardworks"
                         label="%spinner.label"
                         labelVisible="true"
-                        name="worktimedata"
+                        name="standardworks"
                         persistable="true"
                         required="false"
-                        type="Double"
-                        widthHint="80">
+                        type="Double">
                   </text>
                   <list
-                        addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeTypeAction"
+                        addTableItemHandler="com.sg.business.management.field.action.AddParaXAction"
                         editable="true"
                         heightHint="100"
-                        id="worktimetype"
-                        label="%worktimetypebasicpage.title.24"
+                        id="worktimepara_x"
+                        label="%paraxbasicpage.title.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeTypeLabel"
-                        name="worktimetype"
+                        labelprovider="com.sg.business.commons.column.labelprovider.ParaXLabel"
+                        name="worktimepara_x"
                         persistable="true"
                         required="false"
                         widthHint="200">

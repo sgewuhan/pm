@@ -214,12 +214,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	/**
 	 * 工时类型
 	 */
-	public static final String F_WORKTIMETYPES = "worktimetypes";
+	public static final String F_WORKTIME_PARA_X = "worktimepara_x";
 
 	/**
-	 * 类型选项，用于ColumnType 子记录的字段，DBObject类型
+	 * 类型选项，用于paraY 子记录的字段，DBObject类型
 	 */
-	public static final String F_WORKTIME_TYPE_OPTIONS = "worktimetypeoptions";
+	public static final String F_WORKTIME_PARA_OPTIONS = "options";
 
 	/**
 	 * 临时用于记录项目的标签，不作为字段保存
@@ -229,7 +229,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	/**
 	 * 工时列类型
 	 */
-	public static final String F_WORKTIME_COLUMNTYPES = "worktimecolumntypes";
+	public static final String F_WORKTIME_PARA_Y = "worktimepara_y";
 
 	private SummaryProjectWorks summaryProjectWorks;
 
@@ -804,11 +804,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制角色定义
 		Map<ObjectId, DBObject> roleMap = doMakeRolesWithTemplate(id, context);
 
-		//使用项目模板创建wbs
+		// 使用项目模板创建wbs
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
 				folderRootId, roleMap, context);
 		// 复制工作定义
-		
+
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
 
@@ -2500,25 +2500,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	/**
-	 * 获得工时类型 项目F_WORKTIMETYPES字段没有值时返回null,项目的工时类型字段保存的是一个BsonList
-	 * 当项目工时类型中不包含给定的workTimeTypeId对应的workTimeType时,返回为null
+	 * 获得工时类型 项目F_WORKTIME_PARA_X字段没有值时返回null,项目的工时类型字段保存的是一个BsonList
+	 * 当项目工时类型中不包含给定的paraXId对应的paraX时,返回为null
 	 * 
 	 * @param typeId
 	 * @param typeFieldName
 	 * @return
 	 */
-	public DBObject getWorkTimeTypeOrColumnType(ObjectId typeId,
+	public DBObject getParaXOrParaY(ObjectId typeId,
 			String typeFieldName) {
 		// 通过工时类型id，获取工时类型
-		BasicBSONList workTimeTypes = (BasicBSONList) getValue(typeFieldName);
-		if (workTimeTypes == null) {
+		BasicBSONList paraXs = (BasicBSONList) getValue(typeFieldName);
+		if (paraXs == null) {
 			return null;
 		}
-		for (int i = 0; i < workTimeTypes.size(); i++) {
-			DBObject workTimeType = (DBObject) workTimeTypes.get(i);
-			ObjectId _typeId = (ObjectId) workTimeType.get(F__ID);
+		for (int i = 0; i < paraXs.size(); i++) {
+			DBObject paraX = (DBObject) paraXs.get(i);
+			ObjectId _typeId = (ObjectId) paraX.get(F__ID);
 			if (_typeId.equals(typeId)) {
-				return workTimeType;
+				return paraX;
 			}
 		}
 		return null;
@@ -2527,21 +2527,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	/**
 	 * 获取工时类型选项
 	 * 
-	 * @param workTimeTypeId
+	 * @param paraXId
 	 * @return
 	 */
-	public DBObject getWorkTimeTypeOption(ObjectId workTimeTypeId) {
-		DBObject workTimeType = getWorkTimeTypeOrColumnType(workTimeTypeId,
-				F_WORKTIMETYPES);
-		if (workTimeType == null) {
+	public DBObject getParaXOption(ObjectId paraXId) {
+		DBObject paraX = getParaXOrParaY(paraXId,
+				F_WORKTIME_PARA_X);
+		if (paraX == null) {
 			return null;
 		}
-		BasicBSONList workTimeTypeOptions = (BasicBSONList) workTimeType
-				.get(F_WORKTIME_TYPE_OPTIONS);
-		if (workTimeTypeOptions == null || workTimeTypeOptions.size() == 0) {
+		BasicBSONList paraXs = (BasicBSONList) paraX
+				.get(F_WORKTIME_PARA_OPTIONS);
+		if (paraXs == null || paraXs.size() == 0) {
 			return null;
 		}
-		DBObject option = (DBObject) workTimeTypeOptions.get(0);
+		DBObject option = (DBObject) paraXs.get(0);
 		return option;
 
 	}
@@ -2549,37 +2549,37 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	/**
 	 * 为项目的工时类型设置其选项
 	 * 
-	 * @param workTimeTypeId
+	 * @param paraXId
 	 * @param option
 	 */
-	public void makeWorkTimeTypeOption(ObjectId workTimeTypeId,
-			String workTimeTypeDesc, DBObject option) {
-		BasicBSONList workTimeTypes = null;
-		Object value = getValue(F_WORKTIMETYPES);
+	public void makeParaXOption(ObjectId paraXId,
+			String paraXDesc, DBObject option) {
+		BasicBSONList paraXs = null;
+		Object value = getValue(F_WORKTIME_PARA_X);
 
 		if (value instanceof BasicBSONList) {
-			workTimeTypes = (BasicBSONList) value;
-			for (Object object : workTimeTypes) {
-				DBObject workTimeType = (DBObject) object;
-				if (workTimeType.get(F__ID).equals(workTimeTypeId)) {
-					BasicBSONList options = (BasicBSONList) workTimeType
-							.get(F_WORKTIME_TYPE_OPTIONS);
+			paraXs = (BasicBSONList) value;
+			for (Object object : paraXs) {
+				DBObject paraX = (DBObject) object;
+				if (paraX.get(F__ID).equals(paraXId)) {
+					BasicBSONList options = (BasicBSONList) paraX
+							.get(F_WORKTIME_PARA_OPTIONS);
 					options.clear();
 					options.add(option);
 					return;
 				}
 			}
 		} else {
-			workTimeTypes = new BasicDBList();
-			setValue(F_WORKTIMETYPES, workTimeTypes);
+			paraXs = new BasicDBList();
+			setValue(F_WORKTIME_PARA_X, paraXs);
 		}
-		BasicDBObject workTimeType = new BasicDBObject();
-		workTimeType.put(F__ID, workTimeTypeId);
-		workTimeType.put(F_DESC, workTimeTypeDesc);
+		BasicDBObject paraX = new BasicDBObject();
+		paraX.put(F__ID, paraXId);
+		paraX.put(F_DESC, paraXDesc);
 		BasicBSONList options = new BasicDBList();
 		options.add(option);
-		workTimeType.put(F_WORKTIME_TYPE_OPTIONS, options);
-		workTimeTypes.add(workTimeType);
+		paraX.put(F_WORKTIME_PARA_OPTIONS, options);
+		paraXs.add(paraX);
 
 	}
 
@@ -2601,26 +2601,26 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		clearWorkTimeProgramSetting();
 		setValue(F_WORKTIMEPROGRAM_ID, workTimeProgram.get_id());
-		makeDefaultWorkTimeTypeOption(workTimeProgram);
+		makeDefaultParaXOption(workTimeProgram);
 
 	}
 
 	/**
 	 * 为项目中的工时类型设置默认的选项，即该工时类型只有一个选项时，将该选项设置到项目的工时类型中
 	 */
-	private void makeDefaultWorkTimeTypeOption(WorkTimeProgram workTimeProgram) {
+	private void makeDefaultParaXOption(WorkTimeProgram workTimeProgram) {
 
-		BasicBSONList workTimeTypes = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
-		for (Object object : workTimeTypes) {
-			DBObject workTimeType = (DBObject) object;
-			BasicBSONList workTimeTypeOptions = (BasicBSONList) workTimeType
-					.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
-			if (workTimeTypeOptions.size() == 1) {
-				ObjectId workTimeTypeId = (ObjectId) workTimeType.get(F__ID);
-				String workTimeTypeDesc = (String) workTimeType.get(F_DESC);
-				makeWorkTimeTypeOption(workTimeTypeId, workTimeTypeDesc,
-						(DBObject) workTimeTypeOptions.get(0));
+		BasicBSONList paraXs = (BasicBSONList) workTimeProgram
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+		for (Object object : paraXs) {
+			DBObject paraX = (DBObject) object;
+			BasicBSONList paraXOptions = (BasicBSONList) paraX
+					.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
+			if (paraXOptions.size() == 1) {
+				ObjectId paraXId = (ObjectId) paraX.get(F__ID);
+				String paraXDesc = (String) paraX.get(F_DESC);
+				makeParaXOption(paraXId, paraXDesc,
+						(DBObject) paraXOptions.get(0));
 			}
 		}
 
@@ -2630,8 +2630,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 将工时类型选项和列类型选项置空
 	 */
 	public void clearWorkTimeProgramSetting() {
-		setValue(F_WORKTIMETYPES, null);
-		setValue(F_WORKTIME_COLUMNTYPES, null);
+		setValue(F_WORKTIME_PARA_X, null);
+		setValue(F_WORKTIME_PARA_Y, null);
 	}
 
 	/**
@@ -2642,13 +2642,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		clearWorkTimeProgramSetting();
 	}
 
-	public BasicBSONList getWorkTimeColumnTypeOption(ObjectId columnTypeId) {
-		DBObject workTimeType = getWorkTimeTypeOrColumnType(columnTypeId,
-				F_WORKTIME_COLUMNTYPES);
-		if (workTimeType == null) {
+	public BasicBSONList getWorkTimeParaYOption(ObjectId paraYId) {
+		DBObject paraY = getParaXOrParaY(paraYId,
+				F_WORKTIME_PARA_Y);
+		if (paraY == null) {
 			return null;
 		}
-		return (BasicBSONList) workTimeType.get(F_WORKTIME_TYPE_OPTIONS);
+		return (BasicBSONList) paraY.get(F_WORKTIME_PARA_OPTIONS);
 
 	}
 
@@ -2657,7 +2657,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @param optionId
 	 * @param typeFieldName
-	 *            F_WORKTIMETYPES/F_WORKTIME_COLUMNTYPES
+	 *            F_WORKTIME_PARA_X/F_WORKTIME_PARA_Y
 	 * @return
 	 */
 	public boolean isSelectedWorkTimeOption(ObjectId optionId,
@@ -2670,21 +2670,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				WorkTimeProgram.class, programId);
 		// 获取工时方案的列类型，为BsonList类型
 		// 注意到 在工时方案中的工时类型和工时列类型字段名称可能与项目中的不同，此处增加一个转换
-		String key = F_WORKTIME_COLUMNTYPES.equals(typeFieldName) ? WorkTimeProgram.F_COLUMNTYPES
-				: WorkTimeProgram.F_WORKTIMETYPES;
-		DBObject type = program.getWorkTimeType(optionId, key);
+		String key = F_WORKTIME_PARA_Y.equals(typeFieldName) ? WorkTimeProgram.F_WORKTIME_PARA_Y
+				: WorkTimeProgram.F_WORKTIME_PARA_X;
+		DBObject type = program.getParaX(optionId, key);
 		if (type == null) {
 			return false;
 		}
 		ObjectId typeId = (ObjectId) type.get(F__ID);
 
 		// 从项目中获得对应工时列类型的选项
-		BasicBSONList workTimeColumnTypeOptions = getWorkTimeColumnTypeOption(typeId);
-		if (workTimeColumnTypeOptions == null) {
+		BasicBSONList workTimeParaYOptions = getWorkTimeParaYOption(typeId);
+		if (workTimeParaYOptions == null) {
 			return false;
 		}
 		// 当项目没有对应的工时列类型选项时，返回不选中的图片，否则返回选中的图片
-		for (Object object : workTimeColumnTypeOptions) {
+		for (Object object : workTimeParaYOptions) {
 			if (((DBObject) object).get(WorkTimeProgram.F__ID).equals(optionId)) {
 				// 项目中选择了该列类型该选项
 				return true;
@@ -2701,38 +2701,38 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(WorkTimeProgram.class, programId);
 	}
 
-	public void selectWorkTimeColumnTypeOption(ObjectId typeId,
+	public void selectWorkTimeParaYOption(ObjectId typeId,
 			String typeDesc, DBObject option, boolean select) {
 		if (select) {
-			makeWorkTimeColumnTypeOption(typeId, typeDesc, option);
-		}else{
-			removeWorkTimeColumnTypeOption(typeId,option);
+			makeWorkTimeParaYOption(typeId, typeDesc, option);
+		} else {
+			removeWorkTimeParaYOption(typeId, option);
 		}
 	}
 
-	private void removeWorkTimeColumnTypeOption(ObjectId typeId, DBObject option) {
-		BasicBSONList typeOptions = getWorkTimeColumnTypeOption(typeId);
+	private void removeWorkTimeParaYOption(ObjectId typeId, DBObject option) {
+		BasicBSONList typeOptions = getWorkTimeParaYOption(typeId);
 		for (Object object : typeOptions) {
-			DBObject typeOption=(DBObject) object;
-			if(typeOption.get(F__ID).equals(option.get(F__ID))){
+			DBObject typeOption = (DBObject) object;
+			if (typeOption.get(F__ID).equals(option.get(F__ID))) {
 				typeOptions.remove(typeOption);
 				return;
 			}
 		}
 	}
 
-	public void makeWorkTimeColumnTypeOption(ObjectId workTimeColumnTypeId,
-			String workTimeColumnTypeDesc, DBObject option) {
-		BasicBSONList workTimeColumnTypes = null;
-		Object value = getValue(F_WORKTIME_COLUMNTYPES);
+	public void makeWorkTimeParaYOption(ObjectId workTimeParaYId,
+			String workTimeParaYDesc, DBObject option) {
+		BasicBSONList workTimeParaYs = null;
+		Object value = getValue(F_WORKTIME_PARA_Y);
 
 		if (value instanceof BasicBSONList) {
-			workTimeColumnTypes = (BasicBSONList) value;
-			for (Object object : workTimeColumnTypes) {
-				DBObject workTimeColumnType = (DBObject) object;
-				if (workTimeColumnType.get(F__ID).equals(workTimeColumnTypeId)) {
-					BasicBSONList options = (BasicBSONList) workTimeColumnType
-							.get(F_WORKTIME_TYPE_OPTIONS);
+			workTimeParaYs = (BasicBSONList) value;
+			for (Object object : workTimeParaYs) {
+				DBObject workTimeParaY = (DBObject) object;
+				if (workTimeParaY.get(F__ID).equals(workTimeParaYId)) {
+					BasicBSONList options = (BasicBSONList) workTimeParaY
+							.get(F_WORKTIME_PARA_OPTIONS);
 					for (Object object2 : options) {
 						// 项目中已包含此列选项
 						if (option.get(F__ID).equals(
@@ -2741,21 +2741,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						}
 					}
 					options.add(option);
-					setValue(F_WORKTIME_COLUMNTYPES, workTimeColumnTypes);
+					setValue(F_WORKTIME_PARA_Y, workTimeParaYs);
 					return;
 				}
 			}
 		} else {
-			workTimeColumnTypes = new BasicDBList();
+			workTimeParaYs = new BasicDBList();
 		}
-		BasicDBObject workTimeType = new BasicDBObject();
-		workTimeType.put(F__ID, workTimeColumnTypeId);
-		workTimeType.put(F_DESC, workTimeColumnTypeDesc);
+		BasicDBObject paraY = new BasicDBObject();
+		paraY.put(F__ID, workTimeParaYId);
+		paraY.put(F_DESC, workTimeParaYDesc);
 		BasicBSONList options = new BasicDBList();
 		options.add(option);
-		workTimeType.put(F_WORKTIME_TYPE_OPTIONS, options);
-		workTimeColumnTypes.add(workTimeType);
-		setValue(F_WORKTIME_COLUMNTYPES, workTimeColumnTypes);
+		paraY.put(F_WORKTIME_PARA_OPTIONS, options);
+		workTimeParaYs.add(paraY);
+		setValue(F_WORKTIME_PARA_Y, workTimeParaYs);
 	}
 
 	public void checkWorkTimeProgram() throws Exception {
@@ -2776,25 +2776,27 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 选择了工时方案
 			// 1.检查工时类型选项是否完整
 			// 判断没有选的工时类型选项
-			boolean valid = checkWorkTimeTypeOption(workTimeProgram);
+			boolean valid = checkWorkTimeParaXOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+				throw new Exception(
+						Messages.get().ParaXOptionNotSelected);
 			}
 			// 2.检查所有的列类型选项
 			// 所有的列类型选项都没选择，提示出错
-			valid = checkWorkTimeColumnTypeOption(workTimeProgram);
+			valid = checkWorkTimeParaYOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(Messages.get().WorkTimeTypeOptionNotSelected);
+				throw new Exception(
+						Messages.get().ParaXOptionNotSelected);
 			}
 			return;
 		}
 
 	}
 
-	private boolean checkWorkTimeTypeOption(WorkTimeProgram program) {
+	private boolean checkWorkTimeParaXOption(WorkTimeProgram program) {
 		BasicBSONList types_inProg = (BasicBSONList) program
-				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
-		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIMETYPES);
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIME_PARA_X);
 		if (types_inProj == null || types_inProj.isEmpty()) {
 			return false;
 		}
@@ -2807,21 +2809,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				// 判断项目中的工时类型id和工时方案中的工时类型id是否一致
 				if (type_inProj.get(F__ID).equals(type_inProg.get(F__ID))) {
 					BasicBSONList options_inProj = (BasicBSONList) type_inProj
-							.get(F_WORKTIME_TYPE_OPTIONS);
+							.get(F_WORKTIME_PARA_OPTIONS);
 					if (options_inProj == null || options_inProj.isEmpty()) {
 						return false;
 					}
 					// 判断项目中的选项是否在工时方案对应类型的选项中
 					// 取出工时方案中对应类型的所有选项
 					BasicBSONList options_inProg = (BasicBSONList) type_inProg
-							.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+							.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
 					Set<ObjectId> optionIdSet_inProg = new HashSet<ObjectId>();
 					for (Object object3 : options_inProg) {
 						DBObject option_inProg = (DBObject) object3;
 						optionIdSet_inProg.add((ObjectId) option_inProg
 								.get(F__ID));
 					}
-					
+
 					for (Object object4 : options_inProj) {
 						DBObject option_inProj = (DBObject) object4;
 						// 方案中的对应的工时类型选项不包含项目中的工时类型选项，就抛出异常
@@ -2843,13 +2845,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param program
 	 * @return
 	 */
-	private boolean checkWorkTimeColumnTypeOption(WorkTimeProgram program) {
+	private boolean checkWorkTimeParaYOption(WorkTimeProgram program) {
 		// 1. 获取方案中的列类型
 		BasicBSONList types_inProg = (BasicBSONList) program
-				.getValue(WorkTimeProgram.F_COLUMNTYPES);
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
 
 		// 2. 获取项目的列类型
-		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIME_COLUMNTYPES);
+		BasicBSONList types_inProj = (BasicBSONList) getValue(F_WORKTIME_PARA_Y);
 		if (types_inProj == null || types_inProj.isEmpty()) {
 			return false;
 		}
@@ -2864,7 +2866,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 					// 获得方案中对应列类型的选项
 					BasicBSONList options_inProg = (BasicBSONList) ((DBObject) type_inProg)
-							.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+							.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
 					// 检查方案中对应的列类型选项在项目中是否有选择
 					Set<ObjectId> optionSet_inProg = new HashSet<ObjectId>();
 					for (Object option_inProg : options_inProg) {
@@ -2875,7 +2877,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 					// 获得项目对应的列类型选项
 					BasicBSONList options_inProj = (BasicBSONList) ((DBObject) type_inProj)
-							.get(F_WORKTIME_TYPE_OPTIONS);
+							.get(F_WORKTIME_PARA_OPTIONS);
 					for (Object option_inProj : options_inProj) {
 						if (optionSet_inProg
 								.contains(((DBObject) option_inProj).get(F__ID))) {
@@ -2886,6 +2888,38 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 		}
 		return false;
+	}
+
+
+	
+	/**
+	 * 获取项目中定义的工时列类型选项
+	 * 当项目中的列类型没有值或者列类型没有列类型选项时，会返回一个没有元素的集合；集合不会为null
+	 * @return
+	 */
+	public Set<ObjectId> getWorkTimeParaYOptionIds() {
+		//实例化一个Set集合
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		//取出工时列类型，是BasicBSONList类型
+		BasicBSONList paraYs = (BasicBSONList) getValue(F_WORKTIME_PARA_Y);
+		if (paraYs != null) {
+			//判断列类型不为空，就循环遍历列类型的list
+			for (int i = 0; i < paraYs.size(); i++) {
+				//获得列类型list中的DBObject对象的列类型
+				DBObject paraY = (DBObject) paraYs.get(i);
+				//获取列类型的选项，是BasicBSONList类型
+				BasicBSONList options = (BasicBSONList) paraY
+						.get(F_WORKTIME_PARA_OPTIONS);
+				//循环遍历列类型选项list
+				for (int j = 0; j < options.size(); j++) {
+					//得到DBObject类型的列类型选项
+					DBObject option = (DBObject) options.get(j);
+					//获取列类型选项的id，并添加到Set集合中
+					result.add((ObjectId) option.get(F__ID));
+				}
+			}
+		}
+		return result;
 	}
 
 }

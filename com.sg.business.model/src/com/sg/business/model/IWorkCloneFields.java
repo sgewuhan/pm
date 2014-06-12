@@ -133,30 +133,40 @@ public interface IWorkCloneFields {
 
 	public static final String MEASUREMENT_TYPE_COMMIT_VALUE = Messages.get().WorkDefinitionCommitMeasurement;
 
-	public static final String MEASUREMENT_TYPE_PLAN_ID = "plan";//$NON-NLS-1$
+	public static final String MEASUREMENT_TYPE_STANDARD_ID = "standard";//$NON-NLS-1$
 
-	public static final String MEASUREMENT_TYPE_PLAN_VALUE = Messages.get().WorkDefinitionPlanMeasurement;
+	public static final String MEASUREMENT_TYPE_STANDARD_VALUE = Messages.get().WorkDefinitionStandardMeasurement;
 
 	/**
-	 * 工时类型
+	 * 工时类型,用于工作和工作定义上，是BasicBSONList类型
 	 */
-	public static final String F_WORKTIMETYPE = "worktimetype";
+	public static final String F_WORKTIME_PARAX = "worktimepara_x";
 	
 	/**
 	 * 工时
 	 */
 	public static final String F_WORK_TIME_DATA="worktimedata";
+	
 
 	/**
-	 * 工时统计点
+	 *  由工作定义复制过来的工时统计点
 	 */
 	public static final String F_STATISTICS_POINT = "statisticspoint";
 
 	/**
-	 * 统计阶段
+	 * 由工作定义复制过来的统计阶段
 	 */
 	public static final String F_STATISTICS_STEP = "statisticsstep";
 
+	/**
+	 * 工时方案id，用于工作和工作定义上的,是F_WORKTIME_PARA_X的子字段
+	 */
+	public static final String F_WORKTIME_PARAX_PROGRAM_ID="program_id";
+	
+	/**
+	 * 工时类型id，用于工作和工作定义上的,是F_WORKTIME_PARA_X的子字段
+	 */
+	public static final String F_WORKTIME_PARAX_ID="para_id";
 
 	/**
 	 * 需要复制的设置项

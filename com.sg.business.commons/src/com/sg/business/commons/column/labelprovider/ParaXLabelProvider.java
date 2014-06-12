@@ -6,29 +6,30 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.db.model.ModelService;
 import com.mongodb.DBObject;
+import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.WorkTimeProgram;
 
-public class WorkTimeTypeLabelProvider extends ColumnLabelProvider {
+public class ParaXLabelProvider extends ColumnLabelProvider {
 
-	public WorkTimeTypeLabelProvider() {
+	public ParaXLabelProvider() {
 	}
 
 	@Override
 	public String getText(Object element) {
 		if(element instanceof WorkDefinition){
 			WorkDefinition workd=(WorkDefinition) element;
-			return getWorkTimeTypeLabel(workd);
+			return getParaXLabel(workd);
 		}
 		
 		return "";
 	}
-	private String getWorkTimeTypeLabel(WorkDefinition workd) {
+	private String getParaXLabel(WorkDefinition workd) {
 		String result="";
-		BasicBSONList workTimeTypes=(BasicBSONList) workd.getValue(WorkDefinition.F_WORKTIMETYPE);
-		if(workTimeTypes!=null){
-			for (int i = 0; i < workTimeTypes.size(); i++) {
-				String workTimeLabel = getWorkTimeLabel((String) workTimeTypes.get(i));
+		BasicBSONList paraXs=(BasicBSONList) workd.getValue(WorkDefinition.F_WORKTIME_PARAX);
+		if(paraXs!=null){
+			for (int i = 0; i < paraXs.size(); i++) {
+				String workTimeLabel = getWorkTimeLabel((DBObject) paraXs.get(i));
 				if(workTimeLabel!=null){
 					if(result.isEmpty()){
 						result+=workTimeLabel;
@@ -44,22 +45,21 @@ public class WorkTimeTypeLabelProvider extends ColumnLabelProvider {
 		return result;
 	}
 
-	private String getWorkTimeLabel(String workTimeType) {
-		String[] split = workTimeType.split("@");
-		ObjectId typeId = new ObjectId(split[0]);
-		ObjectId programId = new ObjectId(split[1]);
+	private String getWorkTimeLabel(DBObject paraX) {
+		ObjectId typeId = (ObjectId) paraX.get(IWorkCloneFields.F_WORKTIME_PARAX_ID);
+		ObjectId programId = (ObjectId) paraX.get(IWorkCloneFields.F_WORKTIME_PARAX_PROGRAM_ID);
 		WorkTimeProgram program = ModelService.createModelObject(
 				WorkTimeProgram.class, programId);
 		String programDesc = program.getDesc();
-		BasicBSONList workTimeTypeList = (BasicBSONList) program
-				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
-		for (int j = 0; j < workTimeTypeList.size(); j++) {
-			ObjectId workTimeTypeId = (ObjectId) ((DBObject) workTimeTypeList
+		BasicBSONList paraXList = (BasicBSONList) program
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+		for (int j = 0; j < paraXList.size(); j++) {
+			ObjectId paraXId = (ObjectId) ((DBObject) paraXList
 					.get(j)).get(WorkTimeProgram.F__ID);
-			if (workTimeTypeId.equals(typeId)) {
-				String workTimeTypeDesc = (String) ((DBObject) workTimeTypeList
+			if (paraXId.equals(typeId)) {
+				String paraXDesc = (String) ((DBObject) paraXList
 						.get(j)).get(WorkTimeProgram.F_DESC);
-				return programDesc + "|" + workTimeTypeDesc;
+				return programDesc + "|" + paraXDesc;
 			}
 		}
 		return null;

@@ -2680,9 +2680,24 @@
                defaultGroup="false"
                name="%columnGroup.name.8">
             <column
+                  column="measurement"
+                  labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
+                  name="%measurement">
+            </column>
+            <column
                   column="standardworks"
                   name="%column.name.67"
+                  style="SWT.CENTER"
                   type="Double">
+            </column>
+            <column
+                  column="statisticsstep"
+                  name="%statisticsstep">
+            </column>
+            <column
+                  column="statisticspoint"
+                  name="%statisticspoint"
+                  type="Boolean">
             </column>
             <column
                   columnDefinitionId="chargerid">
@@ -2707,6 +2722,11 @@
                   name="%column.name.70"
                   type="Boolean"
                   width="48">
+            </column>
+            <column
+                  column="parax"
+                  labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+                  name="%paraxbasicpage.title.24">
             </column>
          </columnGroup>
       </tree>
@@ -5109,6 +5129,12 @@
                image="image/financial_24.png"
                pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.6">
+         </basicpage>
+         <basicpage
+               description="%worktimeprogramandoptions.description"
+               id="project.basicpage.4"
+               pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
+               title="%worktimeprogram">
          </basicpage>
          <navigatorpage
                createAfterSave="true"

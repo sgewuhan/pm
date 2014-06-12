@@ -370,9 +370,9 @@ public class ProjectToolkit {
 				work.put(IWorkCloneFields.F_MEASUREMENT, value);
 			}
 		//工时类型
-		value=workdef.get(IWorkCloneFields.F_WORKTIMETYPE);
+		value=workdef.get(IWorkCloneFields.F_WORKTIME_PARAX);
 		if(value !=null){
-			work.put(IWorkCloneFields.F_WORKTIMETYPE, value);
+			work.put(IWorkCloneFields.F_WORKTIME_PARAX, value);
 		}
 		//统计阶段
 		value=workdef.get(IWorkCloneFields.F_STATISTICS_STEP);
@@ -384,6 +384,16 @@ public class ProjectToolkit {
 		if(value!=null){
 			work.put(IWorkCloneFields.F_STATISTICS_POINT, value);
 		}
+		
+		//计划工时设置
+		Work workPo = ModelService.createModelObject(work, Work.class);
+		try {
+			value=workPo.calculatePlanWorks();
+			work.put(Work.F_PLAN_WORKS, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		/*
 		 * 
 		 */

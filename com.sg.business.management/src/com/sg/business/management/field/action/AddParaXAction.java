@@ -8,7 +8,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
@@ -16,9 +18,9 @@ import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
 import com.sg.widgets.viewer.CTreeViewer;
 
-public class AddWorkTimeTypeAction implements IAddTableItemHandler {
+public class AddParaXAction implements IAddTableItemHandler {
 
-	public AddWorkTimeTypeAction() {
+	public AddParaXAction() {
 	}
 
 	@Override
@@ -55,13 +57,13 @@ public class AddWorkTimeTypeAction implements IAddTableItemHandler {
 					while (iterator.hasNext()) {
 						//此处value只能是DBObject的工时类型
 						DBObject value = (DBObject) iterator.next();
-						ObjectId workTimeTypeId = (ObjectId) value.get(WorkTimeProgram.F__ID);
+						ObjectId paraXId = (ObjectId) value.get(WorkTimeProgram.F__ID);
 						
 						CTreeViewer viewer = (CTreeViewer) getNavigator().getViewer();
 						TreeItem treeItem = (TreeItem) viewer.testFindItem(value);
 						WorkTimeProgram workTimeProgram = (WorkTimeProgram) treeItem.getParentItem().getData();
 						ObjectId workTimeProgramId = workTimeProgram.get_id();
-						String key = workTimeTypeId.toString()+"@"+workTimeProgramId.toString();
+						DBObject key = new BasicDBObject().append(IWorkCloneFields.F_WORKTIME_PARAX_ID, paraXId).append(IWorkCloneFields.F_WORKTIME_PARAX_PROGRAM_ID, workTimeProgramId);
 						//判断表单编辑器中字段的值是否包含工时类型id和工时方案id组成的字符串时进行的处理
 						if (!inputData.contains(key)) {
 							inputData.add(key);
