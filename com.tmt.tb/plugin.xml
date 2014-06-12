@@ -3669,11 +3669,6 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.DevelopmentDirector"
-               processParameterName="development_director"
-               taskFormFieldName="dept">
-         </processParameter>
-         <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
@@ -3816,7 +3811,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
-                        navigatorId="taskforms.organization.navigator"
+                        navigatorId="taskforms.dataaudit.organization"
                         navigatorReturnField="_id"
                         navigatorSelectorControl="com.tmt.tb.field.control.DeptSelectContorOfTB"
                         persistable="true"

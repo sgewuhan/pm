@@ -1829,6 +1829,27 @@
          </basicpage>
       </editor>
    </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="taskforms.dataaudit.organization"
+            tree="taskforms.dataaudit.organization">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.sg.business.taskforms.dataset.DataAuditOrg"
+            id="taskforms.dataaudit.organization">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
+   </extension>
  </plugin>
    
 
