@@ -566,6 +566,12 @@
             operation="cancel"
             serviceProvider="com.sg.business.taskforms.bpmservice.PrintDocumentService">
       </service>
+      <service
+            interface="projectchange.service.action"
+            name="变更工作关联项目"
+            operation="linkproject"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjectChangeLinkProject">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
