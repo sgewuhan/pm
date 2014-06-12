@@ -1798,22 +1798,10 @@
                style="push">
          </command>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="work.assign"
                icon="image/work_assignment_24.png"
                label="%command.label.11"
                style="push">
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editor.runtimereassignment">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.type"
-                  value="datadialog">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.editable"
-                  value="true">
-            </parameter>
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -1825,7 +1813,7 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="modify"
+                              args="reassignment"
                               property="runtimework.action">
                         </test>
                      </iterate>
@@ -2562,6 +2550,10 @@
             id="work.sendmessage"
             name="%command.name.16">
       </command>
+      <command
+            id="work.assign"
+            name="%command.label.11">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2628,6 +2620,10 @@
       <handler
             class="com.sg.business.work.handler.SendMessage"
             commandId="work.sendmessage">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.AssignRuntimeWork"
+            commandId="work.assign">
       </handler>
    </extension>
    <extension
@@ -2935,6 +2931,19 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="%navigatorSelector.label.2"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -3098,6 +3107,19 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="%navigatorSelector.label.2"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -3848,7 +3870,6 @@
                         name="measurement"
                         option="worktime.measurement"
                         persistable="true"
-                        required="true"
                         type="DBObject">
                   </radio>
                   <text

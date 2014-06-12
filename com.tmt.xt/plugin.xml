@@ -1704,6 +1704,34 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="xtbusinesssupport2.user.auditor"
+            table="xtbusinesssupport2.user.auditor">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="xtbusinesssupport2.user.approve"
+            table="xtbusinesssupport2.user.approve">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -1746,6 +1774,20 @@
       <table
             dataSet="com.tmt.xt.dataset.UserOfSupportApplication"
             id="xtbusinesssupport.user.application">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportAuditor2"
+            id="xtbusinesssupport2.user.auditor">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportApprove2"
+            id="xtbusinesssupport2.user.approve">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -2587,7 +2629,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="auditor"
-                        navigatorId="xtbusinesssupport.user.auditor"
+                        navigatorId="xtbusinesssupport2.user.auditor"
                         navigatorReturnField="userid"
                         persistable="true">
                   </navigatorSelector>
@@ -2603,7 +2645,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="approve"
-                        navigatorId="xtbusinesssupport.user.approve"
+                        navigatorId="xtbusinesssupport2.user.approve"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">

@@ -208,7 +208,7 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</span>"); //$NON-NLS-1$
 
 		// ÉÏ´«
-		if (!doc.canUpload() && control) {
+		if (doc.canUpload() && control) {
 			sb.append("<a href=\"upload@" + doc.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$

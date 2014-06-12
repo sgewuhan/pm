@@ -1,25 +1,35 @@
-package com.sg.business.commons.operation.action;
+package com.sg.business.work.handler;
 
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
+import com.sg.widgets.viewer.ViewerControl;
 
-public class AssignWork extends AbstractWorkDetailPageAction {
+public class AssignRuntimeWork extends AbstractNavigatorHandler {
 
 	@Override
-	public void run(Work work, Control control) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
 		String editorId = "editor.runtimereassignment";
-		Shell shell = control.getShell();
+		Shell shell = part.getSite().getShell();
+		Work work = (Work) selected;
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				editorId);
@@ -37,25 +47,16 @@ public class AssignWork extends AbstractWorkDetailPageAction {
 										| SWT.YES | SWT.NO);
 						if (result == SWT.YES) {
 							IContext context = new CurrentAccountContext();
-
 							work.doAssignment(context);
 						}
 					}
-
-					pageClear();
+					vc.getViewer().update(selected, null);
 				}
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
 		}
-	}
 
-	@Override
-	protected boolean visiableWhen(Work work) {
-		IContext context = getContext();
-		String userId = context.getAccountInfo().getConsignerId();
-		String assignerId = work.getAssignerId();
-		return userId.equals(assignerId) && work.canEdit(context);
 	}
 
 }

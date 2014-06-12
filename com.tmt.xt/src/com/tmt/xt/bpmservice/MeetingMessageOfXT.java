@@ -33,7 +33,7 @@ public class MeetingMessageOfXT extends MessageService {
 					Object confirmType = getInputValue("confirmtype");
 					Work work = (Work) host;
 					String content = "兹定于" + cal.get(Calendar.YEAR) + "年"
-							+ cal.get(Calendar.MONTH) + "月"
+							+ (cal.get(Calendar.MONTH) + 1) + "月"
 							+ cal.get(Calendar.DAY_OF_MONTH) + "日 "
 							+ confirmTime + "在" + confirmAddress + "召开"
 							+ work.getDesc() + confirmType + "。请您准时参加！";
@@ -53,7 +53,7 @@ public class MeetingMessageOfXT extends MessageService {
 					Object confirmType = getInputValue("confirmtype");
 					Work work = (Work) host;
 					String content = "兹定于" + cal.get(Calendar.YEAR) + "年"
-							+ cal.get(Calendar.MONTH) + "月"
+							+ (cal.get(Calendar.MONTH) + 1) + "月"
 							+ cal.get(Calendar.DAY_OF_MONTH) + "日 "
 							+ confirmTime + "在" + confirmAddress + "召开"
 							+ work.getProject().getDesc() + confirmType
@@ -72,15 +72,15 @@ public class MeetingMessageOfXT extends MessageService {
 					Object confirmTime = getInputValue("confirmtime");
 					Object confirmAddress = getInputValue("confirmaddress");
 					Object confirmType = getInputValue("confirmtype");
-					String projectid =  (String) getInputValue("projectid");
+					String projectid = (String) getInputValue("projectid");
 					ObjectId _id = new ObjectId(projectid);
-					Project project = ModelService.createModelObject(Project.class, _id);
+					Project project = ModelService.createModelObject(
+							Project.class, _id);
 					String content = "兹定于" + cal.get(Calendar.YEAR) + "年"
-							+ cal.get(Calendar.MONTH) + "月"
+							+ (cal.get(Calendar.MONTH) + 1) + "月"
 							+ cal.get(Calendar.DAY_OF_MONTH) + "日 "
 							+ confirmTime + "在" + confirmAddress + "召开"
-							+ project.getDesc() + confirmType
-							+ "。请您准时参加！";
+							+ project.getDesc() + confirmType + "。请您准时参加！";
 					return content;
 				}
 			} catch (Exception e) {

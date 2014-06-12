@@ -2,7 +2,6 @@ package com.sg.business.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Image;
 
-import com.artofsolving.jodconverter.DocumentConverter;
-import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
 import com.mobnut.admin.dataset.Setting;
-import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
@@ -42,6 +36,7 @@ import com.sg.business.model.commonlabel.DocumentCommonHTMLLable;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
+import com.sg.documentconverter.DocumentConverterActivator;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
@@ -125,6 +120,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 * Œƒµµ±‡º≠∆˜ID
 	 */
 	public static final String EDITOR = "editor.document.generic"; //$NON-NLS-1$
+
+	public static final String EDITOR_FORDER = "editor.forder.document"; //$NON-NLS-1$
 
 	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 
@@ -249,36 +246,24 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	private void checkDocumentNumber() throws Exception {
-//		String documentNumber = getDocumentNumber();
-//		if (documentNumber != null) {
-//			BasicDBObject condition = new BasicDBObject();
-//			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
-//			condition.put(Document.F__ID,
-//					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
-//			long l = getRelationCountByCondition(Document.class, condition);
-//			if (l > 0) {
-//				//DCPDMŒƒµµ±‡∫≈±‡∫≈ø…÷ÿ∏¥
-////				throw new Exception(Messages.get().Document_3);
-//			}
-//		}
+		// String documentNumber = getDocumentNumber();
+		// if (documentNumber != null) {
+		// BasicDBObject condition = new BasicDBObject();
+		// condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
+		// condition.put(Document.F__ID,
+		//					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
+		// long l = getRelationCountByCondition(Document.class, condition);
+		// if (l > 0) {
+		// //DCPDMŒƒµµ±‡∫≈±‡∫≈ø…÷ÿ∏¥
+		// // throw new Exception(Messages.get().Document_3);
+		// }
+		// }
 	}
 
 	protected void generatePreview() {
 		Job job = new Job("generate preview internal") { //$NON-NLS-1$
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				OpenOfficeConnection connection = new SocketOpenOfficeConnection(
-						Commons.getOfficeServerIP(), Commons.getOfficeSocket());
-				try {
-					connection.connect();
-				} catch (ConnectException e) {
-					return Status.CANCEL_STATUS;
-				}
-
-				// convert
-				DocumentConverter converter = new OpenOfficeDocumentConverter(
-						connection);
-
 				File serverFile;
 				File previewFile;
 				ObjectId previewOid;
@@ -318,7 +303,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						}
 
 						try {
-							converter.convert(serverFile, previewFile);
+							DocumentConverterActivator.convert(serverFile, previewFile);
 							remoteFile.setPreviewUploaded(previewFile,
 									previewOid);
 							remoteFile.addPreview();
@@ -329,7 +314,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 					}
 				}
-				connection.disconnect();
 				return Status.OK_STATUS;
 			}
 		};
@@ -825,10 +809,12 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		String lc = getLifecycle();
 		if (STATUS_WORKING_ID.equals(lc)) {
-			return true;
-		} else {
-			return false;
+			String editorId = get_editor();
+			if (editorId== null || editorId == EDITOR || editorId == EDITOR_FORDER) {
+				return true;
+			}
 		}
+		return false;
 
 	}
 }

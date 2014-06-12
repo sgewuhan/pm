@@ -79,7 +79,7 @@ public abstract class AbstractListBoardPage extends TabBlockPage {
 		fd = new FormData();
 		pageLeft.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 4);
-		fd.right = new FormAttachment(pageRight,-4);
+		fd.right = new FormAttachment(pageRight, -4);
 		fd.width = 24;
 		fd.height = 24;
 		pageLeft.addSelectionListener(new SelectionAdapter() {
@@ -241,14 +241,19 @@ public abstract class AbstractListBoardPage extends TabBlockPage {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT_MONTH_DATA);
 
+		BasicDBObject match = new BasicDBObject();
+		match.put("$match", new BasicDBObject().append(
+				"_id",
+				new BasicDBObject().append("$in", organizationIdList)));
+
 		AggregationOutput aggregationOutput;
 		if (hasUnWindField()) {
 			aggregationOutput = col.aggregate(
 					query,
 					new BasicDBObject().append("$unwind", "$"
-							+ getUnWindField()), group, sort, limit);
+							+ getUnWindField()), group, match, sort, limit);
 		} else {
-			aggregationOutput = col.aggregate(query, group, sort, limit);
+			aggregationOutput = col.aggregate(query, group, match, sort, limit);
 		}
 		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
 		for (int i = 0; i < result.length; i++) {

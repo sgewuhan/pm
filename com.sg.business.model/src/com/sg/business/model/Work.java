@@ -1732,10 +1732,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 返回流程执行者
 	 * 
 	 * @param wfRoleAss
+	 * @param wfActors
 	 * @param roleAssign
 	 * @return BasicDBObject
 	 */
-	private BasicDBObject getWorkFlowActors(DBObject wfRoleAss,
+	private BasicDBObject getWorkFlowActors(boolean bOverride,
+			DBObject wfActors, DBObject wfRoleAss,
 			Map<ObjectId, List<PrimaryObject>> roleAssign) {
 		AbstractRoleAssignment assItem;
 		List<PrimaryObject> assignments;
@@ -1745,28 +1747,37 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Iterator<String> iter = wfRoleAss.keySet().iterator();
 		while (iter.hasNext()) {
 			String actionName = iter.next();
-			ObjectId actorRoleId = (ObjectId) wfRoleAss.get(actionName);
-			if (actorRoleId != null) {
-				assignments = roleAssign.get(actorRoleId);
-				/**
-				 * 
-				 * 只处理该角色只有一个成员的情况
-				 * 
-				 */
-				if (assignments != null && assignments.size() == 1) {
-					// String[] actorList = new String[assignments.size()];
-					// for (int j = 0; j < assignments.size(); j++) {
-					// assItem = (AbstractRoleAssignment) assignments.get(j);
-					// userid = assItem.getUserid();
-					// actorList[j] = userid;
-					// }
-					// wfRoleActors.put(actionName, actorList);
+			String wfActor = null;
+			if (wfActors != null) {
+				wfActor = (String) wfActors.get(actionName);
+			}
+			if (wfActor == null || bOverride) {
+				ObjectId actorRoleId = (ObjectId) wfRoleAss.get(actionName);
+				if (actorRoleId != null) {
+					assignments = roleAssign.get(actorRoleId);
+					/**
+					 * 
+					 * 只处理该角色只有一个成员的情况
+					 * 
+					 */
+					if (assignments != null && assignments.size() == 1) {
+						// String[] actorList = new String[assignments.size()];
+						// for (int j = 0; j < assignments.size(); j++) {
+						// assItem = (AbstractRoleAssignment)
+						// assignments.get(j);
+						// userid = assItem.getUserid();
+						// actorList[j] = userid;
+						// }
+						// wfRoleActors.put(actionName, actorList);
 
-					// 只考虑指派一个人
-					assItem = (AbstractRoleAssignment) assignments.get(0);
-					userid = assItem.getUserid();
-					wfRoleActors.put(actionName, userid);
+						// 只考虑指派一个人
+						assItem = (AbstractRoleAssignment) assignments.get(0);
+						userid = assItem.getUserid();
+						wfRoleActors.put(actionName, userid);
+					}
 				}
+			} else {
+				wfRoleActors.put(actionName, wfActor);
 			}
 		}
 		return wfRoleActors;
@@ -2384,93 +2395,111 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 为工作及下级工作的负责人,参与者,工作流的执行者指定用户
 	 * 
+	 * @param bOverride
+	 * 
 	 * @param roleAssign
 	 * @param context
 	 * @throws Exception
 	 */
-	public void doAssignment(Map<ObjectId, List<PrimaryObject>> roleAssign,
-			IContext context) throws Exception {
+	public void doAssignment(boolean bOverride,
+			Map<ObjectId, List<PrimaryObject>> roleAssign, IContext context)
+			throws Exception {
 		AbstractRoleAssignment assItem;
 		List<PrimaryObject> assignments;
 		String userid;
 		boolean modified = false;
 
-		// 设置负责人
-		ObjectId roleId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
-		if (roleId != null) {
-			assignments = roleAssign.get(roleId);
-			if (assignments != null && !assignments.isEmpty()) {
-				assItem = (AbstractRoleAssignment) assignments.get(0);
-				userid = assItem.getUserid();
-				setValue(F_CHARGER, userid);
-				modified = true;
-			}
-		}
-
-		// 设置指派者
-		roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
-		if (roleId != null) {
-			assignments = roleAssign.get(roleId);
-			if (assignments != null && !assignments.isEmpty()) {
-				assItem = (AbstractRoleAssignment) assignments.get(0);
-				userid = assItem.getUserid();
-				setValue(F_ASSIGNER, userid);
-				modified = true;
-			}
-		}
-
-		// 设置参与者
-		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
-		if (roleIds != null && roleIds.size() > 0) {
-			BasicBSONList participates = new BasicDBList();
-			for (int i = 0; i < roleIds.size(); i++) {
-				DBObject object = (DBObject) roleIds.get(i);
-				assignments = roleAssign.get(object.get(F__ID));
-				if (assignments != null && !assignments.isEmpty()) {
-					for (int j = 0; j < assignments.size(); j++) {
-						assItem = (AbstractRoleAssignment) assignments.get(j);
+		String lc = getLifecycleStatus();
+		if (!STATUS_WIP_VALUE.equals(lc) && !STATUS_CANCELED_VALUE.equals(lc)
+				&& !STATUS_FINIHED_VALUE.equals(lc)) {
+			ObjectId roleId;
+			// 设置负责人
+			if (getChargerId() == null || bOverride) {
+				roleId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
+				if (roleId != null) {
+					assignments = roleAssign.get(roleId);
+					if (assignments != null && !assignments.isEmpty()) {
+						assItem = (AbstractRoleAssignment) assignments.get(0);
 						userid = assItem.getUserid();
-						participates.add(userid);
+						setValue(F_CHARGER, userid);
+						modified = true;
 					}
 				}
 			}
-			if (participates.size() > 0) {
-				setValue(F_PARTICIPATE, participates);
-				modified = true;
+
+			// 设置指派者
+			if (getAssignerId() == null || bOverride) {
+				roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
+				if (roleId != null) {
+					assignments = roleAssign.get(roleId);
+					if (assignments != null && !assignments.isEmpty()) {
+						assItem = (AbstractRoleAssignment) assignments.get(0);
+						userid = assItem.getUserid();
+						setValue(F_ASSIGNER, userid);
+						modified = true;
+					}
+				}
+			}
+
+			// 设置参与者
+			BasicBSONList participatesIdList = getParticipatesIdList();
+			if (participatesIdList == null || participatesIdList.size() == 0
+					|| bOverride) {
+				BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
+				if (roleIds != null && roleIds.size() > 0) {
+					BasicBSONList participates = new BasicDBList();
+					for (int i = 0; i < roleIds.size(); i++) {
+						DBObject object = (DBObject) roleIds.get(i);
+						assignments = roleAssign.get(object.get(F__ID));
+						if (assignments != null && !assignments.isEmpty()) {
+							for (int j = 0; j < assignments.size(); j++) {
+								assItem = (AbstractRoleAssignment) assignments
+										.get(j);
+								userid = assItem.getUserid();
+								participates.add(userid);
+							}
+						}
+					}
+					if (participates.size() > 0) {
+						setValue(F_PARTICIPATE, participates);
+						modified = true;
+					}
+				}
+			}
+
+			// 设置变更工作流执行人
+
+			DBObject wfRoleAss = (DBObject) getValue(F_WF_CHANGE_ASSIGNMENT);
+			if (wfRoleAss != null) {
+				BasicDBObject wfChangeActors = (BasicDBObject) getValue(F_WF_CHANGE_ACTORS);
+				BasicDBObject wfRoleActors = getWorkFlowActors(bOverride,
+						wfChangeActors, wfRoleAss, roleAssign);
+				if (!wfRoleActors.isEmpty()) {
+					setValue(F_WF_CHANGE_ACTORS, wfRoleActors);
+					modified = true;
+				}
+			}
+
+			// 设置执行工作流的执行人
+			wfRoleAss = (DBObject) getValue(F_WF_EXECUTE_ASSIGNMENT);
+			if (wfRoleAss != null) {
+				BasicDBObject wfExecuteActors = (BasicDBObject) getValue(F_WF_EXECUTE_ACTORS);
+				BasicDBObject wfRoleActors = getWorkFlowActors(bOverride,
+						wfExecuteActors, wfRoleAss, roleAssign);
+				if (!wfRoleActors.isEmpty()) {
+					setValue(F_WF_EXECUTE_ACTORS, wfRoleActors);
+					modified = true;
+				}
+			}
+			if (modified) {
+				doSave(context);
 			}
 		}
-
-		// 设置变更工作流执行人
-
-		DBObject wfRoleAss = (DBObject) getValue(F_WF_CHANGE_ASSIGNMENT);
-		if (wfRoleAss != null) {
-			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
-					roleAssign);
-			if (!wfRoleActors.isEmpty()) {
-				setValue(F_WF_CHANGE_ACTORS, wfRoleActors);
-				modified = true;
-			}
-		}
-
-		// 设置执行工作流的执行人
-		wfRoleAss = (DBObject) getValue(F_WF_EXECUTE_ASSIGNMENT);
-		if (wfRoleAss != null) {
-			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
-					roleAssign);
-			if (!wfRoleActors.isEmpty()) {
-				setValue(F_WF_EXECUTE_ACTORS, wfRoleActors);
-				modified = true;
-			}
-		}
-		if (modified) {
-			doSave(context);
-		}
-
 		// 设置下级
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work child = (Work) children.get(i);
-			child.doAssignment(roleAssign, context);
+			child.doAssignment(bOverride, roleAssign, context);
 		}
 	}
 
@@ -5014,6 +5043,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	
 	public String getMeasurement(){
 		return getStringValue(F_MEASUREMENT); 
+	}
+
+	public void doAssignment(IContext context) throws Exception {
+		ObjectId assRoledId = (ObjectId) getValue(Work.F_ASSIGNMENT_CHARGER_ROLE_ID);
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		for (PrimaryObject po : childrenWork) {
+			Work work = (Work) po;
+			ObjectId assChildreRoledId = (ObjectId) work
+					.getValue(Work.F_ASSIGNMENT_CHARGER_ROLE_ID);
+			if (assRoledId.equals(assChildreRoledId)) {
+				work.setValue(F_CHARGER, getValue(F_CHARGER));
+				work.setValue(F_ASSIGNER, getValue(F_ASSIGNER));
+				work.setValue(F_PARTICIPATE, getValue(F_PARTICIPATE));
+				work.doSave(context);
+			}
+			if (work.isSummaryWork()) {
+				work.doAssignment(context);
+			}
+		}
 	}
 
 }

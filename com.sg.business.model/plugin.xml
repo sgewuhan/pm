@@ -714,6 +714,14 @@
             run="com.sg.business.model.etl.ETLOldJob"
             time="2:05:00">
       </schedualJob>
+      <schedualJob
+            day="9999999999"
+            id="finance.schedual.etloldmonth"
+            name="ETL 上月数据导入"
+            rule="month"
+            run="com.sg.business.model.etl.ETLMonthOldJob"
+            time="2:05:00">
+      </schedualJob>
    </extension>
    <extension
          point="com.sg.widgets.searchable">

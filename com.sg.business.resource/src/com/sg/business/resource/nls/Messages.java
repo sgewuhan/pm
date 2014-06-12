@@ -8,22 +8,19 @@ import com.mobnut.commons.util.NLS2;
 
 public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.resource.nls.messages"; //$NON-NLS-1$
-	
-	
-	
-	
-	
-	
-	
+
 	public static Messages get() {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
+
 	public static Messages get(Display display) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);
 	}
+
 	public static Messages get(Locale local) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, local);
 	}
+
 	public String AbstractChangeActivityValidator_0;
 	public String AbstractCheckFieldByChoice_1;
 	public String AbstractLifecycleAction_0;
@@ -409,6 +406,8 @@ public class Messages {
 	public String IRoleConstance_35;
 	public String IRoleConstance_36;
 	public String IRoleConstance_37;
+	public String IRoleConstance_38;
+	public String IRoleConstance_39;
 	public String LaunchWorkWizard_1;
 	public String LifeCycleActionCancel_0;
 	public String LifeCycleActionCancel_2;
@@ -1140,19 +1139,19 @@ public class Messages {
 	public String WorkSubconcessionsMessageService_6;
 
 	public String WorkToProjectByProjectIdService_0;
-	
+
 	public String WorkToProjectByWorkOrderService_0;
-	
+
 	public String CreateWorkTimeProgram_0;
 
 	public String AddOption;
 	public String CanNotEmpty;
 	public String DuplicateName;
-	
+
 	public String WorkDefinitionNoMeasurement;
 	public String WorkDefinitionCommitMeasurement;
 	public String WorkDefinitionStandardMeasurement;
-	
+
 	public String WorkTimeProgramNotSelected;
 	public String ParaXOptionNotSelected;
 	
@@ -1161,4 +1160,7 @@ public class Messages {
 	public String ParaYOptionIdIsNull;
 
 	
+	public String AssignWork_1;
+	public String AssignWork_2;
+
 }

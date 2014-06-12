@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.bpm.service,
  com.sg.business.resource,
  com.mobnut.admin,
- com.sg.sqldb;bundle-version="1.0.0"
+ com.sg.sqldb;bundle-version="1.0.0",
+ com.sg.documentconverter;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.model,
@@ -44,5 +45,3 @@ Export-Package: com.sg.business.model,
  com.sg.business.model.etl.eai,
  com.sg.business.model.event,
  com.sg.business.model.toolkit
-Bundle-ClassPath: libs/sapjco.jar,
- .

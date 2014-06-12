@@ -35,45 +35,53 @@ public class AutoAssignment extends NavigatorAction {
 	public void execute() throws Exception {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getShell();
-		int result = MessageUtil
-				.showMessage(
-						shell,
-						Messages.get().AutoAssignment_1,
-						Messages.get().AutoAssignment_2,
-						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-		if (result == SWT.YES) {
+		final int result = MessageUtil.showMessage(shell,
+				Messages.get().AutoAssignment_1,
+				Messages.get().AutoAssignment_2, SWT.ICON_QUESTION | SWT.YES
+						| SWT.NO | SWT.CANCEL);
+		if (result != SWT.CANCEL) {
 			// 获得项目
 			final Project project = (Project) getInput().getData();
 			final Display display = shell.getDisplay();
 			final IContext context = new CurrentAccountContext();
-			Job job = new Job(Messages.get().AutoAssignment_3){
+			Job job = new Job(Messages.get().AutoAssignment_3) {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					monitor.beginTask(Messages.get().AutoAssignment_4, IProgressMonitor.UNKNOWN);
+					monitor.beginTask(Messages.get().AutoAssignment_4,
+							IProgressMonitor.UNKNOWN);
 					try {
-						project.doAssignmentByRole(context);
+						int type;
+						if (result == SWT.YES) {
+							type = Project.AUTO_ASSIGNMENT_TYPE_ALL;
+						} else {
+							type = Project.AUTO_ASSIGNMENT_TYPE_NONE;
+						}
+
+						project.doAssignmentByRole(type, context);
 					} catch (Exception e) {
-						return new Status(Status.ERROR, ProjectActivator.PLUGIN_ID,
-								Status.ERROR, Messages.get().AutoAssignment_5, e);
+						return new Status(Status.ERROR,
+								ProjectActivator.PLUGIN_ID, Status.ERROR,
+								Messages.get().AutoAssignment_5, e);
 					}
 					return Status.OK_STATUS;
 				}
-				
+
 			};
-			
-			job.addJobChangeListener(new JobChangeAdapter(){
+
+			job.addJobChangeListener(new JobChangeAdapter() {
 				@Override
 				public void done(IJobChangeEvent event) {
 					display.syncExec(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							getNavigator().reload(true);
-							getNavigator().getViewerControl().loadColumnGroup("team");							 //$NON-NLS-1$
+							getNavigator().getViewerControl().loadColumnGroup(
+									"team"); //$NON-NLS-1$
 						}
 					});
-					
+
 					super.done(event);
 				}
 			});

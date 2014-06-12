@@ -233,6 +233,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	private SummaryProjectWorks summaryProjectWorks;
 
+	public static final int AUTO_ASSIGNMENT_TYPE_ALL = 0;
+
+	public static final int AUTO_ASSIGNMENT_TYPE_NONE = 1;
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -1103,21 +1107,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @throws Exception
 	 */
-	public void doAssignmentByRole(IContext context) throws Exception {
+	public void doAssignmentByRole(int type, IContext context) throws Exception {
 		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
 		if (map.size() == 0) {
 			throw new Exception(Messages.get().Project_7);
 		}
 
-		String lc = getLifecycleStatus();
-		if (!STATUS_NONE_VALUE.equals(lc)) {
-			throw new Exception(Messages.get().Project_8);
+		// String lc = getLifecycleStatus();
+		// if (!STATUS_NONE_VALUE.equals(lc)) {
+		// throw new Exception(Messages.get().Project_8);
+		// }
+		boolean bOverride = true;
+		if (type == AUTO_ASSIGNMENT_TYPE_NONE) {
+			bOverride = false;
 		}
 
 		List<PrimaryObject> childrenWorks = getChildrenWork();
 		for (int i = 0; i < childrenWorks.size(); i++) {
 			Work childWork = (Work) childrenWorks.get(i);
-			childWork.doAssignment(map, context);
+			childWork.doAssignment(bOverride, map, context);
 		}
 	}
 
@@ -1785,19 +1793,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkWriteResult(ws);
 
 		BasicDBObject condition = new BasicDBObject();
-		condition.put(Deliverable.F_PROJECT_ID, get_id());
-		condition.put(Deliverable.F_TYPE, IDeliverable.TYPE_OUTPUT);
-		List<PrimaryObject> deliverableList = getRelationByCondition(
-				Deliverable.class, condition);
-		if (deliverableList != null) {
-			for (PrimaryObject po : deliverableList) {
-				Deliverable deliverable = (Deliverable) po;
-				Document document = deliverable.getDocument();
-				if (document != null) {
-					String lc = document.getLifecycle();
-					if (Document.STATUS_WORKING_ID.equals(lc)) {
-						document.doSetLifeCycleStatus(context,
-								Document.STATUS_RELEASED_ID);
+		condition.put(Work.F_PROJECT_ID, get_id());
+		List<PrimaryObject> workList = getRelationByCondition(Work.class,
+				condition);
+		if (workList != null && workList.size() > 0) {
+			for (PrimaryObject po : workList) {
+				Work work = (Work) po;
+				List<PrimaryObject> documentList = work
+						.getOutputDeliverableDocuments();
+				if (documentList != null && documentList.size() > 0) {
+					for (PrimaryObject primaryObject : documentList) {
+						Document document = (Document) primaryObject;
+						if (document != null) {
+							String lc = document.getLifecycle();
+							if (Document.STATUS_WORKING_ID.equals(lc)) {
+								document.doSetLifeCycleStatus(context,
+										Document.STATUS_RELEASED_ID);
+							}
+						}
 					}
 				}
 			}
@@ -2507,8 +2520,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param typeFieldName
 	 * @return
 	 */
-	public DBObject getParaXOrParaY(ObjectId typeId,
-			String typeFieldName) {
+	public DBObject getParaXOrParaY(ObjectId typeId, String typeFieldName) {
 		// 通过工时类型id，获取工时类型
 		BasicBSONList paraXs = (BasicBSONList) getValue(typeFieldName);
 		if (paraXs == null) {
@@ -2531,8 +2543,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @return
 	 */
 	public DBObject getParaXOption(ObjectId paraXId) {
-		DBObject paraX = getParaXOrParaY(paraXId,
-				F_WORKTIME_PARA_X);
+		DBObject paraX = getParaXOrParaY(paraXId, F_WORKTIME_PARA_X);
 		if (paraX == null) {
 			return null;
 		}
@@ -2552,8 +2563,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param paraXId
 	 * @param option
 	 */
-	public void makeParaXOption(ObjectId paraXId,
-			String paraXDesc, DBObject option) {
+	public void makeParaXOption(ObjectId paraXId, String paraXDesc,
+			DBObject option) {
 		BasicBSONList paraXs = null;
 		Object value = getValue(F_WORKTIME_PARA_X);
 
@@ -2643,8 +2654,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public BasicBSONList getWorkTimeParaYOption(ObjectId paraYId) {
-		DBObject paraY = getParaXOrParaY(paraYId,
-				F_WORKTIME_PARA_Y);
+		DBObject paraY = getParaXOrParaY(paraYId, F_WORKTIME_PARA_Y);
 		if (paraY == null) {
 			return null;
 		}
@@ -2701,8 +2711,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(WorkTimeProgram.class, programId);
 	}
 
-	public void selectWorkTimeParaYOption(ObjectId typeId,
-			String typeDesc, DBObject option, boolean select) {
+	public void selectWorkTimeParaYOption(ObjectId typeId, String typeDesc,
+			DBObject option, boolean select) {
 		if (select) {
 			makeWorkTimeParaYOption(typeId, typeDesc, option);
 		} else {
@@ -2778,15 +2788,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 判断没有选的工时类型选项
 			boolean valid = checkWorkTimeParaXOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(
-						Messages.get().ParaXOptionNotSelected);
+				throw new Exception(Messages.get().ParaXOptionNotSelected);
 			}
 			// 2.检查所有的列类型选项
 			// 所有的列类型选项都没选择，提示出错
 			valid = checkWorkTimeParaYOption(workTimeProgram);
 			if (!valid) {
-				throw new Exception(
-						Messages.get().ParaXOptionNotSelected);
+				throw new Exception(Messages.get().ParaXOptionNotSelected);
 			}
 			return;
 		}
@@ -2890,31 +2898,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return false;
 	}
 
-
-	
 	/**
-	 * 获取项目中定义的工时列类型选项
-	 * 当项目中的列类型没有值或者列类型没有列类型选项时，会返回一个没有元素的集合；集合不会为null
+	 * 获取项目中定义的工时列类型选项 当项目中的列类型没有值或者列类型没有列类型选项时，会返回一个没有元素的集合；集合不会为null
+	 * 
 	 * @return
 	 */
 	public Set<ObjectId> getWorkTimeParaYOptionIds() {
-		//实例化一个Set集合
+		// 实例化一个Set集合
 		Set<ObjectId> result = new HashSet<ObjectId>();
-		//取出工时列类型，是BasicBSONList类型
+		// 取出工时列类型，是BasicBSONList类型
 		BasicBSONList paraYs = (BasicBSONList) getValue(F_WORKTIME_PARA_Y);
 		if (paraYs != null) {
-			//判断列类型不为空，就循环遍历列类型的list
+			// 判断列类型不为空，就循环遍历列类型的list
 			for (int i = 0; i < paraYs.size(); i++) {
-				//获得列类型list中的DBObject对象的列类型
+				// 获得列类型list中的DBObject对象的列类型
 				DBObject paraY = (DBObject) paraYs.get(i);
-				//获取列类型的选项，是BasicBSONList类型
+				// 获取列类型的选项，是BasicBSONList类型
 				BasicBSONList options = (BasicBSONList) paraY
 						.get(F_WORKTIME_PARA_OPTIONS);
-				//循环遍历列类型选项list
+				// 循环遍历列类型选项list
 				for (int j = 0; j < options.size(); j++) {
-					//得到DBObject类型的列类型选项
+					// 得到DBObject类型的列类型选项
 					DBObject option = (DBObject) options.get(j);
-					//获取列类型选项的id，并添加到Set集合中
+					// 获取列类型选项的id，并添加到Set集合中
 					result.add((ObjectId) option.get(F__ID));
 				}
 			}

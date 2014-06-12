@@ -149,14 +149,14 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 			if (id != null) {
 				Project project = ModelService.createModelObject(Project.class,
 						id);
-				// if (day == 1) {
-				ProjectMonthlyETL pres = project.getMonthlyETL();
-				DBObject etl = pres.doETL(cal);
-				projectETLList.add(etl);
-				// } else {
-				// ProjectETL pres = project.getETL();
-				// pres.doETL(cal);
-				// }
+				if (day == 1) {
+					ProjectMonthlyETL pres = project.getMonthlyETL();
+					DBObject etl = pres.doETL(cal);
+					projectETLList.add(etl);
+				} else {
+					ProjectETL pres = project.getETL();
+					pres.doETL(cal);
+				}
 				if (Portal.getDefault().isDevelopMode()) {
 					Commons.loginfo(project.getLabel() + " ETL finished."); //$NON-NLS-1$
 				}
@@ -165,7 +165,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		return projectETLList;
 	}
 
-	private void clear(int year, int month) {
+	protected void clear(int year, int month) {
 		rndClear(year, month);
 		workOrderClear(year, month);
 		saleDataClear(year, month);
