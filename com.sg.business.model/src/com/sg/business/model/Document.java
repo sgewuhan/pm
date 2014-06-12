@@ -3,6 +3,7 @@ package com.sg.business.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -210,30 +211,17 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C__IDS);
 
-		String prefix = ""; //$NON-NLS-1$
 		Project project = getProject();
-		if (project != null) {
-			prefix = project.getProjectNumber();
-		} else {
+		if (project == null) {
+			String prefix = "" + Calendar.getInstance().get(Calendar.YEAR);
 			// 独立工作文档的编号，公司代码
-			if (work != null && work.isStandloneWork()) {
-				User charger = work.getCharger();
-				if (charger != null) {
-					Organization org = charger.getOrganization();
-					prefix = org.getCompanyCode();
-					while (Utils.isNullOrEmptyString(prefix)) {
-						org = (Organization) org.getParentOrganization();
-						prefix = org.getCompanyCode();
-					}
-				}
-			}
+			int id = DBUtil.getIncreasedID(ids,
+					IModelConstants.SEQ_DOCUMENT_NUMBER + "." + prefix); //$NON-NLS-1$
+			//		String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$  cctec
+			String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$
+			String codeValue = "D" + prefix + seq;
+			setValue(F_DOCUMENT_NUMBER, codeValue);
 		}
-		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
-				+ "." + prefix); //$NON-NLS-1$
-		//		String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$  cctec
-		String seq = String.format("%03d", id).toUpperCase(); //$NON-NLS-1$
-		String codeValue = prefix + seq;
-		setValue(F_DOCUMENT_NUMBER, codeValue);
 	}
 
 	private Work getWork() {
@@ -303,7 +291,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						}
 
 						try {
-							DocumentConverterActivator.convert(serverFile, previewFile);
+							DocumentConverterActivator.convert(serverFile,
+									previewFile);
 							remoteFile.setPreviewUploaded(previewFile,
 									previewOid);
 							remoteFile.addPreview();
@@ -810,7 +799,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		String lc = getLifecycle();
 		if (STATUS_WORKING_ID.equals(lc)) {
 			String editorId = get_editor();
-			if (editorId== null || editorId == EDITOR || editorId == EDITOR_FORDER) {
+			if (editorId == null || editorId == EDITOR
+					|| editorId == EDITOR_FORDER) {
 				return true;
 			}
 		}
