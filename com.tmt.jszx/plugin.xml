@@ -35,7 +35,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszx.jszxProjectApply.audit"
+            editorId="jszx.jszxProjectApply.audit1"
             name="申请部门审核"
             persistentFields="comment,choice,accessory"
             processDefinitionId="jszx.jszxProjectApply">
@@ -55,7 +55,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszx.jszxProjectApply.audit"
+            editorId="jszx.jszxProjectApply.audit1"
             name="首席师审核"
             persistentFields="comment,choice,accessory"
             processDefinitionId="jszx.jszxProjectApply">
@@ -176,7 +176,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszx.jszxProjectApply.audit"
+            editorId="jszx.jszxProjectApply.audit1"
             name="首席师审核"
             persistentFields="comment,choice,accessory"
             processDefinitionId="jszx.jszxProjectApply1">
@@ -559,6 +559,69 @@
                         editable="true"
                         id="accessory"
                         label="%file.label.3"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="jszx.jszxProjectApply.audit1"
+            name="%editor.name">
+         <basicpage
+               id="page1"
+               title="%basicpage.title">
+            <pagecolumn>
+               <section
+                     label="%section.label">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="%text.label"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="%radio.label"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否整改"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="%basicpage.title.0">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.1">
+            <pagecolumn>
+               <section
+                     label="%section.label.0">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="%file.label"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"

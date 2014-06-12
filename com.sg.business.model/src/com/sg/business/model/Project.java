@@ -233,6 +233,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	private SummaryProjectWorks summaryProjectWorks;
 
+	public static final int AUTO_ASSIGNMENT_TYPE_ALL = 0;
+
+	public static final int AUTO_ASSIGNMENT_TYPE_NONE = 1;
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -1103,21 +1107,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @throws Exception
 	 */
-	public void doAssignmentByRole(IContext context) throws Exception {
+	public void doAssignmentByRole(int type, IContext context) throws Exception {
 		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
 		if (map.size() == 0) {
 			throw new Exception(Messages.get().Project_7);
 		}
 
-		String lc = getLifecycleStatus();
-		if (!STATUS_NONE_VALUE.equals(lc)) {
-			throw new Exception(Messages.get().Project_8);
+		// String lc = getLifecycleStatus();
+		// if (!STATUS_NONE_VALUE.equals(lc)) {
+		// throw new Exception(Messages.get().Project_8);
+		// }
+		boolean bOverride = true;
+		if (type == AUTO_ASSIGNMENT_TYPE_NONE) {
+			bOverride = false;
 		}
 
 		List<PrimaryObject> childrenWorks = getChildrenWork();
 		for (int i = 0; i < childrenWorks.size(); i++) {
 			Work childWork = (Work) childrenWorks.get(i);
-			childWork.doAssignment(map, context);
+			childWork.doAssignment(bOverride, map, context);
 		}
 	}
 
