@@ -4481,6 +4481,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 统计点
 		setValue(F_STATISTICS_POINT, wd.getValue(F_STATISTICS_POINT));
+		
+		//加入项目计算工时
+		setValue(F_JOIN_PROJECT_CALCWORKS, wd.getValue(F_JOIN_PROJECT_CALCWORKS));
 
 		// 处理用户设置
 		DBObject acdata = ipc.getProcessActorsData(F_WF_EXECUTE);

@@ -5,6 +5,12 @@
          point="org.eclipse.ui.views">
       <view
             category="work"
+            class="com.sg.business.performence.user.EmployeeWorksFromWork"
+            id="performence.workssummary"
+            name="%view.name.4">
+      </view>
+      <view
+            category="work"
             class="com.sg.business.performence.organization.OrgResCalender"
             id="performence.works.org"
             name="%view.name">
@@ -76,6 +82,10 @@
             class="com.sg.business.performence.ui.handler.AppendWorkRecord"
             commandId="work.appendrecord">
       </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.QueryWorks"
+            commandId="performence.works.query">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -123,6 +133,10 @@
             categoryId="work"
             id="work.appendrecord"
             name="%command.name.7">
+      </command>
+      <command
+            id="performence.works.query"
+            name="%performence.works.query">
       </command>
    </extension>
    <extension
@@ -478,6 +492,29 @@
          <command
                commandId="work.appendrecord"
                label="%command.label.24"
+               mode="FORCE_TEXT"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:performence.workssummary?after=additions">
+         <command
+               commandId="performence.works.query"
+               icon="image/cal1_16.png"
+               label="%performence.works.query"
+               mode="FORCE_TEXT"
+               style="push">
+         </command>
+         <command
+               commandId="performence.collapse"
+               label="%command.label.3"
+               mode="FORCE_TEXT"
+               style="push">
+         </command>
+         <command
+               commandId="performence.expandAll"
+               label="%command.label.4"
                mode="FORCE_TEXT"
                style="push">
          </command>

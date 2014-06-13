@@ -2258,6 +2258,15 @@
                         persistable="true"
                         required="false">
                   </checkbox>
+                  <checkbox
+                        editable="true"
+                        id="joinprojectcalcworks"
+                        label="%joinprojectcalcworks"
+                        labelVisible="true"
+                        name="joinprojectcalcworks"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>

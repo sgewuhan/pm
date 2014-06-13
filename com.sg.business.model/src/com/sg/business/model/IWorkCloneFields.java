@@ -167,6 +167,11 @@ public interface IWorkCloneFields {
 	 * 工时类型id，用于工作和工作定义上的,是F_WORKTIME_PARA_X的子字段
 	 */
 	public static final String F_WORKTIME_PARAX_ID="para_id";
+	
+	/**
+	 * 加入项目计算工时，用于独立工作统计工时
+	 */
+	public static final String F_JOIN_PROJECT_CALCWORKS="joinprojectcalcworks";
 
 	/**
 	 * 需要复制的设置项

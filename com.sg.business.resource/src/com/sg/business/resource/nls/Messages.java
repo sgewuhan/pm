@@ -1163,4 +1163,6 @@ public class Messages {
 	public String AssignWork_1;
 	public String AssignWork_2;
 
+	public String Role_44;
+
 }

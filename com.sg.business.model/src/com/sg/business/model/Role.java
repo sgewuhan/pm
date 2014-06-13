@@ -55,7 +55,7 @@ public class Role extends PrimaryObject {
 	/**
 	 * 基础角色/组织角色/系统管理员
 	 */
-	public static final String ROLE_ADMIN_ID = "T000"; //$NON-NLS-1$
+	public static final String ROLE_ADMIN_ID = "T099"; //$NON-NLS-1$
 	public static final String ROLE_ADMIN_TEXT = Messages.get().Role_4;
 
 	/**
@@ -116,9 +116,15 @@ public class Role extends PrimaryObject {
 			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
-
 	public static final String ROLE_ASSIGNMENT_ID = "T007"; //$NON-NLS-1$
 	public static final String ROLE_ASSIGNMENT_TEXT = Messages.get().Role_20;
+	
+//2014.6.12日23:23，加工时统计员角色
+	/**
+	 * 基础角色/组织角色/工时统计员，在具有项目管理职能的组织才有
+	 */
+	public static final String ROLE_WORKS_STATISTICS_ID = "T008"; //$NON-NLS-1$
+	public static final String ROLE_WORKS_STATISTICS_TEXT = Messages.get().Role_44;
 
 	public static final String F_RULE = "rule";
 
