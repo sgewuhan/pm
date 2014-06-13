@@ -20,7 +20,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Project;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkflowSynchronizer;
@@ -30,15 +29,15 @@ public class ProcessingSidebarSet extends DataSetFactory {
 
 	private String userId;
 	private DBCollection workCol;
-	private DBCollection projectCol;
+//	private DBCollection projectCol;
 	private DBCollection userTaskCol;
 
 	public ProcessingSidebarSet() {
 		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 		workCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_WORK);
-		projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
+		// projectCol = DBActivator.getCollection(IModelConstants.DB,
+		// IModelConstants.C_PROJECT);
 		userTaskCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USERTASK);
 	}
@@ -47,18 +46,18 @@ public class ProcessingSidebarSet extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		WorkflowSynchronizer synchronizer = new WorkflowSynchronizer();
 		synchronizer.synchronizeUserTask(userId);
-		
+
 		// 前提：（项目必须是进行中）
 		// 并且（本人负责，参与或者是指派者或者是流程任务的执行人）
 		// 并且（工作必须是准备中或进行中）
 
 		// 按照项目工作和计划完成时间排序
 
-		// 查询正在进行的项目
-		List<?> projectIdList = projectCol.distinct(Project.F__ID,
-				new BasicDBObject().append(Project.F_LIFECYCLE,
-						ILifecycle.STATUS_WIP_VALUE));
-		projectIdList.add(null);
+		// // 查询正在进行的项目
+		// List<?> projectIdList = projectCol.distinct(Project.F__ID,
+		// new BasicDBObject().append(Project.F_LIFECYCLE,
+		// ILifecycle.STATUS_WIP_VALUE));
+		// projectIdList.add(null);
 
 		// 查询流程工作
 		DBObject q = new BasicDBObject();
@@ -73,7 +72,7 @@ public class ProcessingSidebarSet extends DataSetFactory {
 		List<?> pWorkId = userTaskCol.distinct(UserTask.F_WORK_ID, q);
 
 		// 查询本人参与的工作
-		//2014-04-18 按舒传玉提出的要求将原有的显示本人参与的工作改为只显示本人负责的工作
+		// 2014-04-18 按舒传玉提出的要求将原有的显示本人参与的工作改为只显示本人负责的工作
 		q = new BasicDBObject();
 		q.put("$or", //$NON-NLS-1$
 				new BasicDBObject[] {
@@ -85,8 +84,8 @@ public class ProcessingSidebarSet extends DataSetFactory {
 		// 生命周期状态为准备、进行中
 		q.put(Work.F_LIFECYCLE, new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 				Work.STATUS_ONREADY_VALUE, Work.STATUS_WIP_VALUE }));
-		q.put(Work.F_PROJECT_ID,
-				new BasicDBObject().append("$in", projectIdList.toArray()));
+		// q.put(Work.F_PROJECT_ID,
+		// new BasicDBObject().append("$in", projectIdList.toArray()));
 
 		DBCursor cur = workCol.find(q);
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
@@ -165,10 +164,13 @@ public class ProcessingSidebarSet extends DataSetFactory {
 	private void addWork(List<PrimaryObject> result, Work work) {
 		Work rootWork = (Work) work.getRoot();
 		if (rootWork != null) {
-			if (result.size() == 0) {
-				result.add(rootWork);
-			} else if (result.indexOf(rootWork) < 0) {
-				result.add(rootWork);
+			String lc = rootWork.getLifecycleStatus();
+			if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+				if (result.size() == 0) {
+					result.add(rootWork);
+				} else if (result.indexOf(rootWork) < 0) {
+					result.add(rootWork);
+				}
 			}
 		}
 	}
