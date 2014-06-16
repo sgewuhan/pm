@@ -984,6 +984,25 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="tbprojectapplication.deptassign"
+            name="部长审核"
+            persistentFields="prj_manager,accessory,projecttype,choice"
+            processDefinitionId="xt.xtProjectApplication"
+            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT">
+         <processParameter
+               processParameterName="prj_manager"
+               taskFormFieldName="prj_manager">
+         </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
             editorId="tbprojectapplication.workorder"
             inputHandler="com.tmt.xt.handler.ProjectApplicationWorkOrderOfXT"
             name="审批工作令号"
