@@ -359,7 +359,7 @@
       <taskForm
             editorId="xtSubconcessions.dataaudit"
             name="预审"
-            persistentFields="comment,choice,accessory"
+            persistentFields="comment,choice,accessory,reviewer_list,reviewer_admin"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -1086,7 +1086,7 @@
       <taskForm
             editorId="xtSubconcessions.dataaudit"
             name="转批预审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,reviewer_list,reviewer_admin"
             processDefinitionId="xt.xtSubconcessions"
             saveHandler="com.sg.business.taskforms.savehandler.AddParticipate">
          <processParameter
