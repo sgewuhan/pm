@@ -1167,5 +1167,6 @@ public class Messages {
 	
 	public String OnlyOwnerDepartmentWorks;
 	public String OnlyProjectWorks;
+	public String CreateFolderTemplate_0;
 
 }

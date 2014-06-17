@@ -24,13 +24,12 @@ import com.sg.business.resource.nls.Messages;
  * @author jinxitao
  * 
  */
-public class ProjectTemplate extends PrimaryObject{
+public class ProjectTemplate extends PrimaryObject {
 
 	/**
 	 * 所属组织
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
-
 
 	/**
 	 * 预算定义ID
@@ -91,21 +90,22 @@ public class ProjectTemplate extends PrimaryObject{
 	 */
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment"; //$NON-NLS-1$
 
-
 	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
-	
+
 	/**
 	 * 工时方案，保存的是由工时方案的_id组成的数组
 	 */
-	public static final String F_WORKTIMEPROGRAMS="worktimeprograms";
-	
+	public static final String F_WORKTIMEPROGRAMS = "worktimeprograms";
+
 	/**
 	 * 统计阶段，从数据库取出的是BSONList，每个元素是字符串
 	 */
-	public static final String F_STATISTICSSTEP="statisticsstep";
+	public static final String F_STATISTICSSTEP = "statisticsstep";
 
-
-	private static final String F_FOLDER_ID = "folder_id";
+	/**
+	 * 文件夹模板的id
+	 */
+	public static final String F_FOLDER_DEFINITION_ID = "folderd_id";
 
 	/**
 	 * 返回显示图标
@@ -137,17 +137,30 @@ public class ProjectTemplate extends PrimaryObject{
 			WorkDefinition wbsRoot = ModelService.createModelObject(
 					wbsRootData, WorkDefinition.class);
 			wbsRoot.doInsert(context);
-			
-			//2014.6.16 雷成洋
-			//********************************************
-			Folder folderRoot = makeFolderRoot();
-			folderRoot.doInsert(context);
-			setValue(F_FOLDER_ID, folderRoot.get_id());
-			//********************************************
 
-			
 			setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
 		}
+		// 2014.6.17
+		// 判断文件夹模板id为空，就新增一条文件夹模板记录
+		// *******************************************
+		if (getValue(F_FOLDER_DEFINITION_ID) == null) {
+			BasicDBObject folderdRootData = new BasicDBObject();
+			folderdRootData.put(FolderDefinition.F_DESC, getDesc());
+			folderdRootData.put(FolderDefinition.F_PROJECT_TEMPLATE_ID,
+					get_id());
+			ObjectId folderRootId = new ObjectId();
+			folderdRootData.put(FolderDefinition.F__ID, folderRootId);
+			folderdRootData.put(FolderDefinition.F_ROOT_ID, folderRootId);
+			folderdRootData.put(
+					FolderDefinition.F_IS_PROJECT_TEMPLATE_FOLDERROOT,
+					Boolean.TRUE);
+			FolderDefinition folderdRoot = ModelService.createModelObject(
+					folderdRootData, FolderDefinition.class);
+			folderdRoot.doInsert(context);
+			setValue(F_FOLDER_DEFINITION_ID, folderdRoot.get_id());
+		}
+
+		// *******************************************
 
 		if (getValue(F_BUDGET_ID) == null) {
 			BudgetItem biRoot = BudgetItem.COPY_DEFAULT_BUDGET_ITEM();
@@ -208,11 +221,21 @@ public class ProjectTemplate extends PrimaryObject{
 
 		// 删除交付物定义
 		doRemoveDeliverableDefinitionsInternal();
+		
+		//删除文件夹模板
+		doRemoveFolderDefinitionInternal();
 
 		// 删除角色定义
 		doRemoveRoleDefinitionInternal();
 
 		super.doRemove(context);
+	}
+
+	private void doRemoveFolderDefinitionInternal() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_FOLDER_DEFINITION);
+		col.remove(new BasicDBObject().append(
+				DeliverableDefinition.F_PROJECTTEMPLATE_ID, get_id()));
 	}
 
 	/**
@@ -252,10 +275,10 @@ public class ProjectTemplate extends PrimaryObject{
 		col.remove(new BasicDBObject().append(
 				WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id()));
 	}
-	
+
 	@Override
 	public boolean canEdit(IContext context) {
-		if(isActivated()){
+		if (isActivated()) {
 			return false;
 		}
 		return super.canEdit(context);
@@ -388,7 +411,7 @@ public class ProjectTemplate extends PrimaryObject{
 
 	/**
 	 * 
-	 * 返回模版中的除根工作外的所有工作定义 
+	 * 返回模版中的除根工作外的所有工作定义
 	 * 
 	 * @return
 	 */
@@ -445,13 +468,13 @@ public class ProjectTemplate extends PrimaryObject{
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IProcessControl.class)) {
-			return (T) new ProcessControl(this){
+			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return RoleDefinition.class;
 				}
 			};
-		}else if(adapter.equals(IActivateSwitch.class)){
+		} else if (adapter.equals(IActivateSwitch.class)) {
 			return (T) new ActivateSwitch(this);
 		}
 		return super.getAdapter(adapter);
@@ -469,28 +492,6 @@ public class ProjectTemplate extends PrimaryObject{
 			return ModelService.createModelObject(ProjectRole.class, roleId);
 		}
 		return null;
-	}
-	
-	/**
-	 * 2014.6.16日，为文件夹模板添加，用于创建根文件夹
-	 * @return
-	 */
-	public Folder makeFolderRoot() {
-		BasicDBObject folderRootData = new BasicDBObject();
-		folderRootData.put(Folder.F_DESC, getDesc());
-		folderRootData.put(Folder.F_PROJECT_ID, get_id());
-		ObjectId folderRootId = new ObjectId();
-		folderRootData.put(Folder.F__ID, folderRootId);
-		folderRootData.put(Folder.F_ROOT_ID, folderRootId);
-		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
-		String containerCollection, containerDB;
-		containerCollection = IModelConstants.C_ORGANIZATION;
-		Container container = Container.adapter(this,
-				Container.TYPE_ADMIN_GRANTED);
-		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
-		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
-		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
-		return ModelService.createModelObject(folderRootData, Folder.class);
 	}
 
 }

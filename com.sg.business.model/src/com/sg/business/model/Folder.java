@@ -66,6 +66,8 @@ public class Folder extends PrimaryObject {
 	 * 是否开放文件夹
 	 */
 	public static final String F_OPENED = "opened"; //$NON-NLS-1$
+	
+
 
 	/**
 	 * 是否项目根文件夹
