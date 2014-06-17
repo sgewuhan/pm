@@ -35,7 +35,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.viewer.WorkTimeTypeOptionProvider;
+import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkTimeProgram;
@@ -47,12 +47,13 @@ import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
-		IPrimaryObjectValueChangeListener,IValidable {
+		IPrimaryObjectValueChangeListener, IValidable {
 
 	private ComboViewer programSelector;
-	private TableViewer workTimeTypeSelector;
-	private TreeViewer columnTypeSelector;
+	private TableViewer paraXSelector;
+	private TreeViewer paraYSelector;
 	private Project project;
+	private boolean isReadonly;
 	private static final int MARGIN = 4;
 
 	/**
@@ -62,18 +63,22 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		super.createPageContent(mForm, parent, input, conf);
+		// 从编辑器输入中获取数据，这个数据是project
+		project = (Project) input.getData();
+		isReadonly = project.isPersistent();
 
 		// 创建方案选择器，ComboViewer类型，参数是容器
 		programSelector = createProgramSelector(parent);
+		
 		// 获取方案选择器的控件
 		Control programSelectorControl = programSelector.getControl();
 		// 创建工时类型选择器，参数是容器
-		workTimeTypeSelector = createWorkTimeTypeSelector(parent);
+		paraXSelector = createParaXSelector(parent);
 		// 获取工时类型选择器的控件
-		Control workTimeTypeSelectorControl = workTimeTypeSelector.getControl();
+		Control paraXSelectorControl = paraXSelector.getControl();
 		// 创建列类型选择器
-		columnTypeSelector = createColumnTypeSelector(parent);
-		Control columnTypeSelectorControl = columnTypeSelector.getControl();
+		paraYSelector = createParaYSelector(parent);
+		Control paraYSelectorControl = paraYSelector.getControl();
 
 		// 设置parent为表单布局
 		parent.setLayout(new FormLayout());
@@ -94,7 +99,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置工时类型选择控件的布局数据
-		workTimeTypeSelectorControl.setLayoutData(fd);
+		paraXSelectorControl.setLayoutData(fd);
 		// 设置工时类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置工时类型选择控件的底部边距
@@ -107,7 +112,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置列类型选择控件的布局数据
-		columnTypeSelectorControl.setLayoutData(fd);
+		paraYSelectorControl.setLayoutData(fd);
 		// 设置列类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置列类型选择控件的底部边距
@@ -117,10 +122,22 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 设置列类型选择控件的右边边距
 		fd.right = new FormAttachment(100, -MARGIN);
 
-		// 从编辑器输入中获取数据，这个数据是project
-		project = (Project) input.getData();
-		// 侦听项目的项目模板id字段的值
-		project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
+		// 如果项目已经持久化了，只需打开，无需侦听
+		if (isReadonly) {
+			WorkTimeProgram program = project.getWorkTimeProgram();
+			if (program != null) {
+				programSelector.setInput(new Object[] { program });
+				programSelector.setSelection(new StructuredSelection(
+						new Object[] { program }));
+				// 设置工时类型选择器的Input,传一个参数是工时方案
+				setparaXSelectorInput(program);
+				// 设置列类型选择器的Input，传入工时方案
+				setParaYSelectorInput(program);
+			}
+		} else {
+			// 侦听项目的项目模板id字段的值
+			project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
+		}
 		// 返回容器
 		return parent;
 	}
@@ -131,7 +148,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param parent
 	 * @return
 	 */
-	private TableViewer createWorkTimeTypeSelector(Composite parent) {
+	private TableViewer createParaXSelector(Composite parent) {
 		// 1.创建表查看器
 		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -144,7 +161,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 第一个列是工时类型列
 		TableViewerColumn column = new TableViewerColumn(tableViewer, SWT.LEFT);
 		// 设置表查看器列的控件列的文本
-		column.getColumn().setText("工时类型");
+		column.getColumn().setText("工作工时参数");
 		// 设置表查看器列的控件列的宽度
 		column.getColumn().setWidth(145);
 		// 设置表查看器列的控件列的LabelProvider
@@ -159,118 +176,116 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 第二列是工时类型选项列，显示本项目中已设置的工时类型选项，并提供编辑器用于编辑选项
 		column = new TableViewerColumn(tableViewer, SWT.LEFT);
-		column.getColumn().setText("工时类型选项");
+		column.getColumn().setText("工作工时参数选项");
 		column.getColumn().setWidth(150);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				// element是DBObject的工时类型，取出工时类型的id
-				ObjectId workTimeTypeId = (ObjectId) ((DBObject) element)
+				ObjectId paraXId = (ObjectId) ((DBObject) element)
 						.get(WorkTimeProgram.F__ID);
 				// 从项目中获得对应工时类型的选项
-				DBObject workTimeTypeOption = project
-						.getWorkTimeTypeOption(workTimeTypeId);
+				DBObject paraXOption = project.getParaXOption(paraXId);
 				// 当项目没有对应的工时类型选项时，返回空字符串
-				if (workTimeTypeOption == null) {
+				if (paraXOption == null) {
 					return "";
 				}
 				// 返回项目中对应工时类型的选项名称
-				String optionDesc = (String) workTimeTypeOption
+				String optionDesc = (String) paraXOption
 						.get(WorkTimeProgram.F_DESC);
 				return optionDesc;
 			}
 		});
 		// 为第二列设置编辑器
-		column.setEditingSupport(new EditingSupport(tableViewer) {
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				// element是DBObject的工时类型，value是editor选择的DBObject的工时类型选项
-				DBObject option = (DBObject) value;
-				// 获取工时类型的id
-				ObjectId workTimeTypeId = (ObjectId) ((DBObject) element)
-						.get(WorkTimeProgram.F__ID);
-				// 获取工时类型的名称
-				String workTimeTypeDesc = (String) ((DBObject) element)
-						.get(WorkTimeProgram.F_DESC);
-				// 调用project的方法设置工时类型选项，传三个参数
-				project.makeWorkTimeTypeOption(workTimeTypeId,
-						workTimeTypeDesc, option);
-				project.noticeValueChanged(Project.F_WORKTIMETYPES);
-
-				// 设置数据脏了
-				setDirty(true);
-				// 更新表查看器对应的工时类型元素
-				tableViewer.update(element, null);
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				// element是DBObject的工时类型
-				// 获取工时类型的id
-				ObjectId workTimeTypeId = (ObjectId) ((DBObject) element)
-						.get(WorkTimeProgram.F__ID);
-				// 通过工时类型id，获取项目中的DBObject的工时类型选项
-				DBObject workTimeTypeOptionOfProject = project
-						.getWorkTimeTypeOption(workTimeTypeId);
-				// 判断项目中的工时类型选项不为空
-				if (workTimeTypeOptionOfProject != null) {
-					// 获取项目中的工时类型选项的id
-					ObjectId optionIdOfProject = (ObjectId) workTimeTypeOptionOfProject
+		if (!isReadonly) {
+			column.setEditingSupport(new EditingSupport(tableViewer) {
+				@Override
+				protected void setValue(Object element, Object value) {
+					// element是DBObject的工时类型，value是editor选择的DBObject的工时类型选项
+					DBObject option = (DBObject) value;
+					// 获取工时类型的id
+					ObjectId paraXId = (ObjectId) ((DBObject) element)
 							.get(WorkTimeProgram.F__ID);
-					// 获取工时类型的BsonList选项
-					BasicBSONList options = (BasicBSONList) ((DBObject) element)
-							.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
-					for (Iterator<?> iterator = options.iterator(); iterator
-							.hasNext();) {
-						// 遍历工时类型的选项，获得DBObject的工时类型选项元素
-						DBObject option = (DBObject) iterator.next();
-						// 获取工时类型选项的id
-						ObjectId optionId = (ObjectId) option
+					// 获取工时类型的名称
+					String paraXDesc = (String) ((DBObject) element)
+							.get(WorkTimeProgram.F_DESC);
+					// 调用project的方法设置工时类型选项，传三个参数
+					project.makeParaXOption(paraXId, paraXDesc, option);
+					project.noticeValueChanged(Project.F_WORKTIME_PARA_X);
+
+					// 设置数据脏了
+					setDirty(true);
+					// 更新表查看器对应的工时类型元素
+					tableViewer.update(element, null);
+				}
+
+				@Override
+				protected Object getValue(Object element) {
+					// element是DBObject的工时类型
+					// 获取工时类型的id
+					ObjectId paraXId = (ObjectId) ((DBObject) element)
+							.get(WorkTimeProgram.F__ID);
+					// 通过工时类型id，获取项目中的DBObject的工时类型选项
+					DBObject paraXOptionOfProject = project
+							.getParaXOption(paraXId);
+					// 判断项目中的工时类型选项不为空
+					if (paraXOptionOfProject != null) {
+						// 获取项目中的工时类型选项的id
+						ObjectId optionIdOfProject = (ObjectId) paraXOptionOfProject
 								.get(WorkTimeProgram.F__ID);
-						// 当项目中的工时类型选项id与工时类型的选项id一致时，返回遍历得到的选项
-						if (optionId.equals(optionIdOfProject)) {
-							return option;
+						// 获取工时类型的BsonList选项
+						BasicBSONList options = (BasicBSONList) ((DBObject) element)
+								.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
+						for (Iterator<?> iterator = options.iterator(); iterator
+								.hasNext();) {
+							// 遍历工时类型的选项，获得DBObject的工时类型选项元素
+							DBObject option = (DBObject) iterator.next();
+							// 获取工时类型选项的id
+							ObjectId optionId = (ObjectId) option
+									.get(WorkTimeProgram.F__ID);
+							// 当项目中的工时类型选项id与工时类型的选项id一致时，返回遍历得到的选项
+							if (optionId.equals(optionIdOfProject)) {
+								return option;
+							}
 						}
 					}
+					return null;
 				}
-				return null;
-			}
 
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				// 创建下拉框查看器表格编辑器
-				ComboBoxViewerCellEditor ce = new ComboBoxViewerCellEditor(
-						tableViewer.getTable(), SWT.READ_ONLY);
-				// 创建下拉框查看器
-				ComboViewer cv = ce.getViewer();
-				// 为下拉框查看器设置contentProvider为ArrayContentProvider
-				cv.setContentProvider(ArrayContentProvider.getInstance());
-				// 为下拉框查看器设置LabelProvider
-				cv.setLabelProvider(new LabelProvider() {
-					@Override
-					public String getText(Object element) {
-						// element是DBObject的工时类型，返回工时类型的名称
-						return (String) ((DBObject) element)
-								.get(WorkTimeProgram.F_DESC);
-					}
-				});
-				// 获取工时类型的BsonList选项
-				BasicBSONList workTimeTypeOptions = (BasicBSONList) ((DBObject) element)
-						.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
-				// 将工时类型选项存入下拉框查看器
-				cv.setInput(workTimeTypeOptions);
-				// 返回下拉框查看器
-				return ce;
-			}
+				@Override
+				protected CellEditor getCellEditor(Object element) {
+					// 创建下拉框查看器表格编辑器
+					ComboBoxViewerCellEditor ce = new ComboBoxViewerCellEditor(
+							tableViewer.getTable(), SWT.READ_ONLY);
+					// 创建下拉框查看器
+					ComboViewer cv = ce.getViewer();
+					// 为下拉框查看器设置contentProvider为ArrayContentProvider
+					cv.setContentProvider(ArrayContentProvider.getInstance());
+					// 为下拉框查看器设置LabelProvider
+					cv.setLabelProvider(new LabelProvider() {
+						@Override
+						public String getText(Object element) {
+							// element是DBObject的工时类型，返回工时类型的名称
+							return (String) ((DBObject) element)
+									.get(WorkTimeProgram.F_DESC);
+						}
+					});
+					// 获取工时类型的BsonList选项
+					BasicBSONList paraXOptions = (BasicBSONList) ((DBObject) element)
+							.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
+					// 将工时类型选项存入下拉框查看器
+					cv.setInput(paraXOptions);
+					// 返回下拉框查看器
+					return ce;
+				}
 
-			// 设置单元格可编辑
-			@Override
-			protected boolean canEdit(Object element) {
-				return true;
-			}
-		});
-
+				// 设置单元格可编辑
+				@Override
+				protected boolean canEdit(Object element) {
+					return true;
+				}
+			});
+		}
 		// ArrayContentProvider.getInstance()可以获得一个ArrayContentProvider
 		// 它适用于两种情形的input，第一种是实现List接口的类，第二种是数组类型
 		// List或者数组中的每个元素，在setInput以后会作为表格的元素存在
@@ -280,7 +295,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		return tableViewer;
 	}
 
-	private TreeViewer createColumnTypeSelector(Composite parent) {
+	private TreeViewer createParaYSelector(Composite parent) {
 		// 1.创建树查看器,并作基本设置
 		final TreeViewer treeViewer = new TreeViewer(parent, SWT.FULL_SELECTION
 				| SWT.BORDER);
@@ -314,15 +329,15 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			public Image getImage(Object element) {
 				// 判断element是否是列类型
 				if (((DBObject) element)
-						.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS)) {
+						.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS)) {
 					return null;
 				}
 				// element不是列类型时，为列类型选项，去列类型选项id
-				ObjectId columnTypeOptionId = (ObjectId) ((DBObject) element)
+				ObjectId paraYOptionId = (ObjectId) ((DBObject) element)
 						.get(WorkTimeProgram.F__ID);
 				boolean isSelectedWorkTimeOption = project
-						.isSelectedWorkTimeOption(columnTypeOptionId,
-								Project.F_WORKTIME_COLUMNTYPES);
+						.isSelectedWorkTimeOption(paraYOptionId,
+								Project.F_WORKTIME_PARA_Y);
 				if (isSelectedWorkTimeOption) {
 					return Widgets.getImage(ImageResource.CHECKED_16);
 				} else {
@@ -332,51 +347,57 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			}
 		});
 
-		// 3.创建编辑器
-		column.setEditingSupport(new EditingSupport(treeViewer) {
+		if (!isReadonly) {
 
-			@Override
-			protected void setValue(Object element, Object value) {
-				// element是DBObject的工时列类型选项，value是true/false
-				WorkTimeProgram workTimeProgram = project.getWorkTimeProgram();
-				DBObject type = workTimeProgram.getWorkTimeType(
-						(ObjectId) ((DBObject) element)
-								.get(WorkTimeProgram.F__ID),
-						WorkTimeProgram.F_COLUMNTYPES);
-				
-				// 调用project的方法设置工时类型选项，传三个参数
-				project.selectWorkTimeColumnTypeOption((ObjectId)type.get(WorkTimeProgram.F__ID),
-						(String)type.get(WorkTimeProgram.F_DESC), (DBObject)element,Boolean.TRUE.equals(value));
-				project.noticeValueChanged(Project.F_WORKTIME_COLUMNTYPES);
+			// 3.创建编辑器
+			column.setEditingSupport(new EditingSupport(treeViewer) {
 
-				// 设置数据脏了
-				setDirty(true);
-				// 更新表查看器对应的工时类型元素
-				treeViewer.update(element, null);
-			}
+				@Override
+				protected void setValue(Object element, Object value) {
+					// element是DBObject的工时列类型选项，value是true/false
+					WorkTimeProgram workTimeProgram = project
+							.getWorkTimeProgram();
+					DBObject type = workTimeProgram.getParaX(
+							(ObjectId) ((DBObject) element)
+									.get(WorkTimeProgram.F__ID),
+							WorkTimeProgram.F_WORKTIME_PARA_Y);
 
-			@Override
-			protected Object getValue(Object element) {
-				// 因为canEdit已判断，所有element只能是列类型选项
-				ObjectId optionId = (ObjectId) ((DBObject) element)
-						.get(WorkTimeProgram.F__ID);
-				return project.isSelectedWorkTimeOption(optionId,
-						Project.F_WORKTIME_COLUMNTYPES);
-			}
+					// 调用project的方法设置工时类型选项，传三个参数
+					project.selectWorkTimeParaYOption(
+							(ObjectId) type.get(WorkTimeProgram.F__ID),
+							(String) type.get(WorkTimeProgram.F_DESC),
+							(DBObject) element, Boolean.TRUE.equals(value));
+					project.noticeValueChanged(Project.F_WORKTIME_PARA_Y);
 
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return new CheckboxCellEditor(treeViewer.getTree());
-			}
+					// 设置数据脏了
+					setDirty(true);
+					// 更新表查看器对应的工时类型元素
+					treeViewer.update(element, null);
+				}
 
-			@Override
-			protected boolean canEdit(Object element) {
-				// element是列类型或者列类型选项,只有列类型选项才可以编辑
-				return !((DBObject) element)
-						.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
-			}
-		});
-		treeViewer.setContentProvider(new WorkTimeTypeOptionProvider());
+				@Override
+				protected Object getValue(Object element) {
+					// 因为canEdit已判断，所有element只能是列类型选项
+					ObjectId optionId = (ObjectId) ((DBObject) element)
+							.get(WorkTimeProgram.F__ID);
+					return project.isSelectedWorkTimeOption(optionId,
+							Project.F_WORKTIME_PARA_Y);
+				}
+
+				@Override
+				protected CellEditor getCellEditor(Object element) {
+					return new CheckboxCellEditor(treeViewer.getTree());
+				}
+
+				@Override
+				protected boolean canEdit(Object element) {
+					// element是列类型或者列类型选项,只有列类型选项才可以编辑
+					return !((DBObject) element)
+							.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
+				}
+			});
+		}
+		treeViewer.setContentProvider(new ParaXOptionProvider());
 
 		return treeViewer;
 	}
@@ -397,40 +418,52 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 				return (String) ((WorkTimeProgram) element).getDesc();
 			}
 		});
-		// 为下拉框查看器添加选择改变的侦听器，这个侦听器是因为contentProvider是ArrayContentProvider
-		cv.addSelectionChangedListener(new ISelectionChangedListener() {
+		cv.getCombo().setEnabled(!isReadonly);
+		if (!isReadonly) {
+			// 为下拉框查看器添加选择改变的侦听器，这个侦听器是因为contentProvider是ArrayContentProvider
+			cv.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				// 创建结构选择器
-				StructuredSelection selection = (StructuredSelection) event
-						.getSelection();
-				// 获取选择的第一个元素，这个元素是工时方案
-				WorkTimeProgram workTimeProgram = (WorkTimeProgram) selection
-						.getFirstElement();
-				// 将选择的工时方案id保存到项目中
-				project.makeSelectedWorkTimeProgram(workTimeProgram);
-				project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
-				// 设置数据脏了
-				setDirty(true);
-				// 设置工时类型选择器的Input,传一个参数是工时方案
-				setWorkTimeTypeSelectorInput(workTimeProgram);
-				// 设置列类型选择器的Input，传入工时方案
-				setColumnTypeSelectorInput(workTimeProgram);
-				
-			}
-		});
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					// 创建结构选择器
+					StructuredSelection selection = (StructuredSelection) event
+							.getSelection();
+					// 获取选择的第一个元素，这个元素是工时方案
+					WorkTimeProgram workTimeProgram = (WorkTimeProgram) selection
+							.getFirstElement();
+					// 将选择的工时方案id保存到项目中
+					project.makeSelectedWorkTimeProgram(workTimeProgram);
+					project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
+					// 设置数据脏了
+					setDirty(true);
+					// 设置工时类型选择器的Input,传一个参数是工时方案
+					setparaXSelectorInput(workTimeProgram);
+					// 设置列类型选择器的Input，传入工时方案
+					setParaYSelectorInput(workTimeProgram);
+
+				}
+			});
+		}
 		return cv;
+	}
+
+	@Override
+	protected void setDirty(boolean isDirty) {
+		if (isReadonly) {
+			return;
+		}
+		super.setDirty(isDirty);
 	}
 
 	/**
 	 * 设置列类型选择器的Input
+	 * 
 	 * @param workTimeProgram
 	 */
-	protected void setColumnTypeSelectorInput(WorkTimeProgram workTimeProgram) {
-		BasicBSONList columnTypes = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_COLUMNTYPES);
-		columnTypeSelector.setInput(columnTypes);
+	protected void setParaYSelectorInput(WorkTimeProgram workTimeProgram) {
+		BasicBSONList paraYs = (BasicBSONList) workTimeProgram
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
+		paraYSelector.setInput(paraYs);
 	}
 
 	/**
@@ -438,12 +471,12 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * 
 	 * @param workTimeProgram
 	 */
-	private void setWorkTimeTypeSelectorInput(WorkTimeProgram workTimeProgram) {
+	private void setparaXSelectorInput(WorkTimeProgram workTimeProgram) {
 		// 获取工时类型
-		BasicBSONList workTimeTypes = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
-		// BasicBsonList继承与ArrayList，而workTimeTypes中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
-		workTimeTypeSelector.setInput(workTimeTypes);
+		BasicBSONList paraXs = (BasicBSONList) workTimeProgram
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+		// BasicBsonList继承与ArrayList，而paraXs中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
+		paraXSelector.setInput(paraXs);
 	}
 
 	/**
@@ -468,9 +501,9 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		}
 
 		programSelector.setInput(input);
-		columnTypeSelector.setInput(new BasicDBList());
-		workTimeTypeSelector.setInput(new BasicDBList());
-		
+		paraYSelector.setInput(new BasicDBList());
+		paraXSelector.setInput(new BasicDBList());
+
 	}
 
 	@Override
@@ -480,6 +513,9 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 	@Override
 	public void commit(boolean onSave) {
+		if (isReadonly) {
+			return;
+		}
 		setDirty(false);
 	}
 
@@ -503,7 +539,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 	@Override
 	public boolean checkValidOnSave() {
-		//验证工时方案是否已选，如果选择了，就验证工时类型选项是否全选和列类型选项是否选择了，如果没选，就
+		// 验证工时方案是否已选，如果选择了，就验证工时类型选项是否全选和列类型选项是否选择了，如果没选，就
 		try {
 			project.checkWorkTimeProgram();
 			return true;

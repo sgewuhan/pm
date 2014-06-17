@@ -1150,12 +1150,22 @@ public class Messages {
 
 	public String WorkDefinitionNoMeasurement;
 	public String WorkDefinitionCommitMeasurement;
-	public String WorkDefinitionPlanMeasurement;
+	public String WorkDefinitionStandardMeasurement;
 
 	public String WorkTimeProgramNotSelected;
-	public String WorkTimeTypeOptionNotSelected;
+	public String ParaXOptionNotSelected;
+	
+	public String NotFoundOfWorkTimeProgram;
+	public String NoParaX;
+	public String ParaYOptionIdIsNull;
+
 	
 	public String AssignWork_1;
 	public String AssignWork_2;
+
+	public String Role_44;
+	
+	public String OnlyOwnerDepartmentWorks;
+	public String OnlyProjectWorks;
 
 }

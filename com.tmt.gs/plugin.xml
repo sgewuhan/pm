@@ -5133,7 +5133,7 @@
       <taskForm
             editorId="gs.gssubconcessions.application"
             name="转批申请"
-            persistentFields="workorder,product,prj_manager,dept,accessory,data_audit"
+            persistentFields="workorder,product,prj_manager,accessory,data_audit"
             processDefinitionId="gs.gsSubconcessions1">
          <processParameter
                processParameterName="workorder"
@@ -5151,11 +5151,6 @@
          <processParameter
                processParameterName="data_audit"
                taskFormFieldName="data_audit">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
-               processParameterName="dept"
-               taskFormFieldName="dept">
          </processParameter>
       </taskForm>
       <taskForm
@@ -5287,19 +5282,6 @@
             <pagecolumn>
                <section
                      label="请填写转批申请">
-                  <navigatorSelector
-                        editable="true"
-                        id="dept"
-                        label="转批部门"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
-                        modelClass="com.sg.business.model.Organization"
-                        name="dept"
-                        navigatorId="taskforms.organization.navigator"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
                   <navigatorSelector
                         editable="true"
                         id="prj_manager"

@@ -1,14 +1,17 @@
-package com.sg.business.commons.ui.viewer;
+package com.sg.business.management.contentprovider;
+
+import java.util.List;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.DBObject;
 import com.sg.business.model.WorkTimeProgram;
 
-public class WorkTimeTypeOptionProvider implements ITreeContentProvider {
+public class ParaXOfProgram implements ITreeContentProvider {
+
+	public ParaXOfProgram() {
+	}
 
 	@Override
 	public void dispose() {
@@ -20,29 +23,31 @@ public class WorkTimeTypeOptionProvider implements ITreeContentProvider {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return ((BasicDBList) inputElement).toArray();
+		return ((List) inputElement).toArray();
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		DBObject parent = ((DBObject) parentElement);
-		Object options = parent.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
-		if (options instanceof BasicBSONList) {
-			return ((BasicBSONList) options).toArray();
+		WorkTimeProgram workTimeProgram=(WorkTimeProgram) parentElement;
+		Object paraXs = workTimeProgram.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+		if(paraXs instanceof BasicBSONList){
+			return ((BasicBSONList) paraXs).toArray();
 		}
 		return new Object[0];
 	}
 
 	@Override
 	public Object getParent(Object element) {
+		
 		return null;
 	}
 
 	@Override
 	public boolean hasChildren(Object element) {
-		return getChildren(element).length > 0;
+		return element instanceof WorkTimeProgram;
 	}
 
 }

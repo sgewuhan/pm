@@ -932,6 +932,85 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbprojectapplication.deptassign"
+            name="部长审核">
+         <basicpage
+               id="page1"
+               title="%basicpage.title.16">
+            <pagecolumn>
+               <section
+                     label="%section.label.14">
+                  <navigatorSelector
+                        editable="true"
+                        id="prj_manager"
+                        label="%navigatorSelector.label.0"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="prj_manager"
+                        navigatorId="tb.taskforms.manager.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="请输入项目等级">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="projecttype"
+                        label="项目等级"
+                        labelVisible="true"
+                        name="projecttype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="审核结论">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="审核结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="%basicpage.title.17">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.18">
+            <pagecolumn>
+               <section
+                     label="%section.label.15">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -2187,6 +2266,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="tb.taskforms.manager.selector"
+            tree="tb.taskforms.manager.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -2244,6 +2343,21 @@
          <column
                columnDefinitionId="work.desc.1">
          </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.tb.dataset.ManagerSelectorOfTaskforms"
+            headerVisiable="false"
+            id="tb.taskforms.manager.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
       </tree>
    </extension>
    <extension

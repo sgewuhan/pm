@@ -150,6 +150,7 @@ public class ColumnLocator extends Shell {
 		dataSource = new DataSource();
 		dataSource.setTemplate(new ColumnTemplate(120, 200)); // the column
 																// widths
+		@SuppressWarnings("rawtypes")
 		ColumnDataProvider dataProvider = new ColumnDataProvider() {
 			public Iterable<?> getSuggestions() {
 				return Arrays.asList(suggestArray);

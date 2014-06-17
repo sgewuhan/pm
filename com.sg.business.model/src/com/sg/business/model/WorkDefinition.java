@@ -596,8 +596,8 @@ public class WorkDefinition extends AbstractWork implements
 				return MEASUREMENT_TYPE_NO_VALUE;
 			}else if(MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)){
 				return MEASUREMENT_TYPE_COMMIT_VALUE;
-			}else if(MEASUREMENT_TYPE_PLAN_ID.equals(measurement)){
-				return MEASUREMENT_TYPE_PLAN_VALUE;
+			}else if(MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)){
+				return MEASUREMENT_TYPE_STANDARD_VALUE;
 			}
 		}
 		return "";

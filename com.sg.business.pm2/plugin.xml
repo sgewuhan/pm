@@ -120,6 +120,11 @@
             id="perspective.system"
             name="%perspective.name.11">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.works"
+            name="%perspective.name.15">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.design.perspectiveDefinition">
@@ -1034,6 +1039,21 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.works">
+         <view
+               closeable="false"
+               id="performence.workssummary"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -1163,11 +1183,18 @@
          </perspective>
       </scenario>
       <scenario
-            id="organization"
+            id="worksmanagement"
             index="80"
             name="%perspective.name.8">
          <perspective
                id="perspective.organization"></perspective>
+      </scenario>
+      <scenario
+            id="worksmanagement"
+            index="26"
+            name="%scenario.name.works">
+         <perspective
+               id="perspective.works"></perspective>
       </scenario>
       <!--<scenario
             id="message"

@@ -370,9 +370,9 @@ public class ProjectToolkit {
 				work.put(IWorkCloneFields.F_MEASUREMENT, value);
 			}
 		//工时类型
-		value=workdef.get(IWorkCloneFields.F_WORKTIMETYPE);
+		value=workdef.get(IWorkCloneFields.F_WORKTIME_PARAX);
 		if(value !=null){
-			work.put(IWorkCloneFields.F_WORKTIMETYPE, value);
+			work.put(IWorkCloneFields.F_WORKTIME_PARAX, value);
 		}
 		//统计阶段
 		value=workdef.get(IWorkCloneFields.F_STATISTICS_STEP);
@@ -384,6 +384,16 @@ public class ProjectToolkit {
 		if(value!=null){
 			work.put(IWorkCloneFields.F_STATISTICS_POINT, value);
 		}
+		
+		//计划工时设置
+		Work workPo = ModelService.createModelObject(work, Work.class);
+		try {
+			value=workPo.calculatePlanWorks();
+			work.put(Work.F_PLAN_WORKS, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		/*
 		 * 
 		 */
@@ -838,6 +848,13 @@ public class ProjectToolkit {
 		work.setValue(Work.F_ROOT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PARENT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PROJECT_ID, projectId);
+		
+		//********************************************************
+		//雷成洋 2014 6 16 当独立工作添加到项目中时，如果该独立工作的工时设置为需要重算，进行以下的处理
+		double aw = work.calculateActualWorks();
+		work.setValue(Work.F_ACTUAL_WORKS, aw);
+		//*********************************************************
+		
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
 		work.doSave(context);

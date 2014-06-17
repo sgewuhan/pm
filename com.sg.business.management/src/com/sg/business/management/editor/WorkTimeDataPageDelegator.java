@@ -22,7 +22,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.viewer.WorkTimeTypeOptionProvider;
+import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.commons.editingsupport.TextPopupCellEditor;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -38,19 +38,19 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 
 	private class WorkTimeDataEditingSupport extends EditingSupport {
 
-		private ObjectId columnTypeOptionId;
+		private ObjectId paraYOptionId;
 
 		/**
 		 * 构造方法
 		 * 
-		 * @param columnTypeOptionId
+		 * @param paraYOptionId
 		 *            列类型选项id
 		 */
-		public WorkTimeDataEditingSupport(ObjectId columnTypeOptionId) {
+		public WorkTimeDataEditingSupport(ObjectId paraYOptionId) {
 			//调用父类的构造方法
 			super(viewer);
 			//将传入的列类型选项id赋值给全局变量列类型选项id
-			this.columnTypeOptionId = columnTypeOptionId;
+			this.paraYOptionId = paraYOptionId;
 		}
 
 		/**
@@ -75,10 +75,10 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 		@Override
 		protected boolean canEdit(Object element) {
 			//将element强转为DBObject类型
-			DBObject workTimeTypeOrOption = (DBObject) element;
-			//返回workTimeTypeOrOption不包含工时类型选项
-			return !workTimeTypeOrOption
-					.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+			DBObject paraXOrParaXOption = (DBObject) element;
+			//返回paraXOrOption不包含工时类型选项
+			return !paraXOrParaXOption
+					.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
 		}
 
 		/**
@@ -91,12 +91,12 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 		@Override
 		protected Object getValue(Object element) {
 			//将element强转为DBObject类型
-			DBObject workTimeTypeOrOption = (DBObject) element;
+			DBObject paraXOrOption = (DBObject) element;
 			//获取工时类型选项的id
-			ObjectId workTimeOptionId = (ObjectId) workTimeTypeOrOption
+			ObjectId paraXOptionId = (ObjectId) paraXOrOption
 					.get(WorkTimeProgram.F__ID);
 			//获取工时数据，传两个参数，第一个参数是工时类型选项id，第二个参数是列类型选项id
-			Double amount = workTimeProgram.getWorkTimeData(workTimeOptionId, columnTypeOptionId);
+			Double amount = workTimeProgram.getWorkTimeData(paraXOptionId, paraYOptionId);
 			return amount;
 		}
 
@@ -113,12 +113,12 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 			//判断工时数据为空或工时数据是Double类型
 			if (value == null || value instanceof Double) {
 				//将工时类型或工时类型选项强转为DBObject类型
-				DBObject workTimeTypeOrOption = (DBObject) element;
+				DBObject paraXOrOption = (DBObject) element;
 				//获取工时类型选项id
-				ObjectId workTimeOptionId = (ObjectId) workTimeTypeOrOption
+				ObjectId paraXOptionId = (ObjectId) paraXOrOption
 						.get(WorkTimeProgram.F__ID);
 				//替换已存在的工时数据或新加一条工时数据
-				workTimeProgram.makeWorkTimeData(workTimeOptionId, columnTypeOptionId, (Double) value);
+				workTimeProgram.makeWorkTimeData(paraXOptionId, paraYOptionId, (Double) value);
 				//设置数据已脏
 				setDirty(true);
 				//更新工时类型或工时类型选项
@@ -211,7 +211,7 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 
 	private void setInput() {
 		Object value = workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIMETYPES);
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
 		viewer.setInput(value);
 	}
 
@@ -237,42 +237,42 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 
 	private void createGridColumns() {
 		// 1.获取本工时方案的列类型
-		BasicBSONList columnTypes = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_COLUMNTYPES);
+		BasicBSONList paraY = (BasicBSONList) workTimeProgram
+				.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
 		// 2.根据列类型创建列组
-		for (int i = 0; i < columnTypes.size(); i++) {
-			createColumnGroup((DBObject) columnTypes.get(i));
+		for (int i = 0; i < paraY.size(); i++) {
+			createColumnGroup((DBObject) paraY.get(i));
 		}
 	}
 
-	private void createColumnGroup(DBObject columnType) {
+	private void createColumnGroup(DBObject paraY) {
 		// 1.创建列组
 		GridColumnGroup group = new GridColumnGroup(viewer.getGrid(), SWT.NONE);
 		group.setExpanded(true);
 
 		// 2.取出列类型名称
-		String groupText = (String) columnType.get(WorkTimeProgram.F_DESC);
+		String groupText = (String) paraY.get(WorkTimeProgram.F_DESC);
 		// 3.设置为列组的名称
 		group.setText(groupText);
 		// 4.取出列类型选项
-		BasicBSONList options = (BasicBSONList) columnType
-				.get(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS);
+		BasicBSONList options = (BasicBSONList) paraY
+				.get(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
 		// 5.根据列类型选项创建列
 		for (int i = 0; i < options.size(); i++) {
-			final DBObject columnTypeOption = (DBObject) options.get(i);
-			createGridColumn(group, columnTypeOption);
+			final DBObject paraYOption = (DBObject) options.get(i);
+			createGridColumn(group, paraYOption);
 		}
 	}
 
 	private void createGridColumn(GridColumnGroup group,
-			final DBObject columnTypeOption) {
+			final DBObject paraYOption) {
 		GridColumn column = new GridColumn(group, SWT.NONE);
 		column.setWidth(120);
 		column.setAlignment(SWT.CENTER);
 		column.setDetail(true);
 		column.setSummary(true);
 		// 设置列名称
-		String columnText = (String) columnTypeOption
+		String columnText = (String) paraYOption
 				.get(WorkTimeProgram.F_DESC);
 		column.setText(columnText); //$NON-NLS-1$
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, column);
@@ -280,14 +280,14 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 			@Override
 			public String getText(Object element) {
 				// 判断元素是工时类型还是工时类型选项
-				DBObject workTimeTypeOrOption = (DBObject) element;
-				if (workTimeTypeOrOption
-						.containsField(WorkTimeProgram.F_WORKTIME_TYPE_OPTIONS)) {
+				DBObject paraXOrOption = (DBObject) element;
+				if (paraXOrOption
+						.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS)) {
 					return "";
 				}
-				Double amount = workTimeProgram.getWorkTimeData((ObjectId) workTimeTypeOrOption
+				Double amount = workTimeProgram.getWorkTimeData((ObjectId) paraXOrOption
 						.get(WorkTimeProgram.F__ID),
-						(ObjectId) columnTypeOption.get(WorkTimeProgram.F__ID));
+						(ObjectId) paraYOption.get(WorkTimeProgram.F__ID));
 				if (amount == null) {
 					return "";
 				}
@@ -296,7 +296,7 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 			}
 		});
 		vColumn.setEditingSupport(new WorkTimeDataEditingSupport(
-				(ObjectId) columnTypeOption.get(WorkTimeProgram.F__ID)));
+				(ObjectId) paraYOption.get(WorkTimeProgram.F__ID)));
 
 	}
 
@@ -304,6 +304,6 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 
 	
 	private IContentProvider getContentProvider() {
-		return new WorkTimeTypeOptionProvider();
+		return new ParaXOptionProvider();
 	}
 }
