@@ -251,5 +251,16 @@ public class WorkTimeProgram extends PrimaryObject {
 		}
 		return null;
 	}
+	
+	/**
+	 * 2014.6.18日解决工时方案启用/停用的问题
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IActivateSwitch.class)) {
+			return (T) new ActivateSwitch(this);
+		}
+		return super.getAdapter(adapter);
+	}
 
 }
