@@ -23,3 +23,4 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.nebula.widgets.grid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.log4j.spi
