@@ -1963,6 +1963,8 @@
                      label="请确定技术支持审批人">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="support_auditor"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="审批人"
@@ -2042,6 +2044,8 @@
                      label="%section.label.24">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="support"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.2"
@@ -2156,6 +2160,8 @@
                      label="%section.label.28">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="checker"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.3"
@@ -2249,6 +2255,8 @@
                      label="%section.label.31">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="auditor"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.4"
@@ -2342,6 +2350,8 @@
                      label="%section.label.35">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="approve"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.5"
@@ -2590,6 +2600,8 @@
                <section
                      label="%section.label.24">
                   <navigatorSelector
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="support"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.2"
@@ -2642,6 +2654,8 @@
                      label="%section.label.31">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="auditor"
                         label="%navigatorSelector.label.4"
                         labelVisible="true"
@@ -2657,6 +2671,8 @@
                      label="%section.label.35">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="approve"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.5"

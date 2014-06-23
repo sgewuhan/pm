@@ -209,6 +209,8 @@
                      label="%section.label.0">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="application_leader"
                         label="%navigatorSelector.label"
                         labelVisible="true"
@@ -622,6 +624,8 @@
                      label="%section.label.14">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="prj_manager"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
@@ -687,6 +691,8 @@
                      label="%section.label.14">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="prj_manager"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
@@ -945,6 +951,8 @@
                      label="%section.label.14">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="prj_manager"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
@@ -1933,6 +1941,8 @@
                      label="%section.label.43">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="project_supervisor"
                         label="%navigatorSelector.label.6"
                         labelVisible="true"
@@ -2615,9 +2625,11 @@
                         id="qm"
                         label="%navigatorSelector.label.10"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="qm"
                         navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -2795,6 +2807,8 @@
                      label="%section.label.53">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="craft_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.15"
@@ -2870,6 +2884,8 @@
                      label="%section.label.55">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="purchase_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.16"
@@ -2945,6 +2961,8 @@
                      label="%section.label.57">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="develop_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.17"
@@ -3235,6 +3253,8 @@
                      label="%section.label.61">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="worker"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.19"
@@ -3543,6 +3563,8 @@
                      label="%section.label.67">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="craft_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.28"
@@ -3618,6 +3640,8 @@
                      label="%section.label.69">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="purchase_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.29"
@@ -3693,6 +3717,8 @@
                      label="%section.label.71">
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="develop_new"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.30"
@@ -4593,6 +4619,8 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="support_auditor"
                         label="批准人"
                         labelVisible="true"
@@ -4606,6 +4634,8 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        fastsearchfieldname="username"
+                        fastsearchfieldtitle="姓名"
                         id="support_approve"
                         label="确认人"
                         labelVisible="true"
