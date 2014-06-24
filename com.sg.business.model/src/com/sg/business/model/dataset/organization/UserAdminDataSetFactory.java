@@ -53,7 +53,9 @@ public class UserAdminDataSetFactory extends SingleDBCollectionDataSetFactory {
 				new BasicDBObject().append("$in", ids.toArray()));
 		BasicDBObject cd2 = new BasicDBObject().append(User.F_ORGANIZATION_ID,
 				null);
-		return new BasicDBObject().append("$or", new BasicDBObject[]{cd1,cd2});
+		DBObject queryCondition = createQueryCondition();
+		queryCondition.put("$or", new BasicDBObject[]{cd1,cd2});
+		return queryCondition;
 	}
 
 	private void addOrg(Organization org, Set<ObjectId> ids) {

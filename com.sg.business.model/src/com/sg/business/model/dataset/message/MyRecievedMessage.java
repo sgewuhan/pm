@@ -21,9 +21,7 @@ public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			
-			
-			BasicDBObject condition = new BasicDBObject();
+			DBObject condition = createQueryCondition();
 			condition.put(Message.F_RECIEVER,userId);
 			condition.put(Message.F_WASTE+"."+userId,new BasicDBObject().append("$ne", true)); //$NON-NLS-1$ //$NON-NLS-2$
 			return condition;

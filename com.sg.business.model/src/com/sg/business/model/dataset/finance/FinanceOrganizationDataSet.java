@@ -6,13 +6,12 @@ import java.util.List;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
-import com.sg.business.model.dataset.ContextSingleDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.commons.dataset.ContextSingleDataSetFactory;
 
 public class FinanceOrganizationDataSet extends ContextSingleDataSetFactory {
 
@@ -60,10 +59,5 @@ public class FinanceOrganizationDataSet extends ContextSingleDataSetFactory {
 		return result;
 	}
 
-	@Override
-	public DBObject getQueryCondition() {
-
-		return super.getQueryCondition();
-	}
 
 }

@@ -62,7 +62,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 				ids[i] = orglist.get(i).get_id();
 			}
 			//获取当前用户具有业务管理员角色的组织项下的项目
-			BasicDBObject condition = new BasicDBObject();
+			DBObject condition = createQueryCondition();
 			condition.put(Project.F_FUNCTION_ORGANIZATION,
 					new BasicDBObject().append("$in", ids)); //$NON-NLS-1$
 			return condition;

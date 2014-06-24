@@ -12,7 +12,6 @@ public class MySendMessage extends SingleDBCollectionDataSetFactory {
 
 	private String userId;
 
-
 	public MySendMessage() {
 		super(IModelConstants.DB, IModelConstants.C_MESSAGE);
 		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
@@ -21,23 +20,20 @@ public class MySendMessage extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			
-			BasicDBObject condition = new BasicDBObject();
-			condition.put(Message.F_SENDER,userId);
-			condition.put(Message.F_WASTE+"."+userId,new BasicDBObject().append("$ne", true)); //$NON-NLS-1$ //$NON-NLS-2$
+			DBObject condition = createQueryCondition();
+			condition.put(Message.F_SENDER, userId);
+			condition
+					.put(Message.F_WASTE + "." + userId, new BasicDBObject().append("$ne", true)); //$NON-NLS-1$ //$NON-NLS-2$
 			return condition;
 		} catch (Exception e) {
 			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
-		
-	}
 
+	}
 
 	@Override
 	public DBObject getSort() {
 		return new SendDateSorter().getBSON();
 	}
-	
-	
 
 }
