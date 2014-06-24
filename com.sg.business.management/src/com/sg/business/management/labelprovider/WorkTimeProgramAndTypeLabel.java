@@ -7,8 +7,8 @@ import com.sg.business.model.WorkTimeProgram;
 
 public class WorkTimeProgramAndTypeLabel extends ColumnLabelProvider {
 
-	public WorkTimeProgramAndTypeLabel() {
-	}
+	
+	
 	@Override
 	public String getText(Object element) {
 		if(element instanceof DBObject){

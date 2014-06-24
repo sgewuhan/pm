@@ -1,7 +1,5 @@
 package com.sg.business.management.editor;
 
-import java.text.DecimalFormat;
-
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.CellEditor;
@@ -23,6 +21,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
+import com.sg.business.management.labelprovider.WorkTimeProgramAndTypeLabel;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.commons.editingsupport.TextPopupCellEditor;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -206,6 +205,8 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 				editor.dispose();
 			}
 		});
+		
+		
 		setInput();
 	}
 
@@ -262,7 +263,29 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 			final DBObject paraYOption = (DBObject) options.get(i);
 			createGridColumn(group, paraYOption);
 		}
+		//2014.6.23  解决收缩功能无效的问题
+		createSummaryColumn(group,paraY);
+
+		
+		
 	}
+
+	private void createSummaryColumn(GridColumnGroup group, DBObject paraYOption) {
+		GridColumn column = new GridColumn(group, SWT.NONE);
+//		column.setWidth(80);
+		column.setAlignment(SWT.CENTER);
+		column.setDetail(false);
+		column.setSummary(true);
+		//column.setText("P/A"); //$NON-NLS-1$
+//		column.setImage(BusinessResource
+//				.getImage(BusinessResource.IMAGE_SUMMARY_16));
+		GridViewerColumn gvColumn = new GridViewerColumn(viewer, column);
+		WorkTimeProgramAndTypeLabel labelProvider = new WorkTimeProgramAndTypeLabel();
+		gvColumn.setLabelProvider(labelProvider);
+	}
+	
+
+	
 
 	private void createGridColumn(GridColumnGroup group,
 			final DBObject paraYOption) {
@@ -291,13 +314,14 @@ public class WorkTimeDataPageDelegator extends AbstractFormPageDelegator {
 				if (amount == null) {
 					return "";
 				}
-				DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
-				return df.format(amount);
+				//2014.6.23 修改工时数据显示的问题
+				/*DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
+				return df.format(amount);*/
+				return amount.toString();
 			}
 		});
 		vColumn.setEditingSupport(new WorkTimeDataEditingSupport(
 				(ObjectId) paraYOption.get(WorkTimeProgram.F__ID)));
-
 	}
 
 	

@@ -26,6 +26,7 @@ public class QueryDocument extends AbstractHandler {
 		}
 		System.out.println("ok");
 		return inputDialg;
+		
 	}
 
 }
