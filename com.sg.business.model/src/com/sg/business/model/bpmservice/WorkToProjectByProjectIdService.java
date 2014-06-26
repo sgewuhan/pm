@@ -40,7 +40,7 @@ public class WorkToProjectByProjectIdService extends ServiceProvider {
 						return result;
 					}
 					// 根据项目id获取项目
-					String projectid = (String) getInputValue("projectid"); //$NON-NLS-1$
+					String projectid = (String) getInputValue("project_id"); //$NON-NLS-1$
 					ObjectId project_id = new ObjectId(projectid);
 					if (project_id != null) {
 						project = ModelService.createModelObject(Project.class,

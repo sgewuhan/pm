@@ -89,4 +89,5 @@ Export-Package: com.tmt.pdm.client,
  dyna.framework.starter
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: com.tmt.pdm.client.Starter
-Require-Bundle: org.eclipse.osgi
+Require-Bundle: org.eclipse.osgi,
+ com.mobnut.admin

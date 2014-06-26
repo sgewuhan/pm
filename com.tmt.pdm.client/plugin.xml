@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            id="pdmclientjob"
+            name="定时启动DCPDM"
+            rule="day"
+            run="com.tmt.pdm.client.setup.RestartDCPDM"
+            time="6:05:00">
+      </schedualJob>
+   </extension>
+
+</plugin>

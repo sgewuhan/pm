@@ -28,6 +28,7 @@
       <plugin id="com.sg.business.vault"/>
       <plugin id="com.sg.business.visualization"/>
       <plugin id="com.sg.business.work"/>
+      <plugin id="com.sg.documentconverter"/>
       <plugin id="com.sg.index"/>
       <plugin id="com.sg.res"/>
       <plugin id="com.sg.sqldb"/>
@@ -63,6 +64,7 @@
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
       <plugin id="org.apache.batik.xml"/>
+      <plugin id="org.apache.commons.cli"/>
       <plugin id="org.apache.commons.codec"/>
       <plugin id="org.apache.commons.fileupload"/>
       <plugin id="org.apache.commons.io"/>
@@ -115,8 +117,10 @@
       <plugin id="org.eclipse.equinox.http.jetty"/>
       <plugin id="org.eclipse.equinox.http.registry"/>
       <plugin id="org.eclipse.equinox.http.servlet"/>
+      <plugin id="org.eclipse.equinox.http.servletbridge"/>
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.servletbridge"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jetty.continuation"/>
       <plugin id="org.eclipse.jetty.http"/>
@@ -177,6 +181,7 @@
       <plugin id="com.sg.business.vault" autoStart="true" startLevel="0" />
       <plugin id="com.sg.business.visualization" autoStart="true" startLevel="0" />
       <plugin id="com.sg.business.work" autoStart="true" startLevel="0" />
+      <plugin id="com.sg.documentconverter" autoStart="true" startLevel="0" />
       <plugin id="com.sg.index" autoStart="true" startLevel="0" />
       <plugin id="com.sg.res" autoStart="true" startLevel="0" />
       <plugin id="com.sg.sqldb" autoStart="true" startLevel="0" />
@@ -211,6 +216,7 @@
       <plugin id="org.apache.batik.util" autoStart="true" startLevel="0" />
       <plugin id="org.apache.batik.util.gui" autoStart="true" startLevel="0" />
       <plugin id="org.apache.batik.xml" autoStart="true" startLevel="0" />
+      <plugin id="org.apache.commons.cli" autoStart="true" startLevel="0" />
       <plugin id="org.apache.commons.codec" autoStart="true" startLevel="0" />
       <plugin id="org.apache.commons.fileupload" autoStart="true" startLevel="0" />
       <plugin id="org.apache.commons.io" autoStart="true" startLevel="0" />
@@ -263,8 +269,10 @@
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.registry" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.servlet" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.http.servletbridge" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.preferences" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.registry" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.servletbridge" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.help" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.jetty.continuation" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.jetty.http" autoStart="true" startLevel="0" />

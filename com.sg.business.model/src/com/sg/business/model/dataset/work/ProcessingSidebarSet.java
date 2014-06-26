@@ -145,9 +145,10 @@ public class ProcessingSidebarSet extends DataSetFactory {
 
 		// 准备中的工作，如果是需要我指派的显示，上级是准备中的不显示
 		if (ILifecycle.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
-			String aid = work.getAssignerId();
-			if (aid != null) {
-				if (!userId.equals(aid)) {
+			String assignerId = work.getAssignerId();
+			String chargerId = work.getChargerId();
+			if (assignerId != null && !assignerId.equals(chargerId)) {
+				if (!userId.equals(assignerId)) {
 					Work parent = (Work) work.getParent();
 					if (parent != null
 							&& ILifecycle.STATUS_ONREADY_VALUE.equals(parent

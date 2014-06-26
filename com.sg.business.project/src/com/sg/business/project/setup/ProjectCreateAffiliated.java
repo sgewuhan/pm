@@ -1,10 +1,22 @@
 package com.sg.business.project.setup;
 
+import org.bson.types.ObjectId;
+import org.jbpm.task.Status;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.ModelService;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
+import com.sg.business.model.UserTask;
+import com.sg.business.model.Work;
+import com.sg.business.model.toolkit.ProjectToolkit;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 
@@ -13,6 +25,50 @@ public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() {
+		DBCollection workCol = getCol(IModelConstants.C_WORK);
+		DBCursor cursor = workCol.find(new BasicDBObject().append(
+				"$or",
+				new BasicDBObject[] {
+						new BasicDBObject().append(Work.F_WORK_DEFINITION_ID,
+								new ObjectId("52b81d5fe0ccc44c11e6d187")),
+						new BasicDBObject().append(Work.F_WORK_DEFINITION_ID,
+								new ObjectId("5292c9a9e0cc84d8d5965df8")),
+						new BasicDBObject().append(Work.F_WORK_DEFINITION_ID,
+								new ObjectId("5270837629f2f33902f9b538")) })
+				.append(Work.F_LIFECYCLE, ILifecycle.STATUS_FINIHED_VALUE));
+		while (cursor.hasNext()) {
+			DBObject dbo = cursor.next();
+			Work work = ModelService.createModelObject(dbo, Work.class);
+			DBCollection userTaskCol = getCol(IModelConstants.C_USERTASK);
+			DBObject query = new BasicDBObject();
+			query.put(UserTask.F_WORK_ID, work.get_id());
+			query.put(UserTask.F_STATUS, Status.Completed.name());
+			DBCursor userTaskCur = userTaskCol.find(query);
+			while (userTaskCur.hasNext()) {
+				DBObject data = userTaskCur.next();
+				UserTask userTask = ModelService.createModelObject(data,
+						UserTask.class);
+				ObjectId value = (ObjectId) userTask
+						.getValue("form_project_id");
+				if (value != null) {
+					Project project = ModelService.createModelObject(
+							Project.class, value);
+					if (project != null)
+						try {
+							ProjectToolkit.doProjectAddStandloneWork(work,
+									project, new CurrentAccountContext());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					else {
+						System.out.println(work.getDesc());
+					}
+
+				}
+			}
+		}
+
 		// System.out.println("-----Start-----");
 		// DBCollection col1 =d
 		// getCol(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
@@ -264,50 +320,50 @@ public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
-//		Map<String, Double> map = new HashMap<String, Double>();
-//		map.put("TBKF13122", 1256000d);
-//		map.put("TBKF14001", 220000d);
-//		map.put("TBKF14007", 112000d);
-//		map.put("TBKF1400A", 30000d);
-//		map.put("TBKF14011", 68000d);
-//		map.put("TBKF14031", 50000d);
-//		map.put("TBKF14033", 46000d);
-//		map.put("TBKF14039", 20000d);
-//		map.put("TBKF14045", 80000d);
-//		map.put("TBKF14046", 66000d);
-//		map.put("TBKF14047", 66000d);
-//		map.put("TBKF1404C", 7000d);
-//		map.put("TBKF14051", 42000d);
-//		map.put("TBKF14053", 102000d);
-//		map.put("TBKF14054", 20000d);
-//		map.put("TBKF14055", 50000d);
-//		map.put("TBKF14057", 46000d);
-//		map.put("TBKF14058", 10000d);
-//
-//		DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
-//		DBCollection projectBudgetCol = getCol(IModelConstants.C_PROJECT_BUDGET);
-//
-//		Set<String> keySet = map.keySet();
-//		for (String projectNumber : keySet) {
-//			DBObject dbObject = projectCol.findOne(new BasicDBObject().append(
-//					Project.F_PROJECT_NUMBER, projectNumber));
-//			Project project = ModelService.createModelObject(dbObject,
-//					Project.class);
-//			ProjectBudget projectBudget = project.getBudget();
-//			if(projectBudget != null){
-//				projectBudgetCol.update(new BasicDBObject().append(
-//						ProjectBudget.F_PROJECT_ID, project.get_id()),
-//						new BasicDBObject().append("$set", new BasicDBObject()
-//								.append(ProjectBudget.F_BUDGET_VALUE,
-//										map.get(projectNumber))));
-//			}
-//
-//		}
+		// Map<String, Double> map = new HashMap<String, Double>();
+		// map.put("TBKF13122", 1256000d);
+		// map.put("TBKF14001", 220000d);
+		// map.put("TBKF14007", 112000d);
+		// map.put("TBKF1400A", 30000d);
+		// map.put("TBKF14011", 68000d);
+		// map.put("TBKF14031", 50000d);
+		// map.put("TBKF14033", 46000d);
+		// map.put("TBKF14039", 20000d);
+		// map.put("TBKF14045", 80000d);
+		// map.put("TBKF14046", 66000d);
+		// map.put("TBKF14047", 66000d);
+		// map.put("TBKF1404C", 7000d);
+		// map.put("TBKF14051", 42000d);
+		// map.put("TBKF14053", 102000d);
+		// map.put("TBKF14054", 20000d);
+		// map.put("TBKF14055", 50000d);
+		// map.put("TBKF14057", 46000d);
+		// map.put("TBKF14058", 10000d);
+		//
+		// DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
+		// DBCollection projectBudgetCol =
+		// getCol(IModelConstants.C_PROJECT_BUDGET);
+		//
+		// Set<String> keySet = map.keySet();
+		// for (String projectNumber : keySet) {
+		// DBObject dbObject = projectCol.findOne(new BasicDBObject().append(
+		// Project.F_PROJECT_NUMBER, projectNumber));
+		// Project project = ModelService.createModelObject(dbObject,
+		// Project.class);
+		// ProjectBudget projectBudget = project.getBudget();
+		// if(projectBudget != null){
+		// projectBudgetCol.update(new BasicDBObject().append(
+		// ProjectBudget.F_PROJECT_ID, project.get_id()),
+		// new BasicDBObject().append("$set", new BasicDBObject()
+		// .append(ProjectBudget.F_BUDGET_VALUE,
+		// map.get(projectNumber))));
+		// }
+		//
+		// }
 		return true;
 
 	}
 
-	@SuppressWarnings("unused")
 	private DBCollection getCol(String collectionName) {
 		return DBActivator.getCollection(IModelConstants.DB, collectionName);
 	}
