@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 
-public abstract class WorksNode {
+public abstract class WorksNode extends PrimaryObject{
 	
 	private WorksNode parent;
 	
@@ -28,7 +28,7 @@ public abstract class WorksNode {
 		return parent;
 	}
 
-	private void setParent(WorksNode parent) {
+	public void setParent(WorksNode parent) {
 		this.parent = parent;
 	}
 
@@ -76,7 +76,7 @@ public abstract class WorksNode {
 		return data;
 	}
 
-	private void setData(PrimaryObject data) {
+	public void setData(PrimaryObject data) {
 		this.data = data;
 	}
 

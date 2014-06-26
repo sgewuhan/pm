@@ -521,7 +521,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
-	private Folder makeFolderRoot() {
+	public Folder makeFolderRoot() {
 		BasicDBObject folderRootData = new BasicDBObject();
 		folderRootData.put(Folder.F_DESC, getDesc());
 		folderRootData.put(Folder.F_PROJECT_ID, get_id());
@@ -593,8 +593,43 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 同步更改根工作定义的名称
 			syncRootWorkNameInternal();
 
+			// 从新计算实际工时
+			syncWorkActualWorksInternal(this.get_id(), context);
+
 		}
 		return saved;
+	}
+
+	private void syncWorkActualWorksInternal(final ObjectId _id,
+			final IContext context) {
+		Job job = new Job("从新计算实际工时") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				DBCollection col = DBActivator.getCollection(
+						IModelConstants.DB, IModelConstants.C_WORK);
+				DBCursor cursor = col.find(new BasicDBObject().append(
+						Work.F_PARENT_ID, _id).append(Work.F_MEASUREMENT,
+						Work.MEASUREMENT_TYPE_STANDARD_ID));
+				while (cursor.hasNext()) {
+					DBObject dbo = cursor.next();
+					Work work = ModelService.createModelObject(dbo, Work.class);
+					double actualWorks;
+					try {
+						actualWorks = work.calculateActualWorks();
+						col.update(new BasicDBObject().append(F__ID,
+								work.get_id()), new BasicDBObject().append(
+								"$set", new BasicDBObject().append(
+										F_ACTUAL_WORKS, actualWorks)), true,
+								false);
+						work.doCalculateWorkPerformence(context);
+					} catch (Exception e) {
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	private void syncRootWorkNameInternal() {
@@ -2926,6 +2961,65 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 		}
 		return result;
+	}
+
+	public boolean canWorkTimeProgramReadonly(IContext context) {
+		if (!isPersistent()) {
+			return false;
+		}
+		String lc = getLifecycleStatus();
+		if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+			return false;
+		} else {
+			String consignerId = context.getAccountInfo().getConsignerId();
+			Organization functionOrg = getFunctionOrganization();
+			String[] assignmentUserIds = functionOrg
+					.getRoleAssignmentUserIds(Role.ROLE_WORKS_STATISTICS_ID,
+							Organization.ROLE_NOT_SEARCH);
+			for (String userId : assignmentUserIds) {
+				if (consignerId.equals(userId)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean canWorkTimeParaXReadonly(IContext context) {
+		if (!isPersistent()) {
+			return false;
+		}
+		String lc = getLifecycleStatus();
+		if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+			return false;
+		} else {
+			String consignerId = context.getAccountInfo().getConsignerId();
+			Organization functionOrg = getFunctionOrganization();
+			String[] projectAdminUserIds;
+			if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
+				projectAdminUserIds = functionOrg.getRoleAssignmentUserIds(
+						Role.ROLE_PROJECT_ADMIN_ID,
+						Organization.ROLE_NOT_SEARCH);
+			} else {
+				projectAdminUserIds = new String[0];
+			}
+			String[] workStatisticsUserIds = functionOrg
+					.getRoleAssignmentUserIds(Role.ROLE_WORKS_STATISTICS_ID,
+							Organization.ROLE_NOT_SEARCH);
+			Object[] assignmentUserIds = Utils.arrayAppend(
+					workStatisticsUserIds, projectAdminUserIds);
+
+			for (Object userId : assignmentUserIds) {
+				if (consignerId.equals(userId)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean canWorkTimeParaYReadonly(IContext context) {
+		return canWorkTimeProgramReadonly(context);
 	}
 
 }
