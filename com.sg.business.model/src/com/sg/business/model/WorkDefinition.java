@@ -1,8 +1,10 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 
@@ -86,8 +88,6 @@ public class WorkDefinition extends AbstractWork implements
 	 * 是否禁止手工发起
 	 */
 	public static final String F_LAUNCHABLE = "launchforbidden";//$NON-NLS-1$
-
-	
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
@@ -590,24 +590,99 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	public String getMeasurementLabel() {
-		String measurement =getMeasurement();
+		String measurement = getMeasurement();
 		if (measurement != null) {
 			if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_NO_VALUE;
-			}else if(MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)){
+			} else if (MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_COMMIT_VALUE;
-			}else if(MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)){
+			} else if (MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_STANDARD_VALUE;
 			}
 		}
 		return "";
 	}
-	
-	public String getMeasurement(){
-		return getStringValue(F_MEASUREMENT); 
+
+	public String getMeasurement() {
+		return getStringValue(F_MEASUREMENT);
 	}
 
-	
-	
+	public void workTimeValidate(ProjectTemplate projectTemplate) throws Exception {
+		//如果不是标准工时工作,无需进行检查
+		if(!MEASUREMENT_TYPE_STANDARD_ID.equals(getMeasurement())){
+			return;
+		}
+		//如果是独立工作
+		if(isStandloneWork()){
+			Object value = getValue(F_JOIN_PROJECT_CALCWORKS);
+			if(Boolean.TRUE.equals(value)){
+				//需要在项目中进行计算的
+				checkWorkTimeDefinition(null);
+			}else{
+				//无需在项目中计算的独立工作
+				//需要填写标准工时
+				value = getValue(F_STANDARD_WORKS);
+				if(getValue(F_STANDARD_WORKS) == null){
+					throw new Exception("无需在项目中计算工时的工作需定义标准工时.");
+				}
+			}
+		}else if(isProjectWork()){
+			//1. 取出项目模板的工时方案
+			BasicBSONList programIds = (BasicBSONList) projectTemplate.getValue(ProjectTemplate.F_WORKTIMEPROGRAMS);
+			checkWorkTimeDefinition(programIds);
+		}
+	}
 
+	private void checkWorkTimeDefinition(List<?> programIds) throws Exception {
+		// 1. 必须要有统计阶段
+		Object step = getValue(F_STATISTICS_STEP);
+		if (step == null) {
+			throw new Exception("工作定义缺少工时统计阶段");
+		}
+		// 2. 检查工时方案和工时参数
+		DBCollection programCol = getCollection(IModelConstants.C_WORKTIMEPROGRAM);
+
+		Object parax = getValue(F_WORKTIME_PARAX);
+		if (parax instanceof List<?>) {
+			if (((List<?>) parax).isEmpty()) {
+				throw new Exception("工作定义缺少工时参数");
+			}
+		}else{
+			throw new Exception("工作定义缺少工时参数");
+		}
+		
+		
+		Iterator<?> iterator = ((List<?>) parax).iterator();
+		while (iterator.hasNext()) {
+			DBObject paraX = (DBObject) iterator.next();
+			ObjectId programId = (ObjectId) paraX
+					.get(F_WORKTIME_PARAX_PROGRAM_ID);
+			if(programIds==null){
+				long count = programCol.count(new BasicDBObject().append(
+						WorkTimeProgram.F__ID, programId));
+				if (count == 0) {
+					throw new Exception("工作定义上的工作工时参数对应的工时方案已不存在.");
+				}
+			}else if(!programIds.contains(programId)){
+				throw new Exception("工作定义上的工作工时参数对应的工时方案在项目模板中不存在.");
+			}
+			ObjectId paraxId = (ObjectId) paraX.get(F_WORKTIME_PARAX_ID);
+			WorkTimeProgram program = ModelService.createModelObject(
+					WorkTimeProgram.class, programId);
+			BasicBSONList types = (BasicBSONList) program
+					.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+			boolean contains = false;
+			for (int i = 0; i < types.size(); i++) {
+				DBObject type = (DBObject) types.get(i);
+				ObjectId typeId = (ObjectId) type.get(F__ID);
+				if (typeId.equals(paraxId)) {
+					contains = true;
+					break;
+				}
+			}
+			if (!contains) {
+				throw new Exception("工作定义上的工作工时参数对应的工时方案已不存在.");
+			}
+		}
+	}
 }

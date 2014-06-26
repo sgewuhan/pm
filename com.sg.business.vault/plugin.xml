@@ -60,11 +60,6 @@
                   columnDefinitionId="folder.desc">
             </column>
          </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="folder.desc">
-            </column>
-         </searchAction>
          <createEditor
                createHandler="com.sg.business.vault.editor.FolderCreater"
                editorId="editor.folder">
@@ -554,6 +549,16 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI=" toolbar:vault.folder.org?after=additions">
+         <command
+               commandId="vault.document.query"
+               label="%vault.document.query"
+               mode="FORCE_TEXT"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -568,6 +573,10 @@
       <command
             id="vault.folder.uploadzip"
             name="ZIP文件上传">
+      </command>
+      <command
+            id="vault.document.query"
+            name="%vault.document.query">
       </command>
    </extension>
    <extension
@@ -601,6 +610,10 @@
       <handler
             class="com.sg.business.vault.handler.UploadZIP"
             commandId="vault.folder.uploadzip">
+      </handler>
+      <handler
+            class="com.sg.business.vault.handler.QueryDocument"
+            commandId="vault.document.query">
       </handler>
    </extension>
    <extension

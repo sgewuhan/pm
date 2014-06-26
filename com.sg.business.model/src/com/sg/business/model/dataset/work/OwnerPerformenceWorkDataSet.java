@@ -20,6 +20,9 @@ public class OwnerPerformenceWorkDataSet extends
 		condition.put(Work.F_CHARGER, userId);
 		// 只需要进行中的
 		condition.put(Work.F_LIFECYCLE, Work.STATUS_WIP_VALUE);
+		
+		//2014.6.24  工时计量方式是 填报工时
+		condition.put(Work.F_MEASUREMENT, Work.MEASUREMENT_TYPE_COMMIT_ID);
 
 		setQueryCondition(condition);
 		setSort(new BasicDBObject().append(Work.F__ID, -1));

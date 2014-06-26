@@ -23,3 +23,7 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.nebula.widgets.grid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Import-Package: com.mobnut.admin.schedual,
+ com.mobnut.admin.schedual.model,
+ com.sg.business.performence.ui.calendar,
+ org.apache.log4j.spi

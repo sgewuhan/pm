@@ -12,6 +12,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkTimeProgram extends PrimaryObject {
 
@@ -63,8 +64,7 @@ public class WorkTimeProgram extends PrimaryObject {
 	 */
 	public static final String F_WORKTIMEDATA_AMOUNT = "amount";
 
-	public Double getWorkTimeData(ObjectId paraXOption,
-			ObjectId paraYOption) {
+	public Double getWorkTimeData(ObjectId paraXOption, ObjectId paraYOption) {
 		// 1.取出工时数据
 		BasicBSONList workTimeData = (BasicBSONList) this
 				.getValue(F_WORKTIMEDATA);
@@ -190,8 +190,7 @@ public class WorkTimeProgram extends PrimaryObject {
 				ObjectId paraXOptionId = (ObjectId) data
 						.get(F_WORKTIMEDATA_PARA_X_OPTION_ID);
 				if (!paraYOptionIdSet.contains(paraYOptionId)
-						|| !paraXOptionIdSet
-								.contains(paraXOptionId)) {
+						|| !paraXOptionIdSet.contains(paraXOptionId)) {
 					workTimeData.remove(i);
 					i--;
 				}
@@ -201,7 +200,7 @@ public class WorkTimeProgram extends PrimaryObject {
 		super.doUpdate(context);
 	}
 
-	private Set<ObjectId> getOptionIdSet(String fieldName) {
+	public Set<ObjectId> getOptionIdSet(String fieldName) {
 		Set<ObjectId> result = new HashSet<ObjectId>();
 		BasicBSONList types = (BasicBSONList) getValue(fieldName);
 		for (int i = 0; i < types.size(); i++) {
@@ -218,6 +217,9 @@ public class WorkTimeProgram extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		if (isActivated()) {
+			throw new Exception(Messages.get().WorkTimeProgram_0);
+		}
 		// 同步引用工时方案的项目模板
 		// {$pull:{worktimeprograms:ObjectId('53730d6980737491eb208ee3')}}
 		// 获取项目模板的集合
@@ -227,11 +229,18 @@ public class WorkTimeProgram extends PrimaryObject {
 				new BasicDBObject().append("$pull", new BasicDBObject().append(
 						ProjectTemplate.F_WORKTIMEPROGRAMS, get_id())), false,
 				true);
+		//2014.6.24    解决删除工时方案同步删除工时参数
+		DBCollection workdCol = getCollection(IModelConstants.C_WORK_DEFINITION);
+		workdCol.update(new BasicDBObject().append(WorkDefinition.F_WORKTIME_PARAX, F_WORKTIME_PARA_X), 
+				new BasicDBObject().append("$pull", new BasicDBObject().append(
+						WorkDefinition.F_WORKTIME_PARAX, F_WORKTIME_PARA_X)),false,true);
+		
 		super.doRemove(context);
 	}
 
 	/**
 	 * 给定类型字段名和选项id，获得该选项所属的类型
+	 * 
 	 * @param optionId
 	 * @param typeFieldName
 	 * @return
@@ -246,6 +255,90 @@ public class WorkTimeProgram extends PrimaryObject {
 				DBObject option = (DBObject) object2;
 				if (option.get(F__ID).equals(optionId)) {
 					return type;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 2014.6.18日解决工时方案启用/停用的问题
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IActivateSwitch.class)) {
+			return (T) new ActivateSwitch(this);
+		}
+		return super.getAdapter(adapter);
+	}
+	
+	/**
+	 * 该方案是否已经启用
+	 */
+	public boolean isActivated() {
+		IActivateSwitch adapter = getAdapter(IActivateSwitch.class);
+		return adapter.isActivated();
+	}
+	
+	/**
+	 * 启用状态下不可编辑
+	 */
+	@Override
+	public boolean canEdit(IContext context) {
+		if (isActivated()) {
+			return false;
+		}
+		return super.canEdit(context);
+	}
+
+	/**
+	 * 2014.6.23日 编辑参数或选项
+	 * 
+	 * @param _id
+	 * @param fieldName workspara_y
+	 * @param typeName  文本输入框的值
+	 * @return
+	 */
+	public DBObject modifyTypeOrOption(ObjectId _id,
+			String typeName,String fieldName) {
+		BasicBSONList types = (BasicBSONList) getValue(fieldName);
+		if(types==null){
+			return null;
+		}
+		for (int i = 0; i < types.size(); i++) {
+			DBObject type = (DBObject) types.get(i);
+			if (_id.equals(type.get(F__ID))) {
+				//当前工时参数名称
+				String typeDesc = (String) type.get(F_DESC);
+				DBCollection col = getCollection();
+				BasicDBObject query = new BasicDBObject().append(
+						F_DESC, typeDesc);
+				BasicDBObject update = new BasicDBObject().append("$set",
+						new BasicDBObject()
+								.append(F_DESC, typeName));
+				col.update(query, update);
+				type.put(F_DESC, typeName);
+			} else {
+				// 所选元素的id与列类型id不一致，就获取列类型的选项集合
+				BasicBSONList options = (BasicBSONList) type
+						.get(F_WORKTIME_PARA_OPTIONS);
+				// 遍历列类型选项集合
+				for (int j = 0; j < options.size(); j++) {
+					DBObject option = (DBObject) options.get(j);
+					// 判断所选元素id与选项id一致的话，就删除、刷新所选的列类型、保存
+					if (_id.equals(option.get(F__ID))) {
+						//当前工时参数选项名称
+						String optionDesc = (String) option.get(F_DESC);
+						DBCollection col = getCollection();
+						BasicDBObject query = new BasicDBObject().append(
+								F_DESC, optionDesc);
+						BasicDBObject update = new BasicDBObject().append("$set",
+								new BasicDBObject()
+										.append(F_DESC, typeName));
+						col.update(query, update);
+						option.put(F_DESC, typeName);
+						return type;
+					}
 				}
 			}
 		}
