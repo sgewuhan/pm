@@ -25,9 +25,8 @@ public class PausedWork extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			
 			// 查询本人参与的工作
-			DBObject queryCondition = new BasicDBObject();
+			DBObject queryCondition = createQueryCondition();
 			queryCondition.put(Work.F_PARTICIPATE, userId);
 			// 生命周期状态为已经暂停
 			queryCondition.put(Work.F_LIFECYCLE, Work.STATUS_PAUSED_VALUE);

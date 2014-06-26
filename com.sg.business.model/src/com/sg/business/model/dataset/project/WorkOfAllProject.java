@@ -33,7 +33,7 @@ public class WorkOfAllProject extends SingleDBCollectionDataSetFactory {
 
 	@Override
 	public DBObject getQueryCondition() {
-		BasicDBObject queryCondition = new BasicDBObject();
+		DBObject queryCondition = createQueryCondition();
 		List<?> workIdList = projectCol.distinct(
 				Project.F_WORK_ID,
 				new BasicDBObject().append(Work.F_PARTICIPATE, userId).append(

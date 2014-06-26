@@ -56,7 +56,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 			
 
 			// 查询本人参与的工作
-			DBObject queryCondition = new BasicDBObject();
+			DBObject queryCondition = createQueryCondition();
 			queryCondition.put(Work.F_PARTICIPATE, userId);
 			// 生命周期状态为准备、进行中
 			queryCondition

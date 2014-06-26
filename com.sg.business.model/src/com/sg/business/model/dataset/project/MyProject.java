@@ -42,7 +42,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 		// 获得当前帐号
 		try {
 			// 查询条件为本人负责的项目和本人参与的项目
-			DBObject queryCondition = new BasicDBObject();
+			DBObject queryCondition = createQueryCondition();
 			queryCondition.put(
 					"$or", //$NON-NLS-1$
 					new BasicDBObject[] {

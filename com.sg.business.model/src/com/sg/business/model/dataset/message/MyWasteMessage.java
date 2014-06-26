@@ -24,7 +24,7 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			BasicDBObject condition = new BasicDBObject();
+			DBObject condition = createQueryCondition();
 			condition.put(Message.F_WASTE+"."+userId,true); //$NON-NLS-1$
 			return condition;
 		} catch (Exception e) {

@@ -13,9 +13,9 @@ import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
-import com.sg.business.model.dataset.ContextSingleDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.commons.dataset.ContextSingleDataSetFactory;
 
 /**
  * <p>
@@ -59,7 +59,7 @@ public class BulletinBoardDataSet extends ContextSingleDataSetFactory {
 			}
 
 			// 设置查询条件
-			BasicDBObject condition = new BasicDBObject();
+			DBObject condition = createQueryCondition();
 			condition.put(BulletinBoard.F_ORGANIZATION_ID,
 					new BasicDBObject().append("$in", orgIds)); //$NON-NLS-1$
 			condition.put(BulletinBoard.F_PARENT_BULLETIN, null);

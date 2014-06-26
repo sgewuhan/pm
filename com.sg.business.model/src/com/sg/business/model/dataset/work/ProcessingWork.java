@@ -90,7 +90,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 		// 获得当前帐号
 		try {
 			// 查询本人参与的工作
-			DBObject queryCondition = new BasicDBObject();
+			DBObject queryCondition = createQueryCondition();
 			queryCondition
 					.put("$or", //$NON-NLS-1$
 							new BasicDBObject[] {
