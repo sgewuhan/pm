@@ -12,6 +12,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkTimeProgram extends PrimaryObject {
 
@@ -199,7 +200,7 @@ public class WorkTimeProgram extends PrimaryObject {
 		super.doUpdate(context);
 	}
 
-	private Set<ObjectId> getOptionIdSet(String fieldName) {
+	public Set<ObjectId> getOptionIdSet(String fieldName) {
 		Set<ObjectId> result = new HashSet<ObjectId>();
 		BasicBSONList types = (BasicBSONList) getValue(fieldName);
 		for (int i = 0; i < types.size(); i++) {
@@ -216,6 +217,9 @@ public class WorkTimeProgram extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		if (isActivated()) {
+			throw new Exception(Messages.get().WorkTimeProgram_0);
+		}
 		// 同步引用工时方案的项目模板
 		// {$pull:{worktimeprograms:ObjectId('53730d6980737491eb208ee3')}}
 		// 获取项目模板的集合
@@ -225,6 +229,12 @@ public class WorkTimeProgram extends PrimaryObject {
 				new BasicDBObject().append("$pull", new BasicDBObject().append(
 						ProjectTemplate.F_WORKTIMEPROGRAMS, get_id())), false,
 				true);
+		//2014.6.24    解决删除工时方案同步删除工时参数
+		DBCollection workdCol = getCollection(IModelConstants.C_WORK_DEFINITION);
+		workdCol.update(new BasicDBObject().append(WorkDefinition.F_WORKTIME_PARAX, F_WORKTIME_PARA_X), 
+				new BasicDBObject().append("$pull", new BasicDBObject().append(
+						WorkDefinition.F_WORKTIME_PARAX, F_WORKTIME_PARA_X)),false,true);
+		
 		super.doRemove(context);
 	}
 
@@ -260,6 +270,25 @@ public class WorkTimeProgram extends PrimaryObject {
 			return (T) new ActivateSwitch(this);
 		}
 		return super.getAdapter(adapter);
+	}
+	
+	/**
+	 * 该方案是否已经启用
+	 */
+	public boolean isActivated() {
+		IActivateSwitch adapter = getAdapter(IActivateSwitch.class);
+		return adapter.isActivated();
+	}
+	
+	/**
+	 * 启用状态下不可编辑
+	 */
+	@Override
+	public boolean canEdit(IContext context) {
+		if (isActivated()) {
+			return false;
+		}
+		return super.canEdit(context);
 	}
 
 	/**

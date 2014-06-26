@@ -2,6 +2,7 @@ package com.sg.business.model;
 
 import java.util.List;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
@@ -12,6 +13,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
@@ -205,6 +207,74 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 
 	/**
+	 * 2014.6.25 项目模板的工时方案更新时调用
+	 */
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+
+		workTimeValidateOnUpdate();
+
+		super.doUpdate(context);
+	}
+
+	private void workTimeValidateOnUpdate() throws Exception {
+		// 1.检查工时方案
+		Object programs = getValue(F_WORKTIMEPROGRAMS);
+		if (programs == null) {
+			return;
+		}
+		if (programs instanceof List<?>) {
+			if (((List<?>) programs).isEmpty()) {
+				return;
+			}
+		}
+		// 2.检查统计阶段是否有值,且有工时方案必须要有统计阶段
+		Object stats = getValue(F_STATISTICSSTEP);
+		if (stats == null) {
+			throw new Exception("项目模板没有定义工时统计阶段");
+		}
+		if (stats instanceof List<?>) {
+			if (((List<?>) stats).isEmpty()) {
+				throw new Exception("项目模板没有定义工时统计阶段");
+			}
+		}
+		// 检查工时方案是否存在
+		workTimeValidateProgrames();
+
+		// 3.工作定义的计量方式是标准工时时,工作工时参数是否定义,并在工时方案中是否还存在
+		workTimeValidateWorkDefinition();
+
+	}
+
+	private void workTimeValidateWorkDefinition() throws Exception {
+		DBCollection wkCol = getCollection(IModelConstants.C_WORK_DEFINITION);
+		DBObject query = new BasicDBObject();
+		query.put(WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id());
+		query.put(WorkDefinition.F_MEASUREMENT,
+				WorkDefinition.MEASUREMENT_TYPE_STANDARD_ID);
+		DBCursor cursor = wkCol.find(query);
+		while (cursor.hasNext()) {
+			DBObject data = cursor.next();
+			WorkDefinition workd = ModelService.createModelObject(data,
+					WorkDefinition.class);
+			workd.workTimeValidate(this);
+		}
+	}
+
+	private void workTimeValidateProgrames() throws Exception {
+		DBCollection wtCol = getCollection(IModelConstants.C_WORKTIMEPROGRAM);
+		BasicBSONList progs = (BasicBSONList) getValue(F_WORKTIMEPROGRAMS);
+		for (int i = 0; i < progs.size(); i++) {
+			ObjectId progId = (ObjectId) progs.get(i);
+			long count = wtCol.count(new BasicDBObject().append(
+					WorkTimeProgram.F__ID, progId));
+			if (count == 0l) {
+				throw new Exception("项目模板中选择的工时方案已不存在,清检查项目模板的工时方案字段内容");
+			}
+		}
+	}
+
+	/**
 	 * 删除模板
 	 */
 	@Override
@@ -221,8 +291,8 @@ public class ProjectTemplate extends PrimaryObject {
 
 		// 删除交付物定义
 		doRemoveDeliverableDefinitionsInternal();
-		
-		//删除文件夹模板
+
+		// 删除文件夹模板
 		doRemoveFolderDefinitionInternal();
 
 		// 删除角色定义

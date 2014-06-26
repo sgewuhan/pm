@@ -3,15 +3,23 @@ package com.sg.business.commons.column.labelprovider;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerColumn;
+import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IWorkCloneFields;
+import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.WorkTimeProgram;
+import com.sg.widgets.viewer.CTreeViewer;
 
 public class ParaXLabelProvider extends ColumnLabelProvider {
+
+	private CTreeViewer viewer;
 
 	public ParaXLabelProvider() {
 	}
@@ -69,5 +77,40 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	protected void initialize(ColumnViewer viewer, ViewerColumn column) {
+		this.viewer = (CTreeViewer) viewer;
+		super.initialize(viewer, column);
+	}
+
+	@Override
+	public void update(ViewerCell cell) {
+
+		Object element = cell.getElement();
+		PrimaryObject master = viewer.getViewerControl().getMaster();
+		try {
+			if (element instanceof WorkDefinition) {
+				((WorkDefinition) element).workTimeValidate((ProjectTemplate) master);
+			}
+			cell.setText(getText(element));
+		} catch (Exception e) {
+			cell.setText("N/A");
+			cell.setBackground(cell.getControl().getDisplay()
+					.getSystemColor(SWT.COLOR_RED));
+		}
+	}
+
+	@Override
+	public String getToolTipText(Object element) {
+		try {
+			PrimaryObject master = viewer.getViewerControl().getMaster();
+			((WorkDefinition) element)
+					.workTimeValidate((ProjectTemplate) master);
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		return super.getToolTipText(element);
 	}
 }

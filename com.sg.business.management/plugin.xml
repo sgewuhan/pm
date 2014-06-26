@@ -942,6 +942,7 @@
                         addTableItemHandler="com.sg.business.management.field.action.AddWorkTimeProgramToProgramTemplateAction"
                         editable="true"
                         id="worktimeprograms"
+                        inputValidator="com.sg.widgets.commons.valuevalidator.AbstractValidator"
                         label="%view.management.worktimeprogram"
                         labelVisible="false"
                         labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"

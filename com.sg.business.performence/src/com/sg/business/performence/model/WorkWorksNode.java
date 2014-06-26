@@ -6,7 +6,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 
-public class WorkWorksNode extends WorksNode {
+public class WorkWorksNode extends WorksNode{
 
 	public WorkWorksNode(WorksNode parent, PrimaryObject data) {
 		super(parent, data);
@@ -20,5 +20,7 @@ public class WorkWorksNode extends WorksNode {
 		return String.format(Utils.FORMATE_DATE_SIMPLE, actualStart) + " ~ "
 				+ String.format(Utils.FORMATE_DATE_SIMPLE, actualFinish);
 	}
+	
+	
 
 }
