@@ -14,7 +14,7 @@ public class ActorOfPaymentAuditor extends AbstractActorIdProvider{
 
 	@Override
 	protected String getRoleNumber() {
-		return ISalesRole.TEAM_MANAGER_NUMBER;
+		return ISalesRole.ROLE_EXPENSE_AUDIT_NUMBER;
 	}
 
 }
