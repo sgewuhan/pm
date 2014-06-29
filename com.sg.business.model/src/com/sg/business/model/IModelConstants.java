@@ -37,6 +37,12 @@ public interface IModelConstants {
 	 * 目录集合
 	 */
 	public static final String C_FOLDER = "folder"; //$NON-NLS-1$
+	
+	/**
+	 * 文件夹模板集合
+	 */
+	public static final String C_FOLDER_DEFINITION = "folderd"; //$NON-NLS-1$
+
 
 	/**
 	 * 文档集合

@@ -1358,6 +1358,127 @@
             </column>
          </exportAction>
       </navigator>
+      <navigator
+            id="project.worksprogram.wbs"
+            tree="project.worksprogram.wbs">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </searchAction>
+         <exportAction>
+            <column
+                  column="desc"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowLeverDesc"
+                  name="%column.name.26"
+                  type="String">
+            </column>
+            <column
+                  column="milestone"
+                  name="%column.name.27"
+                  type="Boolean">
+            </column>
+            <column
+                  column="planstart"
+                  name="%column.name.28"
+                  type="Date">
+            </column>
+            <column
+                  column="planfinish"
+                  name="%column.name.29"
+                  type="Date">
+            </column>
+            <column
+                  column="planduration"
+                  name="%column.name.30"
+                  type="Integer">
+            </column>
+            <column
+                  column="planworks"
+                  name="%column.name.31"
+                  type="Double">
+            </column>
+            <column
+                  column="actualstart"
+                  name="%column.name.32"
+                  type="Date">
+            </column>
+            <column
+                  column="actualfinish"
+                  name="%column.name.33"
+                  type="Date">
+            </column>
+            <column
+                  column="actualduration"
+                  name="%column.name.34"
+                  type="Integer">
+            </column>
+            <column
+                  column="actualworks"
+                  name="%column.name.35"
+                  type="Double">
+            </column>
+            <column
+                  column="chargerid"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserId2UserFullName"
+                  name="%column.name.36"
+                  type="String">
+            </column>
+            <column
+                  column="participate"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserIdArray2UserFullNameArray"
+                  name="%column.name.37"
+                  type="String">
+            </column>
+         </exportAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3017,6 +3138,129 @@
                width="-1">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="true"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            editorId="view.work"
+            fix="1"
+            id="project.worksprogram.wbs"
+            multiSelection="true"
+            popupMenu="popup:project.worksprogram.wbs"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider"
+            virtual="true">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <column
+               columnDefinitionId="work.desc"
+               width="-1">
+         </column>
+         <column
+               columnDefinitionId="milestone">
+         </column>
+         <column
+               column="mandatory"
+               name="%column.name.72"
+               type="Boolean"
+               width="48">
+         </column>
+         <column
+               columnDefinitionId="planstart_e">
+         </column>
+         <column
+               columnDefinitionId="planfinish_e">
+         </column>
+         <column
+               columnDefinitionId="planworks_e">
+         </column>
+         <column
+               columnDefinitionId="planduration_e">
+         </column>
+         <columnGroup
+               defaultGroup="false"
+               id="team"
+               name="%columnGroup.name.6">
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="%columnGroup.name.7">
+            <column
+                  columnDefinitionId="actualstart_e">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="actualworks_e">
+            </column>
+            <column
+                  columnDefinitionId="actualduration_e">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="%columnGroup.name.8">
+            <column
+                  column="measurement"
+                  labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
+                  name="%measurement">
+            </column>
+            <column
+                  column="standardworks"
+                  name="%column.name.67"
+                  style="SWT.CENTER"
+                  type="Double">
+            </column>
+            <column
+                  column="statisticsstep"
+                  name="%statisticsstep">
+            </column>
+            <column
+                  column="statisticspoint"
+                  name="%statisticspoint"
+                  type="Boolean">
+            </column>
+            <column
+                  column="parax"
+                  labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+                  name="%paraxbasicpage.title.24">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="work.chargerrole">
+            </column>
+            <column
+                  column="wf_execute"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
+                  name="%column.name.68"
+                  width="100">
+            </column>
+            <column
+                  column="s_autostartwithparent"
+                  name="%column.name.69"
+                  type="Boolean"
+                  width="48">
+            </column>
+            <column
+                  column="s_autofinishwithparent"
+                  name="%column.name.70"
+                  type="Boolean"
+                  width="48">
+            </column>
+         </columnGroup>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -3125,6 +3369,15 @@
                   name="project.separator4"
                   visible="true">
             </separator>
+            <command
+                  commandId="command.worksset"
+                  label="%projectworksprogram"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="command.worksset">
+               </parameter>
+            </command>
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/flow_24.png"
@@ -4483,6 +4736,33 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.worksprogram.wbs">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/worksetting_24.png"
+               label="%command.label.54"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.work.setting">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -4658,6 +4938,16 @@
             categoryId="project"
             id="project.linkprojectdeliverable"
             name="链接项目交付物文档">
+      </command>
+      <command
+            categoryId="project"
+            id="command.worksset"
+            name="%projectworksprogram">
+         <commandParameter
+               id="command.worksset"
+               name="%projectworksprogram"
+               optional="true">
+         </commandParameter>
       </command>
    </extension>
    <extension
@@ -4859,30 +5149,21 @@
             class="com.sg.business.project.handler.LinkProjectDeliverable"
             commandId="project.linkprojectdeliverable">
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="com.sg.business.commons.operation.test.LifeCycleTest"
-            id="project.action.test"
-            namespace="project"
-            properties="action"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.sg.business.project.test.ProjectOperationTest"
-            id="project.operation.test"
-            namespace="project"
-            properties="operation"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.sg.business.project.test.ForceTest"
-            id="work.forceupdate.test"
-            namespace="work"
-            properties="forceupdate"
-            type="java.lang.Object">
-      </propertyTester>
+      
+      <handler
+            class="com.sg.business.project.command.SettingHandler"
+            commandId="command.worksset">
+         <enabledWhen>
+            <and>
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </and>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          name="%extension.name.0"
@@ -5133,6 +5414,7 @@
          <basicpage
                description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
+               image="lifecycle.action"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
          </basicpage>
@@ -7235,6 +7517,33 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="projectworksprogram"
+            name="%projectworksprogram">
+         <basicpage
+               description="%worktimeprogramandoptions.description"
+               id="project.basicpage.4"
+               pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
+               title="%worktimeprogram">
+         </basicpage>
+         <navigatorpage
+               id="project.worksprogram.wbs"
+               image="image/wbs_24.png"
+               navigatorId="project.worksprogram.wbs"
+               title="WBS">
+            <navigatoraction
+                  action="com.sg.business.project.action.RecalculateSEQ">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.AutoAssignment">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.ExportWBS">
+            </navigatoraction>
+         </navigatorpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -7459,6 +7768,30 @@
             class="com.sg.business.project.handler.EditProject"
             commandId="project.admin.edit">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+         <propertyTester
+            class="com.sg.business.project.test.ProjectOperationTest"
+            id="project.operation.test"
+            namespace="project"
+            properties="operation"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.sg.business.project.test.ForceTest"
+            id="work.forceupdate.test"
+            namespace="work"
+            properties="forceupdate"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.sg.widgets.command.PartPropertyTester"
+            id="com.sg.widgets.test.activePart"
+            namespace="com.sg.widgets.test"
+            properties="activePart"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

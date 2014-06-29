@@ -26,20 +26,19 @@ public class AddParaXAction implements IAddTableItemHandler {
 	@Override
 	public boolean addItem(final BasicDBList inputData,
 			final AbstractFieldPart part) {
-		//表单编辑器输入的数据，类型为工作定义
+		// 表单编辑器输入的数据，类型为工作定义
 		WorkDefinition data = (WorkDefinition) part.getInput().getData();
-		PrimaryObject master =null;
-		if(data.isStandloneWork()){
-			//此工作定义为独立工作定义时，master直接使用工作定义，因为独立工作定义使用了工时方案字段，保存了它可用的工时方案
-			master=data;
-		}else if(data.isGenericWork()){
-			master=data;
-		}else{
-			//此工作定义为项目中的工作定义时，需使用项目模板获取项目模板中的工时方案
-			//获取工作定义所在项目模板
-			master=data.getProjectTemplate();
+		PrimaryObject master = null;
+		if (data.isStandloneWork()) {
+			// 此工作定义为独立工作定义时，master直接使用工作定义，因为独立工作定义使用了工时方案字段，保存了它可用的工时方案
+			master = data;
+		} else if (data.isGenericWork()) {
+			master = data;
+		} else {
+			// 此工作定义为项目中的工作定义时，需使用项目模板获取项目模板中的工时方案
+			// 获取工作定义所在项目模板
+			master = data.getProjectTemplate();
 		}
-		
 
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
 				"management.selectworktimetype") {
@@ -55,16 +54,24 @@ public class AddParaXAction implements IAddTableItemHandler {
 				} else {
 					Iterator<?> iterator = is.iterator();
 					while (iterator.hasNext()) {
-						//此处value只能是DBObject的工时类型
+						// 此处value只能是DBObject的工时类型
 						DBObject value = (DBObject) iterator.next();
-						ObjectId paraXId = (ObjectId) value.get(WorkTimeProgram.F__ID);
-						
-						CTreeViewer viewer = (CTreeViewer) getNavigator().getViewer();
-						TreeItem treeItem = (TreeItem) viewer.testFindItem(value);
-						WorkTimeProgram workTimeProgram = (WorkTimeProgram) treeItem.getParentItem().getData();
+						ObjectId paraXId = (ObjectId) value
+								.get(WorkTimeProgram.F__ID);
+
+						CTreeViewer viewer = (CTreeViewer) getNavigator()
+								.getViewer();
+						TreeItem treeItem = (TreeItem) viewer
+								.testFindItem(value);
+						WorkTimeProgram workTimeProgram = (WorkTimeProgram) treeItem
+								.getParentItem().getData();
 						ObjectId workTimeProgramId = workTimeProgram.get_id();
-						DBObject key = new BasicDBObject().append(IWorkCloneFields.F_WORKTIME_PARAX_ID, paraXId).append(IWorkCloneFields.F_WORKTIME_PARAX_PROGRAM_ID, workTimeProgramId);
-						//判断表单编辑器中字段的值是否包含工时类型id和工时方案id组成的字符串时进行的处理
+						DBObject key = new BasicDBObject()
+								.append(IWorkCloneFields.F_WORKTIME_PARAX_ID,
+										paraXId)
+								.append(IWorkCloneFields.F_WORKTIME_PARAX_PROGRAM_ID,
+										workTimeProgramId);
+						// 判断表单编辑器中字段的值是否包含工时类型id和工时方案id组成的字符串时进行的处理
 						if (!inputData.contains(key)) {
 							inputData.add(key);
 						}

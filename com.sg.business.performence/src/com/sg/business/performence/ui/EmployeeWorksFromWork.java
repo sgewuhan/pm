@@ -4,7 +4,12 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -17,17 +22,49 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
+import com.sg.business.model.DummyWork;
+import com.sg.business.model.Work;
 import com.sg.business.performence.model.EmployeeWorksDataSet;
+import com.sg.business.performence.model.WorkWorksNode;
 import com.sg.business.performence.model.WorksNode;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.IRefreshablePart;
+import com.sg.widgets.part.editor.DataObjectDialog;
 
 public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart {
+
+	// public class WorkEditingSupport extends EditingSupport {
+
+	/*
+	 * private double works;
+	 * 
+	 * public WorkEditingSupport(double works) { super(treeViewer);
+	 * this.works=works; }
+	 * 
+	 * @Override protected CellEditor getCellEditor(Object element) { return
+	 * editor; }
+	 * 
+	 * @Override protected boolean canEdit(Object element) { WorksNode
+	 * worksNode=(WorksNode) element; return !worksNode.getChildren().isEmpty();
+	 * }
+	 * 
+	 * @Override protected Object getValue(Object element) {
+	 * worksNode=(WorksNode) element; double works = worksNode.getWorks();
+	 * return works; }
+	 * 
+	 * @Override protected void setValue(Object element, Object value) {
+	 * 
+	 * }
+	 */
+	// }
 
 	private EmployeeWorksDataSet dataSet;
 	private TreeViewer treeViewer;
@@ -38,6 +75,7 @@ public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart 
 	private boolean onlyOwnerDepartmentWorks;
 	private Label label;
 	private Locale locale;
+	private Action menuEdit;
 
 	public EmployeeWorksFromWork() {
 	}
@@ -133,6 +171,38 @@ public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart 
 				return df.format(works);
 			}
 		});
+		// 2014.6.25 工时统计员可以修改实际工时
+		createActions();
+		Tree tree = treeViewer.getTree();
+		MenuManager menuManager = new MenuManager("popup");
+		menuManager.createContextMenu(tree);
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				IStructuredSelection sel = (IStructuredSelection) treeViewer
+						.getSelection();
+				if (sel != null && !sel.isEmpty()) {
+					Object element = sel.getFirstElement();
+					if (element instanceof WorkWorksNode) {
+						manager.add(menuEdit);
+					}
+				}
+			}
+		});
+
+		tree.setMenu(menuManager.getMenu());
+
+		/*
+		 * context = new CurrentAccountContext(); String userId =
+		 * context.getAccountInfo().getConsignerId(); User user =
+		 * UserToolkit.getUserById(userId); List<PrimaryObject> orgs =
+		 * user.getRoleGrantedInFunctionDepartmentOrganization
+		 * (Role.ROLE_WORKS_STATISTICS_ID); boolean isWorksAdmin=false;
+		 * if(orgs!=null){ isWorksAdmin=true; if(isWorksAdmin){
+		 * vColumn.setEditingSupport(new WorkEditingSupport(get)); } }
+		 */
 
 		// 4. content provider
 		treeViewer.setContentProvider(new ITreeContentProvider() {
@@ -174,6 +244,38 @@ public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart 
 		return treeViewer.getControl();
 	}
 
+	private void createActions() {
+		// 2014.6.23 参数编辑菜单
+		menuEdit = new Action(Messages.get().EditWork_6) {
+			@Override
+			public void run() {
+				IStructuredSelection sel = (IStructuredSelection) treeViewer
+						.getSelection();
+				if (sel != null && !sel.isEmpty()) {
+					Object element = sel.getFirstElement();
+					if (element instanceof WorkWorksNode) {
+						WorkWorksNode worksNode = (WorkWorksNode) element;
+						PrimaryObject po = worksNode.getData();
+						if (po instanceof Work) {
+							Work work = (Work) po;
+							DummyWork dummyWork = work
+									.getAdapter(DummyWork.class);
+							try {
+								DataObjectDialog.openDialog(dummyWork,
+										"work.employeeworks", true, null);
+								treeViewer.refresh();
+							} catch (Exception e) {
+								MessageUtil.showMessage(treeViewer.getControl()
+										.getShell(), "异常", "请选择工作进行编辑",
+										SWT.NONE);
+							}
+						}
+					}
+				}
+			}
+		};
+	}
+
 	@Override
 	public void setFocus() {
 
@@ -205,20 +307,19 @@ public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart 
 		cal.set(Calendar.MONTH, month);
 		String _month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
 				locale);
-		
+
 		StringBuffer sb = new StringBuffer();
 		sb.append(year);
 		sb.append("  ");
 		sb.append(_month);
-		if(isOnlyOwnerDepartmentWorks()){
+		if (isOnlyOwnerDepartmentWorks()) {
 			sb.append(Messages.get().OnlyOwnerDepartmentWorks);
 		}
 
-		if(isOnlyProjectWorks()){
+		if (isOnlyProjectWorks()) {
 			sb.append(Messages.get().OnlyProjectWorks);
 		}
 		label.setText(sb.toString());
-		
 
 		// 设置数据的显示
 		String userId = context.getConsignerId();
@@ -228,7 +329,7 @@ public class EmployeeWorksFromWork extends ViewPart implements IRefreshablePart 
 	}
 
 	public void doExport() {
-		
+
 	}
 
 }

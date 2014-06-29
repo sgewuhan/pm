@@ -51,6 +51,7 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 	public static final String EDITOR_SETTING = "work.deliverable"; //$NON-NLS-1$
 	public static final String TEMPLATE_DOCUMENT = "template_document"; //$NON-NLS-1$
 
+	
 	/**
 	 * ∑µªÿœ‘ æÕº±Í
 	 * 
