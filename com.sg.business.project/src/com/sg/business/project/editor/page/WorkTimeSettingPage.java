@@ -79,9 +79,9 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		super.createPageContent(mForm, parent, input, conf);
 		// 从编辑器输入中获取数据，这个数据是project
 		project = (Project) input.getData();
-		isWorkTimeProgramReadonly = project.canWorkTimeProgramReadonly(context);
-		isWorkTimeParaXReadonly = project.canWorkTimeParaXReadonly(context);
-		isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
+//		isWorkTimeProgramReadonly = project.canWorkTimeProgramReadonly(context);
+//		isWorkTimeParaXReadonly = project.canWorkTimeParaXReadonly(context);
+//		isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
 		// 创建方案选择器，ComboViewer类型，参数是容器
 		programSelector = createProgramSelector(parent);
 
