@@ -334,7 +334,6 @@ public class Organization extends PrimaryObject {
 				true);
 	}
 
-
 	/**
 	 * 添加用户到组织中
 	 * 
@@ -1914,6 +1913,11 @@ public class Organization extends PrimaryObject {
 			result.addAll(org.getChildrenFunctionOrgId());
 		}
 		return result;
+	}
+
+	public List<PrimaryObject> getWorkTimePrograms() {
+		return getRelationById(F__ID, WorkTimeProgram.F_ORGANIZATION_ID,
+				WorkTimeProgram.class);
 	}
 
 }
