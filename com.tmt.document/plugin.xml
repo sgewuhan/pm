@@ -507,6 +507,19 @@
                   </navigatorSelector>
                </section>
                <section
+                     label="使用人">
+                  <table
+                        addTableItemHandler="com.tmt.document.pm.AddPLMApplicationUser"
+                        ctableId="pm.pmplmapplication.user"
+                        editable="true"
+                        id="user"
+                        labelVisible="false"
+                        name="user"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+               <section
                      label="简要描述申请/变更的原因">
                   <text
                         editPart="Text(Multi Line)"
@@ -535,19 +548,6 @@
                         required="false"
                         type="String">
                   </text>
-               </section>
-               <section
-                     label="使用人">
-                  <table
-                        addTableItemHandler="com.tmt.document.pm.AddPLMApplicationUser"
-                        ctableId="pm.pmplmapplication.user"
-                        editable="true"
-                        id="user"
-                        labelVisible="false"
-                        name="user"
-                        persistable="true"
-                        required="false">
-                  </table>
                </section>
             </pagecolumn>
          </basicpage>
