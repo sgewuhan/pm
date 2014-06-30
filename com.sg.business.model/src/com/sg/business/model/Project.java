@@ -237,6 +237,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final int AUTO_ASSIGNMENT_TYPE_NONE = 1;
 
+	private static final String F_STATISTICS_STEP = "statisticsstep";
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -720,6 +722,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 预算
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
+
+		//6.30    复制来自项目模板的工时统计阶段
+		ProjectTemplate projectTemplate = getProjectTemplate();
+		BasicBSONList steps = (BasicBSONList) projectTemplate
+				.getValue(ProjectTemplate.F_STATISTICSSTEP);
+		if (steps != null) {
+			for (int i = 0; i < steps.size(); i++) {
+				String step = (String) steps.get(i);
+				setValue(F_STATISTICS_STEP, step);
+			}
+		}
 
 		super.doInsert(context);
 

@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
@@ -48,11 +49,14 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkTimeProgram;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
@@ -65,6 +69,34 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	private boolean editable;
 	private static final int MARGIN = 4;
 
+	@Override
+	public boolean createBody() {
+		return true;
+	}
+	
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return new IEditorPageLayoutProvider() {
+			
+			@Override
+			public void layout(Control body, Control customerPage) {
+				FormData fd;
+				fd = new FormData();
+				body.setLayoutData(fd);
+				fd.top = new FormAttachment();
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+
+				fd = new FormData();
+				customerPage.setLayoutData(fd);
+				fd.top = new FormAttachment(body);
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+				fd.bottom = new FormAttachment(100);
+			}
+		};
+	}
+	
 	/**
 	 * 创建页面内容
 	 */
@@ -72,6 +104,10 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		super.createPageContent(mForm, parent, input, conf);
+		Section section = new SimpleSection(parent, Section.EXPANDED
+				| Section.SHORT_TITLE_BAR);
+		section.setText(Messages.get().WorkTimeProgramModify);
+		Composite composite = new Composite(section,SWT.NONE);
 		// 从编辑器输入中获取数据，这个数据是project
 		project = (Project) input.getData();
 		// isWorkTimeProgramReadonly =
@@ -80,20 +116,21 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
 		editable = project.canEditWorkTimesSetting(input.getContext());
 		// 创建方案选择器，ComboViewer类型，参数是容器
-		programSelector = createProgramSelector(parent);
+		programSelector = createProgramSelector(composite);
 
 		// 获取方案选择器的控件
 		Control programSelectorControl = programSelector.getControl();
 		// 创建工时类型选择器，参数是容器
-		paraXSelector = createParaXSelector(parent);
+		paraXSelector = createParaXSelector(composite);
 		// 获取工时类型选择器的控件
 		Control paraXSelectorControl = paraXSelector.getControl();
 		// 创建列类型选择器
-		paraYSelector = createParaYSelector(parent);
+		paraYSelector = createParaYSelector(composite);
 		Control paraYSelectorControl = paraYSelector.getControl();
+		
 
 		// 设置parent为表单布局
-		parent.setLayout(new FormLayout());
+		composite.setLayout(new FormLayout());
 
 		// 实例化一个FormData对象
 		FormData fd = new FormData();
@@ -159,7 +196,8 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		}
 		// 返回容器
-		return parent;
+		section.setClient(composite);
+		return section;
 	}
 
 	/**

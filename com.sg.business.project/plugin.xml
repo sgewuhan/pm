@@ -5697,7 +5697,6 @@
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
-               description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
@@ -7529,10 +7528,51 @@
             id="projectworksprogram"
             name="%projectworksprogram">
          <basicpage
-               description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%basicpage.title.4">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="%text.label.24"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        id="description"
+                        label="%text.label.25"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        heightHint="110"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
          </basicpage>
          <navigatorpage
                id="project.wbs.worksprogram"
@@ -7576,9 +7616,9 @@
                   </radio>
                   <fieldgroup
                         columnCount="2">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="false"
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
                            id="statisticsstep"
                            label="%statisticsstep"
                            labelVisible="true"
@@ -7586,7 +7626,7 @@
                            persistable="true"
                            required="false"
                            type="String">
-                     </text>
+                     </combo>
                      <checkbox
                            editable="true"
                            id="statisticspoint"
