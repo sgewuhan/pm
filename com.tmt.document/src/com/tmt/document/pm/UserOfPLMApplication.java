@@ -1,13 +1,12 @@
-package com.tmt.document.tb;
+package com.tmt.document.pm;
 
 import com.sg.business.commons.dataset.AbstractTableDataSetFactory;
 
-public class ProductProposalSet extends AbstractTableDataSetFactory {
+public class UserOfPLMApplication extends AbstractTableDataSetFactory {
 
 	@Override
 	protected String getDataEditorFieldName() {
-		return "product";
+		return "user";
 	}
-
 
 }
