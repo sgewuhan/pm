@@ -9,6 +9,7 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 
 import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
+import com.mobnut.portal.Portal;
 import com.mobnut.portal.page.LoginPage;
 import com.mobnut.portal.user.UserSessionContext;
 
@@ -26,8 +27,15 @@ public class Direct implements EntryPoint {
 		String _editor = RWT.getRequest().getParameter("editor"); //$NON-NLS-1$
 
 		Display display = PlatformUI.createDisplay();
-
-		int returnCode = LoginPage.OPEN(display);
+		
+		boolean useAd = Portal.getDefault().isAdEnable();
+		Object args = RWT.getRequest().getParameter("ad");
+		if ("off".equals(args)) {
+			useAd = false;
+		} else if ("on".equals(args)) {
+			useAd = true;
+		}
+		int returnCode = LoginPage.OPEN(display,useAd);
 		if (returnCode == 1) {
 			return 0;
 		}
