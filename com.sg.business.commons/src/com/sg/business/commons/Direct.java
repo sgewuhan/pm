@@ -35,7 +35,7 @@ public class Direct implements EntryPoint {
 		} else if ("on".equals(args)) {
 			useAd = true;
 		}
-		int returnCode = LoginPage.OPEN(display,useAd);
+		int returnCode = LoginPage.OPEN(display,useAd,false);
 		if (returnCode == 1) {
 			return 0;
 		}
