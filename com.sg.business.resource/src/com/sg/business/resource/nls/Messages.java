@@ -1169,5 +1169,6 @@ public class Messages {
 	public String OnlyProjectWorks;
 	public String CreateFolderTemplate_0;
 	public String WorkTimeProgram_0;
+	public String WorkTimeProgramModify;
 
 }

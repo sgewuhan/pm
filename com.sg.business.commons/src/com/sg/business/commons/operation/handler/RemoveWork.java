@@ -111,11 +111,11 @@ public class RemoveWork extends AbstractNavigatorHandler {
 			IWorkbenchPart part, ViewerControl currentViewerControl, Shell shell) {
 		Assert.isNotNull(currentViewerControl);
 
-		if (selected.getParentPrimaryObjectCache() == null) {
-			MessageUtil.showToast(shell, Messages.get().RemoveWork_8 + selected.getTypeName(), Messages.get().RemoveWork_9
-					+ selected.getTypeName() + Messages.get().RemoveWork_10, SWT.ICON_WARNING);
-			return false;
-		}
+//		if (selected.getParentPrimaryObjectCache() == null) {
+//			MessageUtil.showToast(shell, Messages.get().RemoveWork_8 + selected.getTypeName(), Messages.get().RemoveWork_9
+//					+ selected.getTypeName() + Messages.get().RemoveWork_10, SWT.ICON_WARNING);
+//			return false;
+//		}
 
 		// 如果是工作，需要刷新开始和完成时间
 		List<Work> toUpdate = null;

@@ -6486,93 +6486,14 @@
             expand="search"
             id="sales.company.selector"
             table="sales.company.selector">
-         <filterAction>
-            <column
-                  column="desc"
-                  name="公司名称"
-                  type="String">
-            </column>
-            <column
-                  column="industry"
-                  name="行业"
-                  option="com.sg.res.option.industrycode.full"
-                  type="String">
-            </column>
-            <column
-                  column="product"
-                  name="产品"
-                  type="String">
-            </column>
-            <column
-                  column="level"
-                  name="级别"
-                  type="String">
-            </column>
-            <column
-                  column="levelservice"
-                  name="客户"
-                  type="String">
-            </column>
-            <column
-                  column="capital"
-                  name="注册资金"
-                  type="Float">
-            </column>
-            <column
-                  column="registerdate"
-                  name="成立日期"
-                  type="Date">
-            </column>
-            <column
-                  column="annual"
-                  name="年产值"
-                  type="Float">
-            </column>
-            <column
-                  column="prov"
-                  name="所在省份"
-                  type="String">
-            </column>
-            <column
-                  column="city"
-                  name="所在城市"
-                  type="String">
-            </column>
-         </filterAction>
-         <searchAction
+         <queryAction
                defaultfield="公司名称">
             <column
                   column="desc"
                   name="公司名称"
                   type="String">
             </column>
-            <column
-                  column="industry"
-                  name="行业"
-                  option="com.sg.res.option.industrycode.full"
-                  type="String">
-            </column>
-            <column
-                  column="product"
-                  name="产品"
-                  type="String">
-            </column>
-            <column
-                  column="prov"
-                  name="所在省份"
-                  type="String">
-            </column>
-            <column
-                  column="city"
-                  name="所在城市"
-                  type="String">
-            </column>
-            <column
-                  column="address"
-                  name="地址"
-                  type="String">
-            </column>
-         </searchAction>
+         </queryAction>
       </navigator>
       <navigator
             expand="search"
@@ -8466,6 +8387,7 @@
             markupEnabled="false"
             multiSelection="true"
             preload="10"
+            queryMode="true"
             useHashlookup="true"
             virtual="true">
          <column
@@ -8479,24 +8401,10 @@
                width="-1">
          </column>
          <column
-               column="level"
-               name="级别"
-               type="String">
-         </column>
-         <column
-               column="levelservice"
-               name="客户"
-               type="String">
-         </column>
-         <column
-               column="prov"
-               name="所在省份"
-               type="String">
-         </column>
-         <column
-               column="city"
-               name="所在城市"
-               type="String">
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售经理"
+               width="60">
          </column>
       </table>
       <table

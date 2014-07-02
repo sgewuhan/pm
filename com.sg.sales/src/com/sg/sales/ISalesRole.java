@@ -10,9 +10,12 @@ public interface ISalesRole {
 
 	public static final String ROLE_EXPENSE_APPROVER_NUMBER = "T101";
 	public static final String ROLE_EXPENSE_APPROVER_TEXT = "费用批准";
+	
+	public static final String ROLE_EXPENSE_AUDIT_NUMBER = "T105";
+	public static final String ROLE_EXPENSE_AUDIT_TEXT = "费用审核";
 
-	public static final String TEAM_MANAGER_NUMBER = "T005";
-	public static final String TEAM_MANAGER_TEXT = "管理者";
+//	public static final String TEAM_MANAGER_NUMBER = "T005";
+//	public static final String TEAM_MANAGER_TEXT = "管理者";
 	
 	public static final String FINANCAIL_MANAGER_NUMBER = "T006";
 	public static final String FINANCAIL_MANAGER_TEXT = "财务经理";

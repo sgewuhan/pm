@@ -329,6 +329,34 @@
                value="无工时">
          </option>
       </option>
+      <option
+            id="是否归档"
+            label="是否归档">
+         <option
+               id="归档"
+               label="归档"
+               value="归档">
+         </option>
+         <option
+               id="不归档"
+               label="不归档"
+               value="不归档">
+         </option>
+      </option>
+      <option
+            id="是否新做图纸"
+            label="是否新做图纸">
+         <option
+               id="新做"
+               label="新做"
+               value="新做">
+         </option>
+         <option
+               id="不做"
+               label="不做"
+               value="不做">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -1855,6 +1883,95 @@
                modelRelation="organization_organization">
          </structure>
       </tree>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="pm.pmPLMApplication.audit"
+            name="审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="pm.pmPLMApplication">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.pmPLMApplication.audit"
+            name="批准"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="pm.pmPLMApplication">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmPLMApplication.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否整改"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="%basicpage.title.7">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.8">
+            <pagecolumn>
+               <section
+                     label="%section.label.4">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="%file.label.0"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
  </plugin>
    

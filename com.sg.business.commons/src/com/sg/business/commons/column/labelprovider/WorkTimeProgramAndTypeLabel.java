@@ -1,4 +1,4 @@
-package com.sg.business.management.labelprovider;
+package com.sg.business.commons.column.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 

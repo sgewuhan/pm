@@ -1,6 +1,6 @@
 package com.tmt.document.tb;
 
-import com.tmt.document.handler.AbstractTableItemHandler;
+import com.sg.business.commons.field.action.AbstractTableItemHandler;
 
 public class AddProductItem extends AbstractTableItemHandler {
 
