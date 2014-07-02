@@ -329,6 +329,34 @@
                value="无工时">
          </option>
       </option>
+      <option
+            id="是否归档"
+            label="是否归档">
+         <option
+               id="归档"
+               label="归档"
+               value="归档">
+         </option>
+         <option
+               id="不归档"
+               label="不归档"
+               value="不归档">
+         </option>
+      </option>
+      <option
+            id="是否新做图纸"
+            label="是否新做图纸">
+         <option
+               id="新做"
+               label="新做"
+               value="新做">
+         </option>
+         <option
+               id="不做"
+               label="不做"
+               value="不做">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

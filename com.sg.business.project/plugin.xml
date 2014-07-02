@@ -1366,25 +1366,7 @@
                   columnDefinitionId="work.desc">
             </column>
             <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
                   columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
             </column>
          </filterAction>
          <searchAction>
@@ -1392,92 +1374,13 @@
                   columnDefinitionId="work.desc">
             </column>
             <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
                   columnDefinitionId="planworks_e">
             </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
          </searchAction>
-         <exportAction>
-            <column
-                  column="desc"
-                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowLeverDesc"
-                  name="%column.name.26"
-                  type="String">
-            </column>
-            <column
-                  column="milestone"
-                  name="%column.name.27"
-                  type="Boolean">
-            </column>
-            <column
-                  column="planstart"
-                  name="%column.name.28"
-                  type="Date">
-            </column>
-            <column
-                  column="planfinish"
-                  name="%column.name.29"
-                  type="Date">
-            </column>
-            <column
-                  column="planduration"
-                  name="%column.name.30"
-                  type="Integer">
-            </column>
-            <column
-                  column="planworks"
-                  name="%column.name.31"
-                  type="Double">
-            </column>
-            <column
-                  column="actualstart"
-                  name="%column.name.32"
-                  type="Date">
-            </column>
-            <column
-                  column="actualfinish"
-                  name="%column.name.33"
-                  type="Date">
-            </column>
-            <column
-                  column="actualduration"
-                  name="%column.name.34"
-                  type="Integer">
-            </column>
-            <column
-                  column="actualworks"
-                  name="%column.name.35"
-                  type="Double">
-            </column>
-            <column
-                  column="chargerid"
-                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserId2UserFullName"
-                  name="%column.name.36"
-                  type="String">
-            </column>
-            <column
-                  column="participate"
-                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserIdArray2UserFullNameArray"
-                  name="%column.name.37"
-                  type="String">
-            </column>
-         </exportAction>
+      </navigator>
+      <navigator
+            id="project.selectworktimetype"
+            tree="project.selectworktimetype">
       </navigator>
    </extension>
    <extension
@@ -3160,106 +3063,46 @@
                width="-1">
          </column>
          <column
-               columnDefinitionId="milestone">
+               column="measurement"
+               labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
+               name="%measurement">
          </column>
          <column
-               column="mandatory"
-               name="%column.name.72"
-               type="Boolean"
-               width="48">
+               column="standardworks"
+               name="%column.name.67"
+               style="SWT.CENTER"
+               type="Double">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               columnDefinitionId="planworks">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               column="statisticsstep"
+               name="%statisticsstep">
          </column>
          <column
-               columnDefinitionId="planworks_e">
+               column="statisticspoint"
+               name="%statisticspoint"
+               type="Boolean">
          </column>
          <column
-               columnDefinitionId="planduration_e">
+               column="parax"
+               labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+               name="%paraxbasicpage.title.24">
          </column>
-         <columnGroup
-               defaultGroup="false"
-               id="team"
-               name="%columnGroup.name.6">
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="%columnGroup.name.7">
-            <column
-                  columnDefinitionId="actualstart_e">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="actualworks_e">
-            </column>
-            <column
-                  columnDefinitionId="actualduration_e">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="%columnGroup.name.8">
-            <column
-                  column="measurement"
-                  labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
-                  name="%measurement">
-            </column>
-            <column
-                  column="standardworks"
-                  name="%column.name.67"
-                  style="SWT.CENTER"
-                  type="Double">
-            </column>
-            <column
-                  column="statisticsstep"
-                  name="%statisticsstep">
-            </column>
-            <column
-                  column="statisticspoint"
-                  name="%statisticspoint"
-                  type="Boolean">
-            </column>
-            <column
-                  column="parax"
-                  labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
-                  name="%paraxbasicpage.title.24">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="work.chargerrole">
-            </column>
-            <column
-                  column="wf_execute"
-                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
-                  name="%column.name.68"
-                  width="100">
-            </column>
-            <column
-                  column="s_autostartwithparent"
-                  name="%column.name.69"
-                  type="Boolean"
-                  width="48">
-            </column>
-            <column
-                  column="s_autofinishwithparent"
-                  name="%column.name.70"
-                  type="Boolean"
-                  width="48">
-            </column>
-         </columnGroup>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            contentProvider="com.sg.business.commons.ui.viewer.ParaXOfProgram"
+            dataSet="com.sg.business.model.dataset.WorkTimeProgramOfProject"
+            id="project.selectworktimetype">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkTimeProgramAndTypeLabel"
+               name="%column.name.12"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension
@@ -5697,7 +5540,6 @@
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
-               description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
@@ -7529,25 +7371,57 @@
             id="projectworksprogram"
             name="%projectworksprogram">
          <basicpage
-               description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%basicpage.title.4">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="%text.label.24"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        id="description"
+                        label="%text.label.25"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        heightHint="110"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
          </basicpage>
          <navigatorpage
                id="project.wbs.worksprogram"
                image="image/wbs_24.png"
                navigatorId="project.wbs.worksprogram"
-               title="WBS">
-            <navigatoraction
-                  action="com.sg.business.project.action.RecalculateSEQ">
-            </navigatoraction>
-            <navigatoraction
-                  action="com.sg.business.project.action.AutoAssignment">
-            </navigatoraction>
-            <navigatoraction
-                  action="com.sg.business.project.action.ExportWBS">
-            </navigatoraction>
+               title="%works">
          </navigatorpage>
       </editor>
       <editor
@@ -7566,27 +7440,42 @@
                   <radio
                         defaultValue="no"
                         editable="false"
+                        editableHandler="com.sg.business.project.field.editable.MeasureFieldEditableControl"
                         id="measurement"
                         label="%measurement"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="measurement"
                         option="worktime.measurement"
                         persistable="true"
                         type="DBObject">
                   </radio>
+                  <list
+                        addTableItemHandler="com.sg.business.project.field.action.AddParaXActionOfProject"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimepara_x"
+                        label="%paraxbasicpage.title.24"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.ParaXLabel"
+                        name="worktimepara_x"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
                   <fieldgroup
                         columnCount="2">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="false"
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
                            id="statisticsstep"
                            label="%statisticsstep"
                            labelVisible="true"
                            name="statisticsstep"
+                           optionProvider="com.sg.business.project.editor.option.StatisticsStepOptionOfProject"
                            persistable="true"
                            required="false"
                            type="String">
-                     </text>
+                     </combo>
                      <checkbox
                            editable="true"
                            id="statisticspoint"

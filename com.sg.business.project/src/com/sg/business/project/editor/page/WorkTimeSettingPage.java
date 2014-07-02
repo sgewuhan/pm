@@ -29,30 +29,26 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.widgets.Section;
 
-import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.IModelConstants;
-import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.Work;
 import com.sg.business.model.WorkTimeProgram;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
@@ -65,6 +61,34 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	private boolean editable;
 	private static final int MARGIN = 4;
 
+	@Override
+	public boolean createBody() {
+		return true;
+	}
+	
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return new IEditorPageLayoutProvider() {
+			
+			@Override
+			public void layout(Control body, Control customerPage) {
+				FormData fd;
+				fd = new FormData();
+				body.setLayoutData(fd);
+				fd.top = new FormAttachment();
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+
+				fd = new FormData();
+				customerPage.setLayoutData(fd);
+				fd.top = new FormAttachment(body);
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+				fd.bottom = new FormAttachment(100);
+			}
+		};
+	}
+	
 	/**
 	 * 创建页面内容
 	 */
@@ -72,6 +96,10 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		super.createPageContent(mForm, parent, input, conf);
+		Section section = new SimpleSection(parent, Section.EXPANDED
+				| Section.SHORT_TITLE_BAR);
+		section.setText(Messages.get().WorkTimeProgramModify);
+		Composite composite = new Composite(section,SWT.NONE);
 		// 从编辑器输入中获取数据，这个数据是project
 		project = (Project) input.getData();
 		// isWorkTimeProgramReadonly =
@@ -80,20 +108,21 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
 		editable = project.canEditWorkTimesSetting(input.getContext());
 		// 创建方案选择器，ComboViewer类型，参数是容器
-		programSelector = createProgramSelector(parent);
+		programSelector = createProgramSelector(composite);
 
 		// 获取方案选择器的控件
 		Control programSelectorControl = programSelector.getControl();
 		// 创建工时类型选择器，参数是容器
-		paraXSelector = createParaXSelector(parent);
+		paraXSelector = createParaXSelector(composite);
 		// 获取工时类型选择器的控件
 		Control paraXSelectorControl = paraXSelector.getControl();
 		// 创建列类型选择器
-		paraYSelector = createParaYSelector(parent);
+		paraYSelector = createParaYSelector(composite);
 		Control paraYSelectorControl = paraYSelector.getControl();
+		
 
 		// 设置parent为表单布局
-		parent.setLayout(new FormLayout());
+		composite.setLayout(new FormLayout());
 
 		// 实例化一个FormData对象
 		FormData fd = new FormData();
@@ -159,7 +188,8 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		}
 		// 返回容器
-		return parent;
+		section.setClient(composite);
+		return section;
 	}
 
 	/**
@@ -324,35 +354,6 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			// 设置单元格可编辑
 			@Override
 			protected boolean canEdit(Object element) {
-				ObjectId _id = (ObjectId) ((DBObject) element)
-						.get(PrimaryObject.F__ID);
-				DBCollection collection = DBActivator.getCollection(
-						IModelConstants.DB, IModelConstants.C_WORK);
-				DBCursor cursor = collection.find(
-						new BasicDBObject()
-								.append(Work.F_PROJECT_ID, project.get_id())
-								.append(IWorkCloneFields.F_MEASUREMENT,
-										IWorkCloneFields.MEASUREMENT_TYPE_STANDARD_ID)
-								.append(Work.F_LIFECYCLE,
-										new BasicDBObject()
-												.append("$ne",
-														ILifecycle.STATUS_ONREADY_VALUE)),
-						new BasicDBObject().append(
-								IWorkCloneFields.F_WORKTIME_PARAX, 1));
-				while (cursor.hasNext()) {
-					DBObject object = cursor.next();
-					BasicBSONList worktimeParaXList = (BasicBSONList) object
-							.get(IWorkCloneFields.F_WORKTIME_PARAX);
-					for (Object o : worktimeParaXList) {
-						DBObject worktimeParaX = (DBObject) o;
-						ObjectId para_id = (ObjectId) worktimeParaX
-								.get(IWorkCloneFields.F_WORKTIME_PARAX_ID);
-						if (_id.equals(para_id)) {
-							return false;
-						}
-					}
-				}
-
 				return true;
 			}
 		});

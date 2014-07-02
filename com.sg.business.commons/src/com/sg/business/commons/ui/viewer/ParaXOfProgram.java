@@ -1,4 +1,4 @@
-package com.sg.business.management.contentprovider;
+package com.sg.business.commons.ui.viewer;
 
 import java.util.List;
 
