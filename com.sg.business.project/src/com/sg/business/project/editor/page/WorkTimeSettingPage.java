@@ -31,23 +31,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.Section;
 
-import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.IModelConstants;
-import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.Work;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
@@ -362,35 +354,6 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			// 设置单元格可编辑
 			@Override
 			protected boolean canEdit(Object element) {
-				ObjectId _id = (ObjectId) ((DBObject) element)
-						.get(PrimaryObject.F__ID);
-				DBCollection collection = DBActivator.getCollection(
-						IModelConstants.DB, IModelConstants.C_WORK);
-				DBCursor cursor = collection.find(
-						new BasicDBObject()
-								.append(Work.F_PROJECT_ID, project.get_id())
-								.append(IWorkCloneFields.F_MEASUREMENT,
-										IWorkCloneFields.MEASUREMENT_TYPE_STANDARD_ID)
-								.append(Work.F_LIFECYCLE,
-										new BasicDBObject()
-												.append("$ne",
-														ILifecycle.STATUS_ONREADY_VALUE)),
-						new BasicDBObject().append(
-								IWorkCloneFields.F_WORKTIME_PARAX, 1));
-				while (cursor.hasNext()) {
-					DBObject object = cursor.next();
-					BasicBSONList worktimeParaXList = (BasicBSONList) object
-							.get(IWorkCloneFields.F_WORKTIME_PARAX);
-					for (Object o : worktimeParaXList) {
-						DBObject worktimeParaX = (DBObject) o;
-						ObjectId para_id = (ObjectId) worktimeParaX
-								.get(IWorkCloneFields.F_WORKTIME_PARAX_ID);
-						if (_id.equals(para_id)) {
-							return false;
-						}
-					}
-				}
-
 				return true;
 			}
 		});

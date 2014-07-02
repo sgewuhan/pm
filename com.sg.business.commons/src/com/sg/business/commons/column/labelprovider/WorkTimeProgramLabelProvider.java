@@ -1,4 +1,4 @@
-package com.sg.business.management.column.labelprovider;
+package com.sg.business.commons.column.labelprovider;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkTimeProgram;

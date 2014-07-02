@@ -237,7 +237,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final int AUTO_ASSIGNMENT_TYPE_NONE = 1;
 
-	private static final String F_STATISTICS_STEP = "statisticsstep";
+	public static final String F_STATISTICS_STEP = "statisticsstep";
 
 	/**
 	 * 返回类型名称
@@ -595,7 +595,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 同步更改根工作定义的名称
 			syncRootWorkNameInternal();
 
-			// 从新计算实际工时
+			// 重新计算实际工时
 			syncWorkActualWorksInternal(this.get_id(), context);
 
 		}
@@ -604,28 +604,35 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	private void syncWorkActualWorksInternal(final ObjectId _id,
 			final IContext context) {
-		Job job = new Job("从新计算实际工时") {
+		Job job = new Job("重新计算实际工时") {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				//获取工作集合
 				DBCollection col = DBActivator.getCollection(
 						IModelConstants.DB, IModelConstants.C_WORK);
+				//给集合一个工作的工时计量方式是标准工时制的查询条件
 				DBCursor cursor = col.find(new BasicDBObject().append(
 						Work.F_PARENT_ID, _id).append(Work.F_MEASUREMENT,
 						Work.MEASUREMENT_TYPE_STANDARD_ID));
 				while (cursor.hasNext()) {
 					DBObject dbo = cursor.next();
+					//根据查询出的结果构造工作模型
 					Work work = ModelService.createModelObject(dbo, Work.class);
 					double actualWorks;
 					try {
+						//计算工作的实际工时
 						actualWorks = work.calculateActualWorks();
+						//将计算出的实际工时设置到工作的实际工时字段
 						col.update(new BasicDBObject().append(F__ID,
 								work.get_id()), new BasicDBObject().append(
 								"$set", new BasicDBObject().append(
 										F_ACTUAL_WORKS, actualWorks)), true,
 								false);
+						//计算计算实际工时分摊
 						work.doCalculateWorkPerformence(context);
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 				return Status.OK_STATUS;
@@ -723,14 +730,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
 
-		//6.30    复制来自项目模板的工时统计阶段
+		// 6.30 复制来自项目模板的工时统计阶段
 		ProjectTemplate projectTemplate = getProjectTemplate();
-		BasicBSONList steps = (BasicBSONList) projectTemplate
-				.getValue(ProjectTemplate.F_STATISTICSSTEP);
-		if (steps != null) {
-			for (int i = 0; i < steps.size(); i++) {
-				String step = (String) steps.get(i);
-				setValue(F_STATISTICS_STEP, step);
+		if(projectTemplate!=null){
+			BasicBSONList steps = (BasicBSONList) projectTemplate
+					.getValue(ProjectTemplate.F_STATISTICSSTEP);
+			if (steps != null) {
+				setValue(F_STATISTICS_STEP, steps);
 			}
 		}
 
