@@ -3927,8 +3927,8 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="force"
-                              property="work.forceupdate">
+                              args="synchr"
+                              property="system.admin">
                         </test>
                      </iterate>
                   </and>
@@ -3950,8 +3950,8 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="force"
-                              property="work.forceupdate">
+                              args="synchr"
+                              property="system.admin">
                         </test>
                      </iterate>
                   </and>
