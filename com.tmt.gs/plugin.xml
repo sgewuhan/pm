@@ -6535,6 +6535,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="productcustomerdrawingapprover.draw"
+            name="作图"
+            processDefinitionId="gs.gsProductCustomerDrawingApprover">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -6726,6 +6731,57 @@
                         editable="true"
                         id="accessory"
                         label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="task"
+            dbName="pm2"
+            id="productcustomerdrawingapprover.draw"
+            name="作图">
+         <basicpage
+               description="项目的基本信息"
+               id="project.basicpage.1"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="请选择图纸">
+                  <navigatorSelector
+                        editable="true"
+                        id="project_id"
+                        label="选择图纸"
+                        labelVisible="false"
+                        modelClass="com.sg.business.model.Project"
+                        name="project_id"
+                        navigatorId="gs.taskforms.project.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
                         labelVisible="true"
                         name="accessory"
                         persistable="true"

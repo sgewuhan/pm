@@ -2653,9 +2653,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return;
 		}
 
-		if (workTimeProgram.get_id().equals(getValue(F_WORKTIMEPROGRAM_ID))) {
-			return;
-		}
+//		if (workTimeProgram.get_id().equals(getValue(F_WORKTIMEPROGRAM_ID))) {
+//			return;
+//		}
 
 		clearWorkTimeProgramSetting();
 		setValue(F_WORKTIMEPROGRAM_ID, workTimeProgram.get_id());
