@@ -2000,6 +2000,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				F_ACTUAL_DURATION);
 
 		checkProjectTimeline();
+		
+		//检查工作工时
+		workTimeValidate(getProject());
 
 		super.doSave(context);
 
@@ -2647,7 +2650,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已暂停
-//		doNoticeWorkAction(context, Messages.get().Work_127);
+		// doNoticeWorkAction(context, Messages.get().Work_127);
 
 		// 后处理
 		doPauseAfter(context, params);
@@ -2692,7 +2695,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSaveProcessHistoryToDocument(context);
 
 		// 提示工作已取消
-//		doNoticeWorkAction(context, Messages.get().Work_130);
+		// doNoticeWorkAction(context, Messages.get().Work_130);
 		doCancelAfter(context, params);
 
 		return null;
@@ -2843,13 +2846,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		update.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		// 设置工作的实际完成时间
 		update.put(F_ACTUAL_FINISH, new Date());
-		//设置实际工时
+		// 设置实际工时
 		try {
 			double actualWorks = calculateActualWorks();
 			update.put(F_ACTUAL_WORKS, actualWorks);
 		} catch (Exception e) {
 		}
-		
+
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
@@ -2857,7 +2860,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已完成
-//		doNoticeWorkAction(context, Messages.get().Work_135);
+		// doNoticeWorkAction(context, Messages.get().Work_135);
 		doFinishAfter(context, params);
 
 		doCalculateWorkPerformence(context);
@@ -3262,8 +3265,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append(F__ID,
 						"$" + WorksPerformence.F_WORKID).append(
 						"total",
-						new BasicDBObject().append("$sum",
-								"$"+ WorksPerformence.F_WORKS)));
+						new BasicDBObject().append("$sum", "$"
+								+ WorksPerformence.F_WORKS)));
 		AggregationOutput aggResult = col.aggregate(match, group);
 		Iterator<DBObject> results = aggResult.results().iterator();
 		if (results.hasNext()) {
@@ -3305,23 +3308,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		for (int i = 0; i < paraXs.size(); i++) {
 			DBObject paraX = (DBObject) paraXs.get(i);
 			ObjectId paraXId = (ObjectId) paraX.get(F_WORKTIME_PARAX_ID);
-//			ObjectId paraXId = (ObjectId) paraX.get(F__ID);
+			// ObjectId paraXId = (ObjectId) paraX.get(F__ID);
 			if (paraXId != null) {
 				// 根据工时类型id获取项目上的工时类型选项
 				DBObject paraXOption = project.getParaXOption(paraXId);
 				ObjectId paraXOptionId = (ObjectId) paraXOption.get(F__ID);
 				paraXOptionIdSet.add(paraXOptionId);
-//				BasicBSONList paraXOptions = (BasicBSONList) project
-//						.getParaXOption(paraXId);
-//				if (paraXOptions != null) {
-//					for (int j = 0; j < paraXOptions.size(); j++) {
-//						DBObject paraXOption = (DBObject) paraXOptions.get(j);
-//						ObjectId paraXOptionId = (ObjectId) paraXOption
-//								.get(F__ID);
-//						// 将工时类型选项id加入到set集合
-//						paraXOptionIdSet.add(paraXOptionId);
-//					}
-//				}
+				// BasicBSONList paraXOptions = (BasicBSONList) project
+				// .getParaXOption(paraXId);
+				// if (paraXOptions != null) {
+				// for (int j = 0; j < paraXOptions.size(); j++) {
+				// DBObject paraXOption = (DBObject) paraXOptions.get(j);
+				// ObjectId paraXOptionId = (ObjectId) paraXOption
+				// .get(F__ID);
+				// // 将工时类型选项id加入到set集合
+				// paraXOptionIdSet.add(paraXOptionId);
+				// }
+				// }
 			}
 		}
 
@@ -4480,9 +4483,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 统计点
 		setValue(F_STATISTICS_POINT, wd.getValue(F_STATISTICS_POINT));
-		
-		//加入项目计算工时
-		setValue(F_JOIN_PROJECT_CALCWORKS, wd.getValue(F_JOIN_PROJECT_CALCWORKS));
+
+		// 加入项目计算工时
+		setValue(F_JOIN_PROJECT_CALCWORKS,
+				wd.getValue(F_JOIN_PROJECT_CALCWORKS));
 
 		// 处理用户设置
 		DBObject acdata = ipc.getProcessActorsData(F_WF_EXECUTE);
@@ -5028,24 +5032,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return null;
 	}
-	
-	
+
 	public String getMeasurementLabel() {
-		String measurement =getMeasurement();
+		String measurement = getMeasurement();
 		if (measurement != null) {
 			if (MEASUREMENT_TYPE_NO_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_NO_VALUE;
-			}else if(MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)){
+			} else if (MEASUREMENT_TYPE_COMMIT_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_COMMIT_VALUE;
-			}else if(MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)){
+			} else if (MEASUREMENT_TYPE_STANDARD_ID.equals(measurement)) {
 				return MEASUREMENT_TYPE_STANDARD_VALUE;
 			}
 		}
 		return "";
 	}
-	
-	public String getMeasurement(){
-		return getStringValue(F_MEASUREMENT); 
+
+	public String getMeasurement() {
+		return getStringValue(F_MEASUREMENT);
 	}
 
 	public void doAssignment(IContext context) throws Exception {
@@ -5064,6 +5067,75 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (work.isSummaryWork()) {
 				work.doAssignment(context);
 			}
+		}
+	}
+
+	/**
+	 * 验证工时
+	 * @param master  是项目
+	 * @throws Exception
+	 */
+	public void workTimeValidate(Project master) throws Exception {
+		// 如果不是标准工时工作,无需进行检查
+		if (!MEASUREMENT_TYPE_STANDARD_ID.equals(getMeasurement())) {
+			return;
+		}
+	
+		ObjectId projectWorksProgramId = (ObjectId) master
+				.getValue(Project.F_WORKTIMEPROGRAM_ID);
+		// 1. 必须要有统计阶段
+		Object step = getValue(F_STATISTICS_STEP);
+		if (step == null) {
+			throw new Exception("工作缺少工时统计阶段");
+		}
+		//需要检查工时统计阶段是否包含在项目的工时统计阶段中
+		BasicBSONList steps = (BasicBSONList) master.getValue(Project.F_STATISTICS_STEP);
+		if(!steps.contains(step)){
+			throw new Exception("工作缺少工时统计阶段");
+		}
+		
+		// 2. 检查工时方案和工时参数 
+		
+		Object parax = getValue(F_WORKTIME_PARAX);
+		if (parax instanceof List<?>) {
+			if (((List<?>) parax).isEmpty()) {
+				throw new Exception("工作缺少工时参数");
+			}
+		} else {
+			throw new Exception("工作缺少工时参数");
+		}
+
+		boolean containsProgram = false;
+
+		Iterator<?> iterator = ((List<?>) parax).iterator();
+		while (iterator.hasNext()) {
+			DBObject paraX = (DBObject) iterator.next();
+			ObjectId programId = (ObjectId) paraX
+					.get(F_WORKTIME_PARAX_PROGRAM_ID);
+			if (projectWorksProgramId.equals(programId)) {
+				ObjectId paraxId = (ObjectId) paraX.get(F_WORKTIME_PARAX_ID);
+				WorkTimeProgram program = ModelService.createModelObject(
+						WorkTimeProgram.class, programId);
+				BasicBSONList types = (BasicBSONList) program
+						.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+				boolean contains = false;
+				for (int i = 0; i < types.size(); i++) {
+					DBObject type = (DBObject) types.get(i);
+					ObjectId typeId = (ObjectId) type.get(F__ID);
+					if (typeId.equals(paraxId)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					throw new Exception("工时参数对应的选项在工时方案中不存在.");
+				}
+				containsProgram=true;
+				break;
+			}
+		}
+		if(!containsProgram){
+			throw new Exception("缺少对应项目工时方案的工时参数");
 		}
 	}
 

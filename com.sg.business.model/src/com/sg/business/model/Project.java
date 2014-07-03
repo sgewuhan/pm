@@ -582,9 +582,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
+		//验证统计阶段
+		BasicBSONList steps = (BasicBSONList) getValue(F_STATISTICS_STEP);
+		if (steps==null||steps.isEmpty()) {
+			throw new Exception("项目缺少工时统计阶段");
+		}
+		
 		// 同步工作令号到公司
 		ensureWorkOrderRelativeToCompany(context);
-
+		
+		
 		boolean saved = super.doSave(context);
 		if (saved) {
 			// 同步项目经理角色
@@ -595,50 +602,36 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 同步更改根工作定义的名称
 			syncRootWorkNameInternal();
 
-			// 重新计算实际工时
-			syncWorkActualWorksInternal(this.get_id(), context);
-
 		}
 		return saved;
 	}
 
-	private void syncWorkActualWorksInternal(final ObjectId _id,
-			final IContext context) {
-		Job job = new Job("重新计算实际工时") {
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+		super.doUpdate(context);
+		
+		// 获得项目的生命周期状态
+		doUpdatePlanWorksOfWBS(context);
+	}
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				//获取工作集合
-				DBCollection col = DBActivator.getCollection(
-						IModelConstants.DB, IModelConstants.C_WORK);
-				//给集合一个工作的工时计量方式是标准工时制的查询条件
-				DBCursor cursor = col.find(new BasicDBObject().append(
-						Work.F_PARENT_ID, _id).append(Work.F_MEASUREMENT,
-						Work.MEASUREMENT_TYPE_STANDARD_ID));
-				while (cursor.hasNext()) {
-					DBObject dbo = cursor.next();
-					//根据查询出的结果构造工作模型
-					Work work = ModelService.createModelObject(dbo, Work.class);
-					double actualWorks;
-					try {
-						//计算工作的实际工时
-						actualWorks = work.calculateActualWorks();
-						//将计算出的实际工时设置到工作的实际工时字段
-						col.update(new BasicDBObject().append(F__ID,
-								work.get_id()), new BasicDBObject().append(
-								"$set", new BasicDBObject().append(
-										F_ACTUAL_WORKS, actualWorks)), true,
-								false);
-						//计算计算实际工时分摊
-						work.doCalculateWorkPerformence(context);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				return Status.OK_STATUS;
+	private void doUpdatePlanWorksOfWBS(IContext context) throws Exception {
+		if (STATUS_NONE_TEXT.equals(getLifecycleStatus())) {
+			// 获取此项目的所有是标准工时制的工作
+			DBCollection workCol = getCollection(IModelConstants.C_WORK);
+			DBCursor cursor = workCol.find(new BasicDBObject().append(
+					Work.F_PROJECT_ID, get_id()).append(Work.F_MEASUREMENT,
+					Work.MEASUREMENT_TYPE_STANDARD_ID));
+			while(cursor.hasNext()){
+				DBObject next = cursor.next();
+				Work work = ModelService.createModelObject(next, Work.class);
+				//获得工作的计划工时
+				Double planWorks = work.calculatePlanWorks();
+				//将计算出的计划工时设置到工作的计划工时字段
+				work.setValue(Work.F_PLAN_WORKS, planWorks);
+				//同时刷新工作的计划工时
+				work.doSave(context);
 			}
-		};
-		job.schedule();
+		}
 	}
 
 	private void syncRootWorkNameInternal() {
@@ -732,7 +725,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 6.30 复制来自项目模板的工时统计阶段
 		ProjectTemplate projectTemplate = getProjectTemplate();
-		if(projectTemplate!=null){
+		if (projectTemplate != null) {
 			BasicBSONList steps = (BasicBSONList) projectTemplate
 					.getValue(ProjectTemplate.F_STATISTICSSTEP);
 			if (steps != null) {

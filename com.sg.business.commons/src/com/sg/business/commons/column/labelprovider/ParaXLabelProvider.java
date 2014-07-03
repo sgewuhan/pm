@@ -12,7 +12,9 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IWorkCloneFields;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.WorkTimeProgram;
 import com.sg.widgets.viewer.CTreeViewer;
@@ -37,7 +39,7 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 	private String getParaXLabel(PrimaryObject po) {
 		String result = "";
 		BasicBSONList paraXs = (BasicBSONList) po
-				.getValue(WorkDefinition.F_WORKTIME_PARAX);
+				.getValue(IWorkCloneFields.F_WORKTIME_PARAX);
 		if (paraXs != null) {
 			for (int i = 0; i < paraXs.size(); i++) {
 				String workTimeLabel = getWorkTimeLabel((DBObject) paraXs
@@ -93,6 +95,11 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 		try {
 			if (element instanceof WorkDefinition) {
 				((WorkDefinition) element).workTimeValidate((ProjectTemplate) master);
+			}else if(element instanceof Work){
+//				if(((Work) element).getDesc().equals("签订技术协议")){
+//					System.out.println();
+//				}
+				((Work) element).workTimeValidate((Project) master);
 			}
 			cell.setText(getText(element));
 		} catch (Exception e) {
@@ -106,8 +113,12 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 	public String getToolTipText(Object element) {
 		try {
 			PrimaryObject master = viewer.getViewerControl().getMaster();
-			((WorkDefinition) element)
-					.workTimeValidate((ProjectTemplate) master);
+			if(element instanceof WorkDefinition){
+				((WorkDefinition) element)
+				.workTimeValidate((ProjectTemplate) master);
+			}else if(element instanceof Work){
+				((Work) element).workTimeValidate((Project) master);
+			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
