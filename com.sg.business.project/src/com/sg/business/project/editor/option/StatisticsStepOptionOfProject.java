@@ -18,7 +18,7 @@ public class StatisticsStepOptionOfProject implements IFieldOptionProvider{
 //		ProjectTemplate projectTemplate = ((WorkDefinition)data).getProjectTemplate();
 		Work work=(Work) data;
 		Project project = work.getProject();
-		BasicBSONList steps = (BasicBSONList) project.getValue(Project.F_STATISTICS_STEP);
+		BasicBSONList steps = (BasicBSONList) project.getValue(Project.F_STATISTICSS_STEP);
 		if(steps==null){
 			return new Option("","","",new Option[0]);
 		}
