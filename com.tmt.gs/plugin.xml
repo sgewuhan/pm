@@ -4007,6 +4007,32 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="gs.taskforms.draw.selector"
+            table="gs.taskforms.draw.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="document.documentNumber">
+            </column>
+            <column
+                  columnDefinitionId="document.documentType">
+            </column>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="document.documentNumber">
+            </column>
+            <column
+                  columnDefinitionId="document.documentType">
+            </column>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -4223,6 +4249,12 @@
       <table
             dataSet="com.tmt.gs.dataset.PrintDocOfGS"
             id="gs.gsprintdoc.doc">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            id="gs.taskforms.draw.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -6538,7 +6570,13 @@
       <taskForm
             editorId="productcustomerdrawingapprover.draw"
             name="作图"
+            persistentFields="doc_id"
             processDefinitionId="gs.gsProductCustomerDrawingApprover">
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
+               processParameterName="doc_id"
+               taskFormFieldName="doc_id">
+         </processParameter>
       </taskForm>
    </extension>
    <extension
@@ -6621,7 +6659,7 @@
                         editable="true"
                         id="choice"
                         label="结论"
-                        labelVisible="true"
+                        labelVisible="false"
                         name="choice"
                         option="是否通过"
                         persistable="true"
@@ -6692,22 +6730,22 @@
                   </radio>
                   <radio
                         editable="true"
-                        id="choice_workbook"
-                        label="是否归档"
+                        id="choice_isdraw"
+                        label="是否新做图纸"
                         labelVisible="true"
-                        name="choice_workbook"
-                        option="是否归档"
+                        name="choice_isdraw"
+                        option="是否新做图纸"
                         persistable="true"
                         required="true"
                         type="String">
                   </radio>
                   <radio
                         editable="true"
-                        id="choice_isdraw"
-                        label="是否新做图纸"
+                        id="choice_workbook"
+                        label="是否归档"
                         labelVisible="true"
-                        name="choice_isdraw"
-                        option="是否新做图纸"
+                        name="choice_workbook"
+                        option="是否归档"
                         persistable="true"
                         required="true"
                         type="String">
@@ -6754,12 +6792,12 @@
                      label="请选择图纸">
                   <navigatorSelector
                         editable="true"
-                        id="project_id"
+                        id="doc_id"
                         label="选择图纸"
                         labelVisible="false"
-                        modelClass="com.sg.business.model.Project"
-                        name="project_id"
-                        navigatorId="gs.taskforms.project.selector"
+                        modelClass="com.sg.business.model.Document"
+                        name="doc_id"
+                        navigatorId="gs.taskforms.draw.selector"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">

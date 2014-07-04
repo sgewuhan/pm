@@ -88,7 +88,7 @@ public class WorkDefinition extends AbstractWork implements
 	 * 是否禁止手工发起
 	 */
 	public static final String F_LAUNCHABLE = "launchforbidden";//$NON-NLS-1$
-
+	
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
 	 * 
@@ -623,7 +623,7 @@ public class WorkDefinition extends AbstractWork implements
 				//需要填写标准工时
 				value = getValue(F_STANDARD_WORKS);
 				if(getValue(F_STANDARD_WORKS) == null){
-					throw new Exception("无需在项目中计算工时的工作需定义标准工时.");
+					throw new Exception(Messages.get().WorkTimeValidateOfStandardWorks);
 				}
 			}
 		}else if(isProjectWork()){
@@ -637,7 +637,7 @@ public class WorkDefinition extends AbstractWork implements
 		// 1. 必须要有统计阶段
 		Object step = getValue(F_STATISTICS_STEP);
 		if (step == null) {
-			throw new Exception("工作定义缺少工时统计阶段");
+			throw new Exception(Messages.get().WorkTimeValidateOfStatistics);
 		}
 		// 2. 检查工时方案和工时参数
 		DBCollection programCol = getCollection(IModelConstants.C_WORKTIMEPROGRAM);
@@ -645,10 +645,10 @@ public class WorkDefinition extends AbstractWork implements
 		Object parax = getValue(F_WORKTIME_PARAX);
 		if (parax instanceof List<?>) {
 			if (((List<?>) parax).isEmpty()) {
-				throw new Exception("工作定义缺少工时参数");
+				throw new Exception(Messages.get().WorkTimeValidateOfWorksParaX);
 			}
 		}else{
-			throw new Exception("工作定义缺少工时参数");
+			throw new Exception(Messages.get().WorkTimeValidateOfWorksParaX);
 		}
 		
 		
@@ -661,10 +661,10 @@ public class WorkDefinition extends AbstractWork implements
 				long count = programCol.count(new BasicDBObject().append(
 						WorkTimeProgram.F__ID, programId));
 				if (count == 0) {
-					throw new Exception("工作定义上的工作工时参数对应的工时方案已不存在.");
+					throw new Exception(Messages.get().WorkTimeValidateOfProgramInWorkDefinition);
 				}
 			}else if(!programIds.contains(programId)){
-				throw new Exception("工作定义上的工作工时参数对应的工时方案在项目模板中不存在.");
+				throw new Exception(Messages.get().WorkTimeValidateOfProgramInProjectTemplate);
 			}
 			ObjectId paraxId = (ObjectId) paraX.get(F_WORKTIME_PARAX_ID);
 			WorkTimeProgram program = ModelService.createModelObject(
@@ -681,8 +681,10 @@ public class WorkDefinition extends AbstractWork implements
 				}
 			}
 			if (!contains) {
-				throw new Exception("工作定义上的工作工时参数对应的工时方案已不存在.");
+				throw new Exception(Messages.get().WorkTimeValidateOfProgramInWorkDefinition);
 			}
 		}
 	}
+	
+	
 }

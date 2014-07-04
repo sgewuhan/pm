@@ -356,49 +356,47 @@ public class ProjectToolkit {
 		work.put(IWorkCloneFields.F_SEQ, new Integer(seq));
 
 		/*
-		 *  设置与工时管理有关的值，包括计量方式、标准工时、工时类型、统计阶段和统计点
-		 *  
+		 * 设置与工时管理有关的值，包括计量方式、标准工时、工时类型、统计阶段和统计点
 		 */
-		//标准工时
+		// 标准工时
 		value = workdef.get(IWorkCloneFields.F_STANDARD_WORKS);
 		if (value != null) {
 			work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 		}
-		//工时计量方式
-			value=workdef.get(IWorkCloneFields.F_MEASUREMENT);
-			if(value !=null){
-				work.put(IWorkCloneFields.F_MEASUREMENT, value);
-			}
-		//工时类型
-		value=workdef.get(IWorkCloneFields.F_WORKTIME_PARAX);
-		if(value !=null){
+		// 工时计量方式
+		value = workdef.get(IWorkCloneFields.F_MEASUREMENT);
+		if (value != null) {
+			work.put(IWorkCloneFields.F_MEASUREMENT, value);
+		}
+		// 工时类型
+		value = workdef.get(IWorkCloneFields.F_WORKTIME_PARAX);
+		if (value != null) {
 			work.put(IWorkCloneFields.F_WORKTIME_PARAX, value);
 		}
-		//统计阶段
-		value=workdef.get(IWorkCloneFields.F_STATISTICS_STEP);
-		if(value!=null){
+		// 统计阶段
+		value = workdef.get(IWorkCloneFields.F_STATISTICS_STEP);
+		if (value != null) {
 			work.put(IWorkCloneFields.F_STATISTICS_STEP, value);
 		}
-		//统计点
-		value=workdef.get(IWorkCloneFields.F_STATISTICS_POINT);
-		if(value!=null){
+		// 统计点
+		value = workdef.get(IWorkCloneFields.F_STATISTICS_POINT);
+		if (value != null) {
 			work.put(IWorkCloneFields.F_STATISTICS_POINT, value);
 		}
-		
-		//计划工时设置
+
+		// 计划工时设置
 		Work workPo = ModelService.createModelObject(work, Work.class);
 		try {
-			value=workPo.calculatePlanWorks();
+			value = workPo.calculatePlanWorks();
 			work.put(Work.F_PLAN_WORKS, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		/*
 		 * 
 		 */
-		
-		
+
 		// 设置提醒时间
 		value = workdef.get(IWorkCloneFields.F_REMIND_BEFORE);
 		if (value != null) {
@@ -848,13 +846,13 @@ public class ProjectToolkit {
 		work.setValue(Work.F_ROOT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PARENT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PROJECT_ID, projectId);
-		
-		//********************************************************
-		//雷成洋 2014 6 16 当独立工作添加到项目中时，如果该独立工作的工时设置为需要重算，进行以下的处理
+
+		// ********************************************************
+		// 雷成洋 2014 6 16 当独立工作添加到项目中时，如果该独立工作的工时设置为需要重算，进行以下的处理
 		double aw = work.calculateActualWorks();
 		work.setValue(Work.F_ACTUAL_WORKS, aw);
-		//*********************************************************
-		
+		// *********************************************************
+
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
 		work.doSave(context);

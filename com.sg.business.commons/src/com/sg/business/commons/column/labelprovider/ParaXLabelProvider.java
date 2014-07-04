@@ -99,7 +99,7 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 //				if(((Work) element).getDesc().equals("签订技术协议")){
 //					System.out.println();
 //				}
-				((Work) element).workTimeValidate((Project) master);
+				((Work) element).workTimeValidateOfProjectWork((Project) master);
 			}
 			cell.setText(getText(element));
 		} catch (Exception e) {
@@ -117,7 +117,7 @@ public class ParaXLabelProvider extends ColumnLabelProvider {
 				((WorkDefinition) element)
 				.workTimeValidate((ProjectTemplate) master);
 			}else if(element instanceof Work){
-				((Work) element).workTimeValidate((Project) master);
+				((Work) element).workTimeValidateOfProjectWork((Project) master);
 			}
 		} catch (Exception e) {
 			return e.getMessage();

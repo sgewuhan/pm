@@ -541,6 +541,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	private void setProgramSelectorInput(Organization organization) {
 		List<PrimaryObject> programs = organization.getWorkTimePrograms();
 		if (programs != null && !programs.isEmpty()) {
+			//为工时方案的下拉框设置空选项，空选项在所有选项的最上方，在下拉框显示空白
 			Object[] input = new Object[programs.size()+1];
 			input[0] = "";
 			System.arraycopy(programs.toArray(),0,input,1,programs.size());
@@ -572,7 +573,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 为cv设置input
 		// input是一个arraylist
 		List<WorkTimeProgram> programs = new ArrayList<WorkTimeProgram>();
-		if (workTimePrograms != null&& !programs.isEmpty()) {
+		if (workTimePrograms != null&& !workTimePrograms.isEmpty()) {
 			for (int i = 0; i < workTimePrograms.size(); i++) {
 				ObjectId programId = (ObjectId) workTimePrograms.get(i);
 				WorkTimeProgram workTimeProgram = ModelService

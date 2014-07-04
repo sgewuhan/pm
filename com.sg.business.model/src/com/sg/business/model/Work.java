@@ -1039,6 +1039,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 3.判断本工作及其下级工作的必要信息是否录入
 		message.addAll(checkCascadeStart(false));
+
+		// 检查工作工时
+		workTimeValidate();
+
 		return message;
 	}
 
@@ -2000,9 +2004,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				F_ACTUAL_DURATION);
 
 		checkProjectTimeline();
-		
-		//检查工作工时
-		workTimeValidate(getProject());
 
 		super.doSave(context);
 
@@ -2019,6 +2020,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		return true;
 
+	}
+
+	public void workTimeValidate() throws Exception {
+		if (isStandloneWork()) {
+			workTimeValidateOfStandloneWork();
+		} else if (isProjectWork()) {
+			workTimeValidateOfProjectWork(getProject());
+		}
 	}
 
 	@Override
@@ -4481,6 +4490,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 设置计划工时
 		setValue(F_PLAN_WORKS, wd.getValue(F_STANDARD_WORKS));
 
+		// 设置统计阶段
+		setValue(F_STATISTICS_STEP, wd.getValue(F_STATISTICS_STEP));
+
 		// 统计点
 		setValue(F_STATISTICS_POINT, wd.getValue(F_STATISTICS_POINT));
 
@@ -5071,38 +5083,124 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 验证工时
-	 * @param master  是项目
+	 * 独立工作的工时验证
+	 * 
 	 * @throws Exception
 	 */
-	public void workTimeValidate(Project master) throws Exception {
+	public void workTimeValidateOfStandloneWork() throws Exception {
+		// 区分独立工作的计量方式
+		if (MEASUREMENT_TYPE_STANDARD_ID.equals(getMeasurement())) {
+			// 判断独立工作是否加入项目计算工时
+			if (Boolean.TRUE.equals(getValue(F_JOIN_PROJECT_CALCWORKS))) {
+				// 独立工作的是否有工时方案、工时参数
+				// 独立工作是否有统计阶段
+				Object step = getValue(F_STATISTICS_STEP);
+				if (step instanceof List<?>) {
+					if (((List<?>)step).isEmpty()) {
+						throw new Exception(
+								Messages.get().WorkTimeValidateOfStatistics);
+					}
+				}else{
+					throw new Exception(
+							Messages.get().WorkTimeValidateOfStatistics);
+				}
+				DBCollection programCol = getCollection(IModelConstants.C_WORKTIMEPROGRAM);
+
+				Object parax = getValue(F_WORKTIME_PARAX);
+				if (parax instanceof List<?>) {
+					if (((List<?>) parax).isEmpty()) {
+						throw new Exception(
+								Messages.get().WorkTimeValidateOfWorksParaX);
+					}
+				} else {
+					throw new Exception(
+							Messages.get().WorkTimeValidateOfWorksParaX);
+				}
+
+				WorkDefinition workd = getWorkDefinition();
+				BasicBSONList programIds = (BasicBSONList) workd
+						.getValue(WorkDefinition.F_WORKTIMEPROGRAMS);
+
+				Iterator<?> iterator = ((List<?>) parax).iterator();
+				while (iterator.hasNext()) {
+					DBObject paraX = (DBObject) iterator.next();
+					// 工作上工时参数对应的工时方案的id
+					ObjectId programId = (ObjectId) paraX
+							.get(F_WORKTIME_PARAX_PROGRAM_ID);
+					if (programIds == null) {
+						long count = programCol.count(new BasicDBObject()
+								.append(WorkTimeProgram.F__ID, programId));
+						if (count == 0) {
+							throw new Exception(
+									Messages.get().WorkTimeValidateOfProgramInWorkDefinition);
+						}
+					} else if (!programIds.contains(programId)) {
+						throw new Exception(
+								Messages.get().WorkTimeValidateOfProgramInProjectTemplate);
+					}
+					ObjectId paraxId = (ObjectId) paraX
+							.get(F_WORKTIME_PARAX_ID);
+					WorkTimeProgram program = ModelService.createModelObject(
+							WorkTimeProgram.class, programId);
+					BasicBSONList types = (BasicBSONList) program
+							.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+					boolean contains = false;
+					for (int i = 0; i < types.size(); i++) {
+						DBObject type = (DBObject) types.get(i);
+						ObjectId typeId = (ObjectId) type.get(F__ID);
+						if (typeId.equals(paraxId)) {
+							contains = true;
+							break;
+						}
+					}
+					if (!contains) {
+						throw new Exception(
+								Messages.get().WorkTimeValidateOfProgramInWorkDefinition);
+					}
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * 项目工作的工时验证
+	 * 
+	 * @param project
+	 *            是项目,可以传空
+	 * @throws Exception
+	 */
+	public void workTimeValidateOfProjectWork(Project project) throws Exception {
+		if (project == null) {
+			project = getProject();
+		}
 		// 如果不是标准工时工作,无需进行检查
 		if (!MEASUREMENT_TYPE_STANDARD_ID.equals(getMeasurement())) {
 			return;
 		}
-	
-		ObjectId projectWorksProgramId = (ObjectId) master
+		ObjectId projectWorksProgramId = (ObjectId) project
 				.getValue(Project.F_WORKTIMEPROGRAM_ID);
 		// 1. 必须要有统计阶段
 		Object step = getValue(F_STATISTICS_STEP);
 		if (step == null) {
-			throw new Exception("工作缺少工时统计阶段");
+			throw new Exception(Messages.get().WorkTimeValidateOfStatistics);
 		}
-		//需要检查工时统计阶段是否包含在项目的工时统计阶段中
-		BasicBSONList steps = (BasicBSONList) master.getValue(Project.F_STATISTICS_STEP);
-		if(!steps.contains(step)){
-			throw new Exception("工作缺少工时统计阶段");
+		// 需要检查工时统计阶段是否包含在项目的工时统计阶段中
+		BasicBSONList steps = (BasicBSONList) project
+				.getValue(Project.F_STATISTICSS_STEP);
+		if (!steps.contains(step)) {
+			throw new Exception(Messages.get().WorkTimeValidateOfStatistics);
 		}
-		
-		// 2. 检查工时方案和工时参数 
-		
+
+		// 2. 检查工时方案和工时参数
+
 		Object parax = getValue(F_WORKTIME_PARAX);
 		if (parax instanceof List<?>) {
 			if (((List<?>) parax).isEmpty()) {
-				throw new Exception("工作缺少工时参数");
+				throw new Exception(Messages.get().WorkTimeValidateOfParaInWork);
 			}
 		} else {
-			throw new Exception("工作缺少工时参数");
+			throw new Exception(Messages.get().WorkTimeValidateOfParaInWork);
 		}
 
 		boolean containsProgram = false;
@@ -5128,14 +5226,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 				if (!contains) {
-					throw new Exception("工时参数对应的选项在工时方案中不存在.");
+					throw new Exception(
+							Messages.get().WorkTimeValidateOfParaOptionInProgram);
 				}
-				containsProgram=true;
+				containsProgram = true;
 				break;
 			}
 		}
-		if(!containsProgram){
-			throw new Exception("缺少对应项目工时方案的工时参数");
+		if (!containsProgram) {
+			throw new Exception(Messages.get().WorkTimeValidateOfParaInProject);
 		}
 	}
 
