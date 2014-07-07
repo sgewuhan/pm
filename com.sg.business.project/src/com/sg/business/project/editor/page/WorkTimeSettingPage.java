@@ -65,11 +65,11 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	public boolean createBody() {
 		return true;
 	}
-	
+
 	@Override
 	public IEditorPageLayoutProvider getPageLayout() {
 		return new IEditorPageLayoutProvider() {
-			
+
 			@Override
 			public void layout(Control body, Control customerPage) {
 				FormData fd;
@@ -88,7 +88,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			}
 		};
 	}
-	
+
 	/**
 	 * 创建页面内容
 	 */
@@ -99,7 +99,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		Section section = new SimpleSection(parent, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR);
 		section.setText(Messages.get().WorkTimeProgramModify);
-		Composite composite = new Composite(section,SWT.NONE);
+		Composite composite = new Composite(section, SWT.NONE);
 		// 从编辑器输入中获取数据，这个数据是project
 		project = (Project) input.getData();
 		// isWorkTimeProgramReadonly =
@@ -109,17 +109,15 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		editable = project.canEditWorkTimesSetting(input.getContext());
 		// 创建方案选择器，ComboViewer类型，参数是容器
 		programSelector = createProgramSelector(composite);
-
 		// 获取方案选择器的控件
 		Control programSelectorControl = programSelector.getControl();
+		// 创建列类型选择器
+		paraYSelector = createParaYSelector(composite);
+		Control paraYSelectorControl = paraYSelector.getControl();
 		// 创建工时类型选择器，参数是容器
 		paraXSelector = createParaXSelector(composite);
 		// 获取工时类型选择器的控件
 		Control paraXSelectorControl = paraXSelector.getControl();
-		// 创建列类型选择器
-		paraYSelector = createParaYSelector(composite);
-		Control paraYSelectorControl = paraYSelector.getControl();
-		
 
 		// 设置parent为表单布局
 		composite.setLayout(new FormLayout());
@@ -140,7 +138,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置工时类型选择控件的布局数据
-		paraXSelectorControl.setLayoutData(fd);
+		paraYSelectorControl.setLayoutData(fd);
 		// 设置工时类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置工时类型选择控件的底部边距
@@ -153,7 +151,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置列类型选择控件的布局数据
-		paraYSelectorControl.setLayoutData(fd);
+		paraXSelectorControl.setLayoutData(fd);
 		// 设置列类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置列类型选择控件的底部边距
@@ -166,22 +164,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 如果项目已经持久化了，只需打开，无需侦听
 		if (project.isPersistent()) {
 			Organization organization = project.getFunctionOrganization();
-			List<PrimaryObject> programs = organization.getWorkTimePrograms();
-			if (programs != null) {
-				programSelector.setInput(programs.toArray());
-				WorkTimeProgram program = project.getWorkTimeProgram();
-				if (program != null) {
-					programSelector.setSelection(new StructuredSelection(
-							new Object[] { program }));
-					// 设置工时类型选择器的Input,传一个参数是工时方案
-					setparaXSelectorInput(program);
-					// 设置列类型选择器的Input，传入工时方案
-					setParaYSelectorInput(program);
-				}
-
-			} else {
-				programSelector.setInput(new Object[0]);
-			}
+			setProgramSelectorInput(organization);
 
 		} else {
 			// 侦听项目的项目模板id字段的值
@@ -227,7 +210,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 第二列是工时类型选项列，显示本项目中已设置的工时类型选项，并提供编辑器用于编辑选项
 		column = new TableViewerColumn(tableViewer, SWT.LEFT);
-		column.getColumn().setText("工作工时参数选项");
+		column.getColumn().setText("选项");
 		column.getColumn().setWidth(150);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -368,7 +351,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 2.创建树查看器的列
 		TreeViewerColumn column = new TreeViewerColumn(treeViewer, SWT.LEFT);
-		column.getColumn().setText("");
+		column.getColumn().setText("项目工时参数");
 		column.getColumn().setWidth(260);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -380,7 +363,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		});
 
 		column = new TreeViewerColumn(treeViewer, SWT.LEFT);
-		column.getColumn().setText("");
+		column.getColumn().setText("选项");
 		column.getColumn().setWidth(32);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -483,7 +466,10 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			@Override
 			public String getText(Object element) {
 				// element是WorkTimeProgram类型的工时方案
-				return (String) ((WorkTimeProgram) element).getDesc();
+				if (element instanceof WorkTimeProgram) {
+					return (String) ((WorkTimeProgram) element).getDesc();
+				}
+				return super.getText(element);
 			}
 		});
 		cv.getCombo().setEnabled(editable);
@@ -496,9 +482,14 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 					// 创建结构选择器
 					StructuredSelection selection = (StructuredSelection) event
 							.getSelection();
-					// 获取选择的第一个元素，这个元素是工时方案
-					WorkTimeProgram workTimeProgram = (WorkTimeProgram) selection
-							.getFirstElement();
+					WorkTimeProgram workTimeProgram = null;
+					if (!selection.isEmpty()) {
+						// 获取选择的第一个元素，这个元素是工时方案,可能为空
+						Object element = selection.getFirstElement();
+						if (element instanceof WorkTimeProgram) {
+							workTimeProgram = (WorkTimeProgram) element;
+						}
+					}
 					// 将选择的工时方案id保存到项目中
 					project.makeSelectedWorkTimeProgram(workTimeProgram);
 					project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
@@ -521,9 +512,13 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param workTimeProgram
 	 */
 	protected void setParaYSelectorInput(WorkTimeProgram workTimeProgram) {
-		BasicBSONList paraYs = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
-		paraYSelector.setInput(paraYs);
+		if (workTimeProgram != null) {
+			BasicBSONList paraYs = (BasicBSONList) workTimeProgram
+					.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
+			paraYSelector.setInput(paraYs);
+		}else{
+			paraYSelector.setInput(new Object[0]);
+		}
 	}
 
 	/**
@@ -532,11 +527,38 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param workTimeProgram
 	 */
 	private void setparaXSelectorInput(WorkTimeProgram workTimeProgram) {
-		// 获取工时类型
-		BasicBSONList paraXs = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
-		// BasicBsonList继承与ArrayList，而paraXs中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
-		paraXSelector.setInput(paraXs);
+		if (workTimeProgram != null) {
+			// 获取工时类型
+			BasicBSONList paraXs = (BasicBSONList) workTimeProgram
+					.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+			// BasicBsonList继承与ArrayList，而paraXs中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
+			paraXSelector.setInput(paraXs);
+		} else {
+			paraXSelector.setInput(new Object[0]);
+		}
+	}
+
+	private void setProgramSelectorInput(Organization organization) {
+		List<PrimaryObject> programs = organization.getWorkTimePrograms();
+		if (programs != null && !programs.isEmpty()) {
+			//为工时方案的下拉框设置空选项，空选项在所有选项的最上方，在下拉框显示空白
+			Object[] input = new Object[programs.size()+1];
+			input[0] = "";
+			System.arraycopy(programs.toArray(),0,input,1,programs.size());
+			programSelector.setInput(input);
+			WorkTimeProgram program = project.getWorkTimeProgram();
+			if (program != null) {
+				programSelector.setSelection(new StructuredSelection(
+						new Object[] { program }));
+				// 设置工时类型选择器的Input,传一个参数是工时方案
+				setparaXSelectorInput(program);
+				// 设置列类型选择器的Input，传入工时方案
+				setParaYSelectorInput(program);
+			}
+
+		} else {
+			programSelector.setInput(new Object[0]);
+		}
 	}
 
 	/**
@@ -544,23 +566,27 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * 
 	 * @param projectTemplate
 	 */
-	private void setProgramSelectorInput(PrimaryObject projectTemplate) {
+	private void setProgramSelectorInput(ProjectTemplate projectTemplate) {
 		// 获取项目模板中关联的工时方案，BSonList类型
 		BasicBSONList workTimePrograms = (BasicBSONList) projectTemplate
 				.getValue(ProjectTemplate.F_WORKTIMEPROGRAMS);
 		// 为cv设置input
 		// input是一个arraylist
-		List<WorkTimeProgram> input = new ArrayList<WorkTimeProgram>();
-		if (workTimePrograms != null) {
+		List<WorkTimeProgram> programs = new ArrayList<WorkTimeProgram>();
+		if (workTimePrograms != null&& !workTimePrograms.isEmpty()) {
 			for (int i = 0; i < workTimePrograms.size(); i++) {
 				ObjectId programId = (ObjectId) workTimePrograms.get(i);
 				WorkTimeProgram workTimeProgram = ModelService
 						.createModelObject(WorkTimeProgram.class, programId);
-				input.add(workTimeProgram);
+				programs.add(workTimeProgram);
 			}
+			Object[] input = new Object[programs.size()+1];
+			input[0] = "";
+			System.arraycopy(programs.toArray(),0,input,1,programs.size());
+			programSelector.setInput(input);
+		} else {
+			programSelector.setInput(new Object[0]);
 		}
-
-		programSelector.setInput(input);
 		paraYSelector.setInput(new BasicDBList());
 		paraXSelector.setInput(new BasicDBList());
 
