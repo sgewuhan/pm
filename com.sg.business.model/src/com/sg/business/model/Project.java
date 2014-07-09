@@ -237,6 +237,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final int AUTO_ASSIGNMENT_TYPE_NONE = 1;
 
+	public static final String F_STATISTICSS_STEP = "statisticsstep";
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -580,6 +582,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
+
 		// 同步工作令号到公司
 		ensureWorkOrderRelativeToCompany(context);
 
@@ -593,43 +596,36 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 同步更改根工作定义的名称
 			syncRootWorkNameInternal();
 
-			// 从新计算实际工时
-			syncWorkActualWorksInternal(this.get_id(), context);
-
 		}
 		return saved;
 	}
 
-	private void syncWorkActualWorksInternal(final ObjectId _id,
-			final IContext context) {
-		Job job = new Job("从新计算实际工时") {
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+		super.doUpdate(context);
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				DBCollection col = DBActivator.getCollection(
-						IModelConstants.DB, IModelConstants.C_WORK);
-				DBCursor cursor = col.find(new BasicDBObject().append(
-						Work.F_PARENT_ID, _id).append(Work.F_MEASUREMENT,
-						Work.MEASUREMENT_TYPE_STANDARD_ID));
-				while (cursor.hasNext()) {
-					DBObject dbo = cursor.next();
-					Work work = ModelService.createModelObject(dbo, Work.class);
-					double actualWorks;
-					try {
-						actualWorks = work.calculateActualWorks();
-						col.update(new BasicDBObject().append(F__ID,
-								work.get_id()), new BasicDBObject().append(
-								"$set", new BasicDBObject().append(
-										F_ACTUAL_WORKS, actualWorks)), true,
-								false);
-						work.doCalculateWorkPerformence(context);
-					} catch (Exception e) {
-					}
-				}
-				return Status.OK_STATUS;
+		// 获得项目的生命周期状态
+		doUpdatePlanWorksOfWBS(context);
+	}
+
+	private void doUpdatePlanWorksOfWBS(IContext context) throws Exception {
+		if (STATUS_NONE_TEXT.equals(getLifecycleStatus())) {
+			// 获取此项目的所有是标准工时制的工作
+			DBCollection workCol = getCollection(IModelConstants.C_WORK);
+			DBCursor cursor = workCol.find(new BasicDBObject().append(
+					Work.F_PROJECT_ID, get_id()).append(Work.F_MEASUREMENT,
+					Work.MEASUREMENT_TYPE_STANDARD_ID));
+			while (cursor.hasNext()) {
+				DBObject next = cursor.next();
+				Work work = ModelService.createModelObject(next, Work.class);
+				// 获得工作的计划工时
+				Double planWorks = work.calculatePlanWorks();
+				// 将计算出的计划工时设置到工作的计划工时字段
+				work.setValue(Work.F_PLAN_WORKS, planWorks);
+				// 同时刷新工作的计划工时
+				work.doSave(context);
 			}
-		};
-		job.schedule();
+		}
 	}
 
 	private void syncRootWorkNameInternal() {
@@ -720,6 +716,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 预算
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
+
+		// 6.30 复制来自项目模板的工时统计阶段
+		ProjectTemplate projectTemplate = getProjectTemplate();
+		if (projectTemplate != null) {
+			BasicBSONList steps = (BasicBSONList) projectTemplate
+					.getValue(ProjectTemplate.F_STATISTICSSTEP);
+			if (steps != null) {
+				setValue(F_STATISTICSS_STEP, steps);
+			}
+		}
 
 		super.doInsert(context);
 
@@ -2112,6 +2118,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (getRelationCountByCondition(Work.class, condition) > 0) {
 			throw new Exception(Messages.get().Project_51 + this);
 		}
+
+		workTimeValidate();
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -2641,9 +2650,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return;
 		}
 
-		if (workTimeProgram.get_id().equals(getValue(F_WORKTIMEPROGRAM_ID))) {
-			return;
-		}
+		// if (workTimeProgram.get_id().equals(getValue(F_WORKTIMEPROGRAM_ID)))
+		// {
+		// return;
+		// }
 
 		clearWorkTimeProgramSetting();
 		setValue(F_WORKTIMEPROGRAM_ID, workTimeProgram.get_id());
@@ -2963,96 +2973,88 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-//	/**
-//	 * 项目的工时方案只读
-//	 * 
-//	 * @param context
-//	 * @return   true   只读
-//	 */
-//	public boolean canWorkTimeProgramReadonly(IContext context) {
-//		//项目非持久化 时,工时方案可以编辑
-//		if (!isPersistent()) {
-//			return false;
-//		}
-//		String lc = getLifecycleStatus();
-//		if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-//			//项目是无状态时,工时方案可以编辑
-//			return false;
-//		} else {
-//			//获得当前登录用户
-//			String consignerId = context.getAccountInfo().getConsignerId();
-//			//获得项目的管理组织
-//			Organization functionOrg = getFunctionOrganization();
-//			//获得本级组织中工时统计员的用户id,用String数组存放
-//			String[] assignmentUserIds = functionOrg
-//					.getRoleAssignmentUserIds(Role.ROLE_WORKS_STATISTICS_ID,
-//							Organization.ROLE_NOT_SEARCH);
-//			for (String userId : assignmentUserIds) {
-//				if (consignerId.equals(userId)) {
-//					//当前登录用户是工时统计员,工时方案可以编辑
-//					return false;
-//				}
-//			}
-//		}
-//		return true;
-//	}
-//
-//	/**
-//	 * 项目的工作工时参数只读
-//	 * @param context
-//	 * @return
-//	 */
-//	public boolean canWorkTimeParaXReadonly(IContext context) {
-//		//项目非持久化 时,工作工时参数可以编辑
-//		if (!isPersistent()) {
-//			return false;
-//		}
-//		//获得项目的生命周期状态
-//		String lc = getLifecycleStatus();
-//		if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-//			//项目是无状态时,工作工时参数可以编辑
-//			return false;
-//		} else {
-//			String consignerId = context.getAccountInfo().getConsignerId();
-//			Organization functionOrg = getFunctionOrganization();
-//			String[] projectAdminUserIds;
-//			if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-//				//项目是准备中状态时,在本级项目的管理组织中获得项目管理员的用户id数组
-//				projectAdminUserIds = functionOrg.getRoleAssignmentUserIds(
-//						Role.ROLE_PROJECT_ADMIN_ID,
-//						Organization.ROLE_NOT_SEARCH);
-//			} else {
-//				//项目不是准备中状态,项目管理员数组长度为0
-//				projectAdminUserIds = new String[0];
-//			}
-//			//在本级项目的管理组织中获得工时统计员的用户id数组
-//			String[] workStatisticsUserIds = functionOrg
-//					.getRoleAssignmentUserIds(Role.ROLE_WORKS_STATISTICS_ID,
-//							Organization.ROLE_NOT_SEARCH);
-//			//将项目管理员的用户id数组,工时统计员的用户id数组放入Object数组
-//			Object[] assignmentUserIds = Utils.arrayAppend(
-//					workStatisticsUserIds, projectAdminUserIds);
-//
-//			for (Object userId : assignmentUserIds) {
-//				if (consignerId.equals(userId)) {
-//					//当前登录用户是项目管理员或工时统计员,可以编辑工作工时参数
-//					return false;
-//				}
-//			}
-//		}
-//		return true;
-//	}
-//
-//	/**
-//	 * 项目工时参数只读
-//	 * 可编辑的条件与工时方案一致,所以直接调用工时方案只读的方法
-//	 * @param context
-//	 * @return
-//	 */
-//	public boolean canWorkTimeParaYReadonly(IContext context) {
-//		return canWorkTimeProgramReadonly(context);
-//	}
+	/**
+	 * 编辑工时方案
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean canEditWorkTimesSetting(IContext context) {
+		// 当项目不是规划中时不能编辑工时方案
+		String lifecycleStatus = getLifecycleStatus();
+		if (Utils.inArray(lifecycleStatus, new String[] {
+				STATUS_CANCELED_VALUE, STATUS_FINIHED_VALUE,
+				STATUS_ONREADY_VALUE, STATUS_PAUSED_VALUE, STATUS_WIP_VALUE })) {
+			return false;
+		}
+		// context不是项目负责人时不能编辑工时方案
+		String chargerId = getChargerId();
+		String consignerId = context.getAccountInfo().getConsignerId();
+		if (consignerId.equals(chargerId)) {
+			return true;
+		} else {
+			// context不是项目职能部门的项目管理员时不能编辑工时方案
+			Organization organization = getFunctionOrganization();
+			String[] userIds = organization.getRoleAssignmentUserIds(
+					Role.ROLE_PROJECT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
+			if (Utils.inArray(consignerId, userIds)) {
+				return true;
+			} else {
+				userIds = organization.getRoleAssignmentUserIds(
+						Role.ROLE_WORKS_STATISTICS_ID,
+						Organization.ROLE_SEARCH_UP);
+				if (Utils.inArray(consignerId, userIds)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 
-	
-	
+		}
+	}
+
+	public void workTimeValidate() throws Exception {
+		// 对工时进行检查
+		// 1.对项目上的属性进行验证
+		// 1.1.有工时方案，工时统计阶段就不能为空
+		WorkTimeProgram program = getWorkTimeProgram();
+		if (program != null) {
+			Object stats = getValue(Project.F_STATISTICSS_STEP);
+			if (stats == null) {
+				throw new Exception(Messages.get().WorkTimeValidateOfStatistics);
+			}
+			if (stats instanceof List<?>) {
+				if (((List<?>) stats).isEmpty()) {
+					throw new Exception(Messages.get().WorkTimeValidateOfStatistics);
+				}
+			}
+			// 1.3工时方案的每个工时参数是否都有选项
+			boolean check = checkWorkTimeParaXOption(program);
+			if(!check){
+				throw new Exception(Messages.get().WorkTimeValidateOfWorksParaX);
+			}
+			// 1.4项目工时参数至少有一个选项被选择
+			check=checkWorkTimeParaYOption(program);
+			if(!check){
+				throw new Exception(Messages.get().WorkTimeValidateOfWorksParaY);
+			}
+			// 2.对项目的工作进行验证
+			// 2.1.调用工作的验证
+			workTimeValidateWork();
+		}
+
+	}
+
+	private void workTimeValidateWork() throws Exception {
+		DBCollection wkCol = getCollection(IModelConstants.C_WORK);
+		DBObject query = new BasicDBObject();
+		query.put(Work.F_MEASUREMENT, Work.MEASUREMENT_TYPE_STANDARD_ID);
+		DBCursor cursor = wkCol.find(query);
+		while (cursor.hasNext()) {
+			DBObject data = cursor.next();
+			Work work = ModelService.createModelObject(data, Work.class);
+			work.workTimeValidateOfProjectWork(this);
+		}
+	}
+
 }

@@ -1169,5 +1169,16 @@ public class Messages {
 	public String OnlyProjectWorks;
 	public String CreateFolderTemplate_0;
 	public String WorkTimeProgram_0;
+	public String WorkTimeProgramModify;
+	public String WorkTimeValidateOfStatistics;
+	public String WorkTimeValidateOfWorksParaX;
+	public String WorkTimeValidateOfWorksParaY;
+	public String WorkTimeValidateOfProgram;
+	public String WorkTimeValidateOfStandardWorks;
+	public String WorkTimeValidateOfProgramInWorkDefinition;
+	public String WorkTimeValidateOfProgramInProjectTemplate;
+	public String WorkTimeValidateOfParaInWork;
+	public String WorkTimeValidateOfParaOptionInProgram;
+	public String WorkTimeValidateOfParaInProject;
 
 }

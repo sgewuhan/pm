@@ -29,31 +29,26 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.widgets.Section;
 
-import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.viewer.ParaXOptionProvider;
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.IModelConstants;
-import com.sg.business.model.IWorkCloneFields;
+import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.Work;
 import com.sg.business.model.WorkTimeProgram;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
-import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
@@ -63,11 +58,36 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	private TableViewer paraXSelector;
 	private TreeViewer paraYSelector;
 	private Project project;
-	private boolean isWorkTimeProgramReadonly;
-	private boolean isWorkTimeParaXReadonly;
-	private boolean isWorkTimeParaYReadonly;
-	private IContext context;
+	private boolean editable;
 	private static final int MARGIN = 4;
+
+	@Override
+	public boolean createBody() {
+		return true;
+	}
+
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return new IEditorPageLayoutProvider() {
+
+			@Override
+			public void layout(Control body, Control customerPage) {
+				FormData fd;
+				fd = new FormData();
+				body.setLayoutData(fd);
+				fd.top = new FormAttachment();
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+
+				fd = new FormData();
+				customerPage.setLayoutData(fd);
+				fd.top = new FormAttachment(body);
+				fd.left = new FormAttachment();
+				fd.right = new FormAttachment(100);
+				fd.bottom = new FormAttachment(100);
+			}
+		};
+	}
 
 	/**
 	 * 创建页面内容
@@ -75,28 +95,32 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	@Override
 	public Composite createPageContent(IManagedForm mForm, Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		context = new CurrentAccountContext();
 		super.createPageContent(mForm, parent, input, conf);
+		Section section = new SimpleSection(parent, Section.EXPANDED
+				| Section.SHORT_TITLE_BAR);
+		section.setText(Messages.get().WorkTimeProgramModify);
+		Composite composite = new Composite(section, SWT.NONE);
 		// 从编辑器输入中获取数据，这个数据是project
 		project = (Project) input.getData();
-//		isWorkTimeProgramReadonly = project.canWorkTimeProgramReadonly(context);
-//		isWorkTimeParaXReadonly = project.canWorkTimeParaXReadonly(context);
-//		isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
+		// isWorkTimeProgramReadonly =
+		// project.canWorkTimeProgramReadonly(context);
+		// isWorkTimeParaXReadonly = project.canWorkTimeParaXReadonly(context);
+		// isWorkTimeParaYReadonly = project.canWorkTimeParaYReadonly(context);
+		editable = project.canEditWorkTimesSetting(input.getContext());
 		// 创建方案选择器，ComboViewer类型，参数是容器
-		programSelector = createProgramSelector(parent);
-
+		programSelector = createProgramSelector(composite);
 		// 获取方案选择器的控件
 		Control programSelectorControl = programSelector.getControl();
+		// 创建列类型选择器
+		paraYSelector = createParaYSelector(composite);
+		Control paraYSelectorControl = paraYSelector.getControl();
 		// 创建工时类型选择器，参数是容器
-		paraXSelector = createParaXSelector(parent);
+		paraXSelector = createParaXSelector(composite);
 		// 获取工时类型选择器的控件
 		Control paraXSelectorControl = paraXSelector.getControl();
-		// 创建列类型选择器
-		paraYSelector = createParaYSelector(parent);
-		Control paraYSelectorControl = paraYSelector.getControl();
 
 		// 设置parent为表单布局
-		parent.setLayout(new FormLayout());
+		composite.setLayout(new FormLayout());
 
 		// 实例化一个FormData对象
 		FormData fd = new FormData();
@@ -114,7 +138,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置工时类型选择控件的布局数据
-		paraXSelectorControl.setLayoutData(fd);
+		paraYSelectorControl.setLayoutData(fd);
 		// 设置工时类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置工时类型选择控件的底部边距
@@ -127,7 +151,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 实例化一个FormData对象
 		fd = new FormData();
 		// 设置列类型选择控件的布局数据
-		paraYSelectorControl.setLayoutData(fd);
+		paraXSelectorControl.setLayoutData(fd);
 		// 设置列类型选择控件相对方案选择控件的顶部边距
 		fd.top = new FormAttachment(programSelectorControl, MARGIN);
 		// 设置列类型选择控件的底部边距
@@ -139,22 +163,16 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 如果项目已经持久化了，只需打开，无需侦听
 		if (project.isPersistent()) {
-			WorkTimeProgram program = project.getWorkTimeProgram();
-			if (program != null) {
-				programSelector.setInput(new Object[] { program });
-				programSelector.setSelection(new StructuredSelection(
-						new Object[] { program }));
-				// 设置工时类型选择器的Input,传一个参数是工时方案
-				setparaXSelectorInput(program);
-				// 设置列类型选择器的Input，传入工时方案
-				setParaYSelectorInput(program);
-			}
+			Organization organization = project.getFunctionOrganization();
+			setProgramSelectorInput(organization);
+
 		} else {
 			// 侦听项目的项目模板id字段的值
 			project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		}
 		// 返回容器
-		return parent;
+		section.setClient(composite);
+		return section;
 	}
 
 	/**
@@ -192,7 +210,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 第二列是工时类型选项列，显示本项目中已设置的工时类型选项，并提供编辑器用于编辑选项
 		column = new TableViewerColumn(tableViewer, SWT.LEFT);
-		column.getColumn().setText("工作工时参数选项");
+		column.getColumn().setText("选项");
 		column.getColumn().setWidth(150);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -215,7 +233,9 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 为第二列设置编辑器
 		// 2014.6.24日 为项目启动后还可以修改工作工时参数,将if判断注释
 		// 2014.6.25 项目负责人和项目管理员都可以在项目未提交计划之前修改工时参数
-		worksParaXInWork(tableViewer, column);
+		if (editable) {
+			setEditingSupportForParaX(tableViewer, column);
+		}
 		// 它适用于两种情形的input，第一种是实现List接口的类，第二种是数组类型
 		// List或者数组中的每个元素，在setInput以后会作为表格的元素存在
 		// ArrayContentProvider提供的选择实现了IStructuredSelection
@@ -231,7 +251,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param column
 	 * @param readOnly
 	 */
-	private void worksParaXInWork(final TableViewer tableViewer,
+	private void setEditingSupportForParaX(final TableViewer tableViewer,
 			TableViewerColumn column) {
 		column.setEditingSupport(new EditingSupport(tableViewer) {
 
@@ -317,37 +337,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			// 设置单元格可编辑
 			@Override
 			protected boolean canEdit(Object element) {
-				if (isWorkTimeProgramReadonly && !isWorkTimeParaXReadonly) {
-					ObjectId _id = (ObjectId) ((DBObject) element)
-							.get(PrimaryObject.F__ID);
-					DBCollection collection = DBActivator.getCollection(
-							IModelConstants.DB, IModelConstants.C_WORK);
-					DBCursor cursor = collection.find(
-							new BasicDBObject()
-									.append(Work.F_PROJECT_ID, project.get_id())
-									.append(IWorkCloneFields.F_MEASUREMENT,
-											IWorkCloneFields.MEASUREMENT_TYPE_STANDARD_ID)
-									.append(Work.F_LIFECYCLE,
-											new BasicDBObject()
-													.append("$ne",
-															ILifecycle.STATUS_ONREADY_VALUE)),
-							new BasicDBObject().append(
-									IWorkCloneFields.F_WORKTIME_PARAX, 1));
-					while (cursor.hasNext()) {
-						DBObject object = cursor.next();
-						BasicBSONList worktimeParaXList = (BasicBSONList) object
-								.get(IWorkCloneFields.F_WORKTIME_PARAX);
-						for (Object o : worktimeParaXList) {
-							DBObject worktimeParaX = (DBObject) o;
-							ObjectId para_id = (ObjectId) worktimeParaX
-									.get(IWorkCloneFields.F_WORKTIME_PARAX_ID);
-							if (_id.equals(para_id)) {
-								return false;
-							}
-						}
-					}
-				}
-				return !isWorkTimeParaXReadonly;
+				return true;
 			}
 		});
 	}
@@ -361,7 +351,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 
 		// 2.创建树查看器的列
 		TreeViewerColumn column = new TreeViewerColumn(treeViewer, SWT.LEFT);
-		column.getColumn().setText("");
+		column.getColumn().setText("项目工时参数");
 		column.getColumn().setWidth(260);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -373,7 +363,7 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		});
 
 		column = new TreeViewerColumn(treeViewer, SWT.LEFT);
-		column.getColumn().setText("");
+		column.getColumn().setText("选项");
 		column.getColumn().setWidth(32);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -405,6 +395,17 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		});
 
 		// 3.创建编辑器
+		if (editable) {
+			setEditingSupportForParaY(treeViewer, column);
+		}
+
+		treeViewer.setContentProvider(new ParaXOptionProvider());
+
+		return treeViewer;
+	}
+
+	private void setEditingSupportForParaY(final TreeViewer treeViewer,
+			TreeViewerColumn column) {
 		column.setEditingSupport(new EditingSupport(treeViewer) {
 
 			@Override
@@ -446,14 +447,10 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			@Override
 			protected boolean canEdit(Object element) {
 				// element是列类型或者列类型选项,只有列类型选项才可以编辑
-				return !isWorkTimeParaYReadonly
-						&& !((DBObject) element)
-								.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
+				return !((DBObject) element)
+						.containsField(WorkTimeProgram.F_WORKTIME_PARA_OPTIONS);
 			}
 		});
-		treeViewer.setContentProvider(new ParaXOptionProvider());
-
-		return treeViewer;
 	}
 
 	private ComboViewer createProgramSelector(Composite parent) {
@@ -469,43 +466,44 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 			@Override
 			public String getText(Object element) {
 				// element是WorkTimeProgram类型的工时方案
-				return (String) ((WorkTimeProgram) element).getDesc();
+				if (element instanceof WorkTimeProgram) {
+					return (String) ((WorkTimeProgram) element).getDesc();
+				}
+				return super.getText(element);
 			}
 		});
-		cv.getCombo().setEnabled(!isWorkTimeProgramReadonly);
-		// 为下拉框查看器添加选择改变的侦听器，这个侦听器是因为contentProvider是ArrayContentProvider
-		cv.addSelectionChangedListener(new ISelectionChangedListener() {
+		cv.getCombo().setEnabled(editable);
+		if (editable) {
+			// 为下拉框查看器添加选择改变的侦听器，这个侦听器是因为contentProvider是ArrayContentProvider
+			cv.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				// 创建结构选择器
-				StructuredSelection selection = (StructuredSelection) event
-						.getSelection();
-				// 获取选择的第一个元素，这个元素是工时方案
-				WorkTimeProgram workTimeProgram = (WorkTimeProgram) selection
-						.getFirstElement();
-				// 将选择的工时方案id保存到项目中
-				project.makeSelectedWorkTimeProgram(workTimeProgram);
-				project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
-				// 设置数据脏了
-				setDirty(true);
-				// 设置工时类型选择器的Input,传一个参数是工时方案
-				setparaXSelectorInput(workTimeProgram);
-				// 设置列类型选择器的Input，传入工时方案
-				setParaYSelectorInput(workTimeProgram);
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					// 创建结构选择器
+					StructuredSelection selection = (StructuredSelection) event
+							.getSelection();
+					WorkTimeProgram workTimeProgram = null;
+					if (!selection.isEmpty()) {
+						// 获取选择的第一个元素，这个元素是工时方案,可能为空
+						Object element = selection.getFirstElement();
+						if (element instanceof WorkTimeProgram) {
+							workTimeProgram = (WorkTimeProgram) element;
+						}
+					}
+					// 将选择的工时方案id保存到项目中
+					project.makeSelectedWorkTimeProgram(workTimeProgram);
+					project.noticeValueChanged(Project.F_WORKTIMEPROGRAM_ID);
+					// 设置数据脏了
+					setDirty(true);
+					// 设置工时类型选择器的Input,传一个参数是工时方案
+					setparaXSelectorInput(workTimeProgram);
+					// 设置列类型选择器的Input，传入工时方案
+					setParaYSelectorInput(workTimeProgram);
 
-			}
-		});
-		return cv;
-	}
-
-	@Override
-	protected void setDirty(boolean isDirty) {
-		if (isWorkTimeProgramReadonly && isWorkTimeParaXReadonly
-				&& isWorkTimeParaYReadonly) {
-			return;
+				}
+			});
 		}
-		super.setDirty(isDirty);
+		return cv;
 	}
 
 	/**
@@ -514,9 +512,13 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param workTimeProgram
 	 */
 	protected void setParaYSelectorInput(WorkTimeProgram workTimeProgram) {
-		BasicBSONList paraYs = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
-		paraYSelector.setInput(paraYs);
+		if (workTimeProgram != null) {
+			BasicBSONList paraYs = (BasicBSONList) workTimeProgram
+					.getValue(WorkTimeProgram.F_WORKTIME_PARA_Y);
+			paraYSelector.setInput(paraYs);
+		}else{
+			paraYSelector.setInput(new Object[0]);
+		}
 	}
 
 	/**
@@ -525,11 +527,38 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * @param workTimeProgram
 	 */
 	private void setparaXSelectorInput(WorkTimeProgram workTimeProgram) {
-		// 获取工时类型
-		BasicBSONList paraXs = (BasicBSONList) workTimeProgram
-				.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
-		// BasicBsonList继承与ArrayList，而paraXs中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
-		paraXSelector.setInput(paraXs);
+		if (workTimeProgram != null) {
+			// 获取工时类型
+			BasicBSONList paraXs = (BasicBSONList) workTimeProgram
+					.getValue(WorkTimeProgram.F_WORKTIME_PARA_X);
+			// BasicBsonList继承与ArrayList，而paraXs中的每个元素是DBObject，包括了F_id,F_desc,F_Type_Options三个字段
+			paraXSelector.setInput(paraXs);
+		} else {
+			paraXSelector.setInput(new Object[0]);
+		}
+	}
+
+	private void setProgramSelectorInput(Organization organization) {
+		List<PrimaryObject> programs = organization.getWorkTimePrograms();
+		if (programs != null && !programs.isEmpty()) {
+			//为工时方案的下拉框设置空选项，空选项在所有选项的最上方，在下拉框显示空白
+			Object[] input = new Object[programs.size()+1];
+			input[0] = "";
+			System.arraycopy(programs.toArray(),0,input,1,programs.size());
+			programSelector.setInput(input);
+			WorkTimeProgram program = project.getWorkTimeProgram();
+			if (program != null) {
+				programSelector.setSelection(new StructuredSelection(
+						new Object[] { program }));
+				// 设置工时类型选择器的Input,传一个参数是工时方案
+				setparaXSelectorInput(program);
+				// 设置列类型选择器的Input，传入工时方案
+				setParaYSelectorInput(program);
+			}
+
+		} else {
+			programSelector.setInput(new Object[0]);
+		}
 	}
 
 	/**
@@ -537,23 +566,27 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	 * 
 	 * @param projectTemplate
 	 */
-	private void setProgramSelectorInput(PrimaryObject projectTemplate) {
+	private void setProgramSelectorInput(ProjectTemplate projectTemplate) {
 		// 获取项目模板中关联的工时方案，BSonList类型
 		BasicBSONList workTimePrograms = (BasicBSONList) projectTemplate
 				.getValue(ProjectTemplate.F_WORKTIMEPROGRAMS);
 		// 为cv设置input
 		// input是一个arraylist
-		List<WorkTimeProgram> input = new ArrayList<WorkTimeProgram>();
-		if (workTimePrograms != null) {
+		List<WorkTimeProgram> programs = new ArrayList<WorkTimeProgram>();
+		if (workTimePrograms != null&& !workTimePrograms.isEmpty()) {
 			for (int i = 0; i < workTimePrograms.size(); i++) {
 				ObjectId programId = (ObjectId) workTimePrograms.get(i);
 				WorkTimeProgram workTimeProgram = ModelService
 						.createModelObject(WorkTimeProgram.class, programId);
-				input.add(workTimeProgram);
+				programs.add(workTimeProgram);
 			}
+			Object[] input = new Object[programs.size()+1];
+			input[0] = "";
+			System.arraycopy(programs.toArray(),0,input,1,programs.size());
+			programSelector.setInput(input);
+		} else {
+			programSelector.setInput(new Object[0]);
 		}
-
-		programSelector.setInput(input);
 		paraYSelector.setInput(new BasicDBList());
 		paraXSelector.setInput(new BasicDBList());
 
@@ -562,15 +595,6 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 	@Override
 	public void setFocus() {
 
-	}
-
-	@Override
-	public void commit(boolean onSave) {
-		if (isWorkTimeProgramReadonly && isWorkTimeParaXReadonly
-				&& isWorkTimeParaYReadonly) {
-			return;
-		}
-		setDirty(false);
 	}
 
 	/**
@@ -596,10 +620,15 @@ public class WorkTimeSettingPage extends AbstractFormPageDelegator implements
 		// 验证工时方案是否已选，如果选择了，就验证工时类型选项是否全选和列类型选项是否选择了，如果没选，就
 		try {
 			project.checkWorkTimeProgram();
+			setDirty(false);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public void commit(boolean onSave) {
 	}
 
 }

@@ -174,6 +174,12 @@ public interface IWorkCloneFields {
 	public static final String F_JOIN_PROJECT_CALCWORKS="joinprojectcalcworks";
 
 	/**
+	 * 7.3工时方案，保存的是由工时方案的_id组成的数组，用于独立工作定义
+	 */
+	public static final String F_WORKTIMEPROGRAMS = "worktimeprograms";
+	
+	
+	/**
 	 * 需要复制的设置项
 	 */
 	public static final String[] SETTING_FIELDS = new String[] {

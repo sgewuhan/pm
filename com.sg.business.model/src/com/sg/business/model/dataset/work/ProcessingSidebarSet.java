@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.jbpm.task.Status;
 
 import com.mobnut.db.DBActivator;
@@ -29,7 +30,7 @@ public class ProcessingSidebarSet extends DataSetFactory {
 
 	private String userId;
 	private DBCollection workCol;
-//	private DBCollection projectCol;
+	// private DBCollection projectCol;
 	private DBCollection userTaskCol;
 
 	public ProcessingSidebarSet() {
@@ -165,12 +166,18 @@ public class ProcessingSidebarSet extends DataSetFactory {
 	private void addWork(List<PrimaryObject> result, Work work) {
 		Work rootWork = (Work) work.getRoot();
 		if (rootWork != null) {
-			String lc = rootWork.getLifecycleStatus();
-			if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-				if (result.size() == 0) {
-					result.add(rootWork);
-				} else if (result.indexOf(rootWork) < 0) {
-					result.add(rootWork);
+			ObjectId work_id = work.get_id();
+			ObjectId rootWork_id = rootWork.get_id();
+			if (work_id.equals(rootWork_id)) {
+				result.add(rootWork);
+			} else {
+				String lc = rootWork.getLifecycleStatus();
+				if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+					if (result.size() == 0) {
+						result.add(rootWork);
+					} else if (result.indexOf(rootWork) < 0) {
+						result.add(rootWork);
+					}
 				}
 			}
 		}

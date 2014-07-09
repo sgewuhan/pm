@@ -1,10 +1,11 @@
 package com.sg.business.commons.ui.viewer;
 
+import java.util.List;
+
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.business.model.WorkTimeProgram;
 
@@ -22,7 +23,13 @@ public class ParaXOptionProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return ((BasicDBList) inputElement).toArray();
+		if(inputElement instanceof List<?>){
+			return ((List<?>) inputElement).toArray();
+		}else if(inputElement instanceof Object[]){
+			return (Object[]) inputElement;
+		}else{
+			return new Object[]{inputElement};
+		}
 	}
 
 	@Override

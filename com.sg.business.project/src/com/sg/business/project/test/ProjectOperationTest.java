@@ -32,6 +32,10 @@ public class ProjectOperationTest extends PropertyTester {
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == (project.canCheck() && project
 							.canEdit(new CurrentAccountContext()));
+				}else if("worktimesetting".equals(args[0])){//$NON-NLS-1$
+					boolean expected = Boolean.TRUE.equals(expectedValue);
+					return expected == project
+							.canEditWorkTimesSetting(new CurrentAccountContext());
 				}
 			}
 		} else if (receiver instanceof Work) {

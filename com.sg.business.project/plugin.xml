@@ -1358,6 +1358,30 @@
             </column>
          </exportAction>
       </navigator>
+      <navigator
+            id="project.wbs.worksprogram"
+            tree="project.wbs.worksprogram">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.selectworktimetype"
+            tree="project.selectworktimetype">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3017,6 +3041,70 @@
                width="-1">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="true"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            editorId="view.work"
+            fix="1"
+            id="project.wbs.worksprogram"
+            multiSelection="true"
+            popupMenu="popup:project.wbs.worksprogram"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider"
+            virtual="true">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <column
+               columnDefinitionId="work.desc"
+               width="-1">
+         </column>
+         <column
+               column="measurement"
+               labelProvider="com.sg.business.commons.column.labelprovider.MeasurementLabelProvider"
+               name="%measurement">
+         </column>
+         <column
+               column="standardworks"
+               name="%column.name.67"
+               style="SWT.CENTER"
+               type="Double">
+         </column>
+         <column
+               columnDefinitionId="planworks">
+         </column>
+         <column
+               column="statisticsstep"
+               name="%statisticsstep">
+         </column>
+         <column
+               column="statisticspoint"
+               name="%statisticspoint"
+               type="Boolean">
+         </column>
+         <column
+               column="parax"
+               labelProvider="com.sg.business.commons.column.labelprovider.ParaXLabelProvider"
+               name="%paraxbasicpage.title.24"
+               width="160">
+         </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            contentProvider="com.sg.business.commons.ui.viewer.ParaXOfProgram"
+            dataSet="com.sg.business.model.dataset.WorkTimeProgramOfProject"
+            id="project.selectworktimetype">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkTimeProgramAndTypeLabel"
+               name="%column.name.12"
+               type="String"
+               width="-1">
+         </column>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -3125,6 +3213,15 @@
                   name="project.separator4"
                   visible="true">
             </separator>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  label="%projectworksprogram"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="projectworksprogram">
+               </parameter>
+            </command>
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/flow_24.png"
@@ -3386,6 +3483,15 @@
                   name="project.separator4"
                   visible="true">
             </separator>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  label="%projectworksprogram"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="projectworksprogram">
+               </parameter>
+            </command>
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/flow_24.png"
@@ -3822,8 +3928,8 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="force"
-                              property="work.forceupdate">
+                              args="synchr"
+                              property="system.admin">
                         </test>
                      </iterate>
                   </and>
@@ -3845,8 +3951,8 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="force"
-                              property="work.forceupdate">
+                              args="synchr"
+                              property="system.admin">
                         </test>
                      </iterate>
                   </and>
@@ -4483,6 +4589,33 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.wbs.worksprogram">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/worksetting_24.png"
+               label="%command.label.54"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="setwork">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -4658,6 +4791,11 @@
             categoryId="project"
             id="project.linkprojectdeliverable"
             name="链接项目交付物文档">
+      </command>
+      <command
+            categoryId="project"
+            id="projectworksprogram"
+            name="%projectworksprogram">
       </command>
    </extension>
    <extension
@@ -5130,12 +5268,6 @@
                pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.6">
          </basicpage>
-         <basicpage
-               description="%worktimeprogramandoptions.description"
-               id="project.basicpage.4"
-               pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
-               title="%worktimeprogram">
-         </basicpage>
          <navigatorpage
                createAfterSave="true"
                description="项目团队的各个角色和成员"
@@ -5409,7 +5541,6 @@
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
-               description="%worktimeprogramandoptions.description"
                id="project.basicpage.4"
                pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
                title="%worktimeprogram">
@@ -7231,6 +7362,131 @@
                         persistable="true"
                         required="false">
                   </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="projectworksprogram"
+            name="%projectworksprogram">
+         <basicpage
+               id="project.basicpage.4"
+               pageDelegator="com.sg.business.project.editor.page.WorkTimeSettingPage"
+               title="%worktimeprogram">
+            <pagecolumn>
+               <section
+                     label="%basicpage.title.4">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="%text.label.24"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        id="description"
+                        label="%text.label.25"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        heightHint="110"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <navigatorpage
+               id="project.wbs.worksprogram"
+               image="image/wbs_24.png"
+               navigatorId="project.wbs.worksprogram"
+               title="%works">
+         </navigatorpage>
+      </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="setwork"
+            isDefault="false"
+            name="%setwork">
+         <basicpage
+               description="%worktime"
+               id="worktimepage"
+               title="%worktime">
+            <pagecolumn>
+               <section
+                     label="%worktime">
+                  <radio
+                        defaultValue="no"
+                        editable="false"
+                        editableHandler="com.sg.business.project.field.editable.MeasureFieldEditableControl"
+                        id="measurement"
+                        label="%measurement"
+                        labelVisible="true"
+                        name="measurement"
+                        option="worktime.measurement"
+                        persistable="true"
+                        type="DBObject">
+                  </radio>
+                  <list
+                        addTableItemHandler="com.sg.business.project.field.action.AddParaXActionOfProject"
+                        editable="true"
+                        heightHint="100"
+                        id="worktimepara_x"
+                        label="%paraxbasicpage.title.24"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.ParaXLabel"
+                        name="worktimepara_x"
+                        persistable="true"
+                        required="false"
+                        widthHint="200">
+                  </list>
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="statisticsstep"
+                           label="%statisticsstep"
+                           labelVisible="true"
+                           name="statisticsstep"
+                           optionProvider="com.sg.business.project.editor.option.StatisticsStepOptionOfProject"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <checkbox
+                           editable="true"
+                           id="statisticspoint"
+                           label="%statisticspoint"
+                           labelVisible="true"
+                           name="statisticspoint"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                  </fieldgroup>
                </section>
             </pagecolumn>
          </basicpage>

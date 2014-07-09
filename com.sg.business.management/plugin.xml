@@ -754,12 +754,12 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            contentProvider="com.sg.business.management.contentprovider.ParaXOfProgram"
+            contentProvider="com.sg.business.commons.ui.viewer.ParaXOfProgram"
             dataSet="com.sg.business.model.dataset.WorkTimeProgramOfProjectTemplate"
             id="management.selectworktimetype">
          <column
                column="desc"
-               labelProvider="com.sg.business.management.labelprovider.WorkTimeProgramAndTypeLabel"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkTimeProgramAndTypeLabel"
                name="%column.name.12"
                type="String"
                width="-1">
@@ -945,7 +945,7 @@
                         inputValidator="com.sg.widgets.commons.valuevalidator.AbstractValidator"
                         label="%view.management.worktimeprogram"
                         labelVisible="false"
-                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeProgramLabelProvider"
                         name="worktimeprograms"
                         persistable="true"
                         required="false">
@@ -1798,7 +1798,7 @@
                         id="worktimeprograms"
                         label="%view.management.worktimeprogram"
                         labelVisible="false"
-                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeProgramLabelProvider"
                         name="worktimeprograms"
                         persistable="true"
                         required="false">
@@ -2246,8 +2246,20 @@
                         id="worktimeprograms"
                         label="%view.management.worktimeprogram"
                         labelVisible="false"
-                        labelprovider="com.sg.business.management.column.labelprovider.WorkTimeProgramLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.WorkTimeProgramLabelProvider"
                         name="worktimeprograms"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%statisticsstep">
+                  <list
+                        editable="true"
+                        id="statisticsstep"
+                        label="%statisticsstep"
+                        labelVisible="false"
+                        name="statisticsstep"
                         persistable="true"
                         required="false">
                   </list>
@@ -2304,9 +2316,7 @@
                         persistable="true"
                         required="false">
                   </checkbox>
-                  <checkbox
-                        editable="true"
-                        id="joinprojectcalcworks"
+                  <checkbox             id="joinprojectcalcworks"
                         label="%joinprojectcalcworks"
                         labelVisible="true"
                         name="joinprojectcalcworks"

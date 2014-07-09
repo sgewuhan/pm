@@ -25,15 +25,22 @@ public class ProjectApplicationAuditSaveOfTB implements
 	@Override
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
-        TaskForm taskform = (TaskForm) input.getData();
-        Object value = taskform.getValue("prj_manager"); //$NON-NLS-1$
-        if(value instanceof String){
-        	String userid=(String) value;
-        	List<String> userList = new ArrayList<String>();
-        	userList.add(userid);
-        	Work work = taskform.getWork();
+		List<String> userList = new ArrayList<String>();
+		TaskForm taskform = (TaskForm) input.getData();
+		Object value = taskform.getValue("prj_manager"); //$NON-NLS-1$
+		if (value instanceof String) {
+			String userid = (String) value;
+			userList.add(userid);
+		}
+		value = taskform.getValue("data_audit"); //$NON-NLS-1$
+		if (value instanceof String) {
+			String userid = (String) value;
+			userList.add(userid);
+		}
+		if (userList.size() > 0) {
+			Work work = taskform.getWork();
 			work.doAddParticipateList(userList);
-        }
+		}
 		return true;
 	}
 

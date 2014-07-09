@@ -120,6 +120,8 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 					+ (end - start) / 1000 + " S");
 		}
 
+		
+		
 		return true;
 	}
 
